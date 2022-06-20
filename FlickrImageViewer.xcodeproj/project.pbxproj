@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
+		B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C928604B9D00E976C8 /* PopularViewController.m */; };
+		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
+		B23A30D92860507F00E976C8 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D82860507F00E976C8 /* ProfileViewController.m */; };
+		B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DB2860508D00E976C8 /* UploadViewController.m */; };
+		B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DF2860573400E976C8 /* UIView+Additions.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
 		B29CBB592859D2B20058B382 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB572859D2B20058B382 /* Main.storyboard */; };
 		B29CBB5B2859D2B60058B382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB5A2859D2B60058B382 /* Assets.xcassets */; };
@@ -35,6 +41,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B23A30BF286047EF00E976C8 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		B23A30C0286047EF00E976C8 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		B23A30C828604B9D00E976C8 /* PopularViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularViewController.h; sourceTree = "<group>"; };
+		B23A30C928604B9D00E976C8 /* PopularViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularViewController.m; sourceTree = "<group>"; };
+		B23A30D228604FC700E976C8 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		B23A30D328604FC700E976C8 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		B23A30D72860507F00E976C8 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		B23A30D82860507F00E976C8 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		B23A30DA2860508D00E976C8 /* UploadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadViewController.h; sourceTree = "<group>"; };
+		B23A30DB2860508D00E976C8 /* UploadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
+		B23A30DE2860573400E976C8 /* UIView+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
+		B23A30DF2860573400E976C8 /* UIView+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 		B29CBB4B2859D2B20058B382 /* FlickrImageViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrImageViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB4E2859D2B20058B382 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B29CBB4F2859D2B20058B382 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -75,6 +93,84 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B23A30C628604B7D00E976C8 /* Popular */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30C728604B8A00E976C8 /* Views */,
+				B23A30C828604B9D00E976C8 /* PopularViewController.h */,
+				B23A30C928604B9D00E976C8 /* PopularViewController.m */,
+			);
+			path = Popular;
+			sourceTree = "<group>";
+		};
+		B23A30C728604B8A00E976C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B23A30CB28604BB400E976C8 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30CC28604BD800E976C8 /* Views */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		B23A30CC28604BD800E976C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B23A30CD28604F0700E976C8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30C628604B7D00E976C8 /* Popular */,
+				B23A30D028604F2000E976C8 /* Profile */,
+				B23A30D128604F4000E976C8 /* Upload */,
+				B23A30D228604FC700E976C8 /* HomeViewController.h */,
+				B23A30D328604FC700E976C8 /* HomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B23A30D028604F2000E976C8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30D52860506100E976C8 /* Views */,
+				B23A30D72860507F00E976C8 /* ProfileViewController.h */,
+				B23A30D82860507F00E976C8 /* ProfileViewController.m */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		B23A30D128604F4000E976C8 /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30D62860506700E976C8 /* Views */,
+				B23A30DA2860508D00E976C8 /* UploadViewController.h */,
+				B23A30DB2860508D00E976C8 /* UploadViewController.m */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
+		B23A30D52860506100E976C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B23A30D62860506700E976C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,15 +181,10 @@
 		B2410886286020C4005B08BC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B23A30DE2860573400E976C8 /* UIView+Additions.h */,
+				B23A30DF2860573400E976C8 /* UIView+Additions.m */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		B2410887286020D9005B08BC /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		B24108882860211B005B08BC /* Onboarding */ = {
@@ -108,6 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				B241088A2860215F005B08BC /* Views */,
+				B23A30BF286047EF00E976C8 /* LoginViewController.h */,
+				B23A30C0286047EF00E976C8 /* LoginViewController.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -204,6 +297,8 @@
 		B29CBB862859D33B0058B382 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				B23A30CD28604F0700E976C8 /* Home */,
+				B23A30CB28604BB400E976C8 /* Error */,
 				B241088928602120005B08BC /* Login */,
 				B24108882860211B005B08BC /* Onboarding */,
 				B29CBB872859D36B0058B382 /* Main */,
@@ -214,7 +309,6 @@
 		B29CBB872859D36B0058B382 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B2410887286020D9005B08BC /* ViewControllers */,
 				B29CBB4E2859D2B20058B382 /* AppDelegate.h */,
 				B29CBB4F2859D2B20058B382 /* AppDelegate.m */,
 				B29CBB602859D2B60058B382 /* main.m */,
@@ -352,8 +446,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
+				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
+				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
+				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
+				B23A30D92860507F00E976C8 /* ProfileViewController.m in Sources */,
+				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
