@@ -59,4 +59,9 @@
     return YES;
 }
 
+#pragma mark - <Initial setup>
+- (void)checkForConsumerKeyAndSecret {
+    
+}
+
 @end

@@ -19,6 +19,7 @@
 		B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30F728616CD300E976C8 /* OMGUserAgent.m */; };
 		B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FC28616E4800E976C8 /* UserAgent.m */; };
 		B23A310028616E8F00E976C8 /* OAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FF28616E8F00E976C8 /* OAuth.m */; };
+		B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A310928619FE700E976C8 /* LoginHandler.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
 		B29CBB592859D2B20058B382 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB572859D2B20058B382 /* Main.storyboard */; };
 		B29CBB5B2859D2B60058B382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB5A2859D2B60058B382 /* Assets.xcassets */; };
@@ -72,6 +73,8 @@
 		B23A30FC28616E4800E976C8 /* UserAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgent.m; sourceTree = "<group>"; };
 		B23A30FE28616E8F00E976C8 /* OAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuth.h; sourceTree = "<group>"; };
 		B23A30FF28616E8F00E976C8 /* OAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuth.m; sourceTree = "<group>"; };
+		B23A310828619FE700E976C8 /* LoginHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginHandler.h; sourceTree = "<group>"; };
+		B23A310928619FE700E976C8 /* LoginHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginHandler.m; sourceTree = "<group>"; };
 		B29CBB4B2859D2B20058B382 /* FlickrImageViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrImageViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB4E2859D2B20058B382 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B29CBB4F2859D2B20058B382 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -245,6 +248,15 @@
 			path = UserAgent;
 			sourceTree = "<group>";
 		};
+		B23A310428619F6E00E976C8 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				B23A310828619FE700E976C8 /* LoginHandler.h */,
+				B23A310928619FE700E976C8 /* LoginHandler.m */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +289,7 @@
 		B241088928602120005B08BC /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				B23A310428619F6E00E976C8 /* Handlers */,
 				B241088A2860215F005B08BC /* Views */,
 				B23A30BF286047EF00E976C8 /* LoginViewController.h */,
 				B23A30C0286047EF00E976C8 /* LoginViewController.m */,
@@ -530,6 +543,7 @@
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
+				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
