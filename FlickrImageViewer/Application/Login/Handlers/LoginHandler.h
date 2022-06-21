@@ -21,9 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLRequest *)requestTokenURLRequest;
 
+- (NSURL *)authorizationURL;
+
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                        NSString * _Nullable oauthTokenSecret,
                                                        NSError * _Nullable error))completion;
+
+- (void)parseTokenAndSecretFromQuery:(NSString *)queryString;
+- (void)parseTokenAndVerifierFromQuery:(NSString *)queryString;
 
 NS_ASSUME_NONNULL_END
 

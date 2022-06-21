@@ -49,9 +49,10 @@
             }
         }
         
-        NSString *message = [params objectForKey:@"oauth_token"];
+//        NSString *message = [params objectForKey:@"oauth_token"];
+        NSString *message = url.query;
         if (message) {
-            NSNotificationName notiName = @"MessageReceived";
+            NSNotificationName notiName = @"CallbackReceived";
             [[NSNotificationCenter defaultCenter] postNotificationName:notiName object:message];
         }
     }

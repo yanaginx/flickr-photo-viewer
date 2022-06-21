@@ -12,6 +12,7 @@
 
 @implementation LoginHandler
 
+static NSString *authorizationEndpoint = @"https://www.flickr.com/services/oauth/authorize";
 static NSString *oauthConsumerKey = @"68fb93124728e9d210ca6dd75e1ba96d";
 static NSString *oauthConsumerSecret = @"b55ec59d57a6e559";
 static NSString *oauthCallbackURL = @"flickrz://";
@@ -47,6 +48,18 @@ static NSString *oauthCallbackURL = @"flickrz://";
     return request;
 }
 
+- (NSURL *)authorizationURL {
+    NSString *requestOAuthToken = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
+    NSString *requestOAuthTokenSecret = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token_secret"];
+    if (!requestOAuthToken || !requestOAuthTokenSecret) return nil;
+    
+    NSString *authorizationURLString = [NSString stringWithFormat:@"%@?oauth_token=%@&perms=read&perms=write",
+                                                                    authorizationEndpoint,
+                                                                    requestOAuthToken];
+    
+    return [NSURL URLWithString:authorizationURLString];
+}
+
 #pragma mark - Make request
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable responseString,
                                                        NSString * _Nullable oauthTokenSecret,
@@ -67,27 +80,32 @@ static NSString *oauthCallbackURL = @"flickrz://";
         }
         NSString *responseDataString = [[NSString alloc] initWithData:data
                                                              encoding:NSASCIIStringEncoding];
-        NSLog(@"[DEBUG] %s : data received: %@", __func__, responseDataString);
         if (!isValidResponse(responseDataString)) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:LoginHandlerErrorNotValidData
                                              userInfo:nil];
             completion(nil, nil, error);
         }
-        NSArray *queryItem = [responseDataString componentsSeparatedByString:@"&"];
-        NSString *token = @"";
-        NSString *secret = @"";
-        for (NSString *pair in queryItem) {
-            NSArray *item = [pair componentsSeparatedByString:@"="];
-            if (item.count != 2) continue;
-            if ([item[0] isEqualToString:@"oauth_token"]) token = item[1];
-            if ([item[0] isEqualToString:@"oauth_token_secret"]) secret = item[1];
-        }
-        completion(token, secret, nil);
+//        NSArray *queryItem = [responseDataString componentsSeparatedByString:@"&"];
+//        NSString *token = @"";
+//        NSString *secret = @"";
+//        for (NSString *pair in queryItem) {
+//            NSArray *item = [pair componentsSeparatedByString:@"="];
+//            if (item.count != 2) continue;
+//            if ([item[0] isEqualToString:@"oauth_token"]) token = item[1];
+//            if ([item[0] isEqualToString:@"oauth_token_secret"]) secret = item[1];
+//        }
+//        [NSUserDefaults.standardUserDefaults setObject:token forKey:@"request_oauth_token"];
+//        [NSUserDefaults.standardUserDefaults setObject:secret forKey:@"request_oauth_token_secret"];
+        [self parseTokenAndSecretFromQuery:responseDataString];
+        NSString *token = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
+        NSString *tokenSecret = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token_secret"];
+        completion(token, tokenSecret, nil);
     }] resume];
 }
 
 #pragma mark - Helper
+
 BOOL isValidResponse(NSString * responseString) {
     NSArray *queryItem = [responseString componentsSeparatedByString:@"&"];
     for (NSString *item in queryItem) {
@@ -95,5 +113,34 @@ BOOL isValidResponse(NSString * responseString) {
     }
     return NO;
 }
+
+- (void)parseTokenAndSecretFromQuery:(NSString *)queryString {
+    NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
+    NSString *token = @"";
+    NSString *secret = @"";
+    for (NSString *pair in queryItem) {
+        NSArray *item = [pair componentsSeparatedByString:@"="];
+        if (item.count != 2) continue;
+        if ([item[0] isEqualToString:@"oauth_token"]) token = item[1];
+        if ([item[0] isEqualToString:@"oauth_token_secret"]) secret = item[1];
+    }
+    [NSUserDefaults.standardUserDefaults setObject:token forKey:@"request_oauth_token"];
+    [NSUserDefaults.standardUserDefaults setObject:secret forKey:@"request_oauth_token_secret"];
+}
+
+- (void)parseTokenAndVerifierFromQuery:(NSString *)queryString {
+    NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
+    NSString *token = @"";
+    NSString *verifier = @"";
+    for (NSString *pair in queryItem) {
+        NSArray *item = [pair componentsSeparatedByString:@"="];
+        if (item.count != 2) continue;
+        if ([item[0] isEqualToString:@"oauth_token"]) token = item[1];
+        if ([item[0] isEqualToString:@"oauth_verifier"]) verifier = item[1];
+    }
+    [NSUserDefaults.standardUserDefaults setObject:token forKey:@"request_oauth_token"];
+    [NSUserDefaults.standardUserDefaults setObject:verifier forKey:@"request_oauth_verifier"];
+}
+
 
 @end
