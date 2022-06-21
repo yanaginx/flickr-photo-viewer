@@ -5,12 +5,15 @@
 //  Created by LAP14121 on 21/06/2022.
 //
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObjCRuntime.h>
+@class NSString;
 
+#if __has_feature(nullability) && defined(NS_ASSUME_NONNULL_BEGIN)
 NS_ASSUME_NONNULL_BEGIN
+#endif
 
-@interface UserAgent : NSObject
+NSString *UserAgent(void);
 
-@end
-
+#if __has_feature(nullability) && defined(NS_ASSUME_NONNULL_END)
 NS_ASSUME_NONNULL_END
+#endif

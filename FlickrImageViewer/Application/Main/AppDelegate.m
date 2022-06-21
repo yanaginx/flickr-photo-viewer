@@ -6,6 +6,8 @@
 //
 
 #import "AppDelegate.h"
+#import "../Login/LoginViewController.h"
+#import "../Home/HomeViewController.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +21,9 @@
     self.window = [UIWindow new];
     [self.window makeKeyAndVisible];
     
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    
+    self.window.rootViewController = loginVC;
 
     return YES;
 }

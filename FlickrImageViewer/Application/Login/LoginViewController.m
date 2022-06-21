@@ -6,6 +6,8 @@
 //
 
 #import "LoginViewController.h"
+#import "../../Common/Extensions/UIView+Additions.h"
+#import "../../Common/Extensions/NSString+Additions.h"
 
 @interface LoginViewController ()
 
@@ -15,10 +17,18 @@
 
 @implementation LoginViewController
 
+static NSString *oauthConsumerKey = @"68fb93124728e9d210ca6dd75e1ba96d";
+static NSString *oauthConsumerSecret = @"b55ec59d57a6e559";
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.label];
+    self.view.backgroundColor = UIColor.whiteColor;
     [self.label setAnchorCenterX:self.label.superview.centerXAnchor centerY:self.label.superview.centerYAnchor];
+    
+    // http%3A%2F%2Fwww.example.com
+    self.label.text = [@"http://www.example.com" URLEncodedString];
     
     [self addObserver];
 }

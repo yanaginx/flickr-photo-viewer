@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (Additions)
 
+- (NSString *)URLEncodedString;
+
 @end
 
 NS_ASSUME_NONNULL_END

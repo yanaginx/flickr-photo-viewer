@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "../../Common/Extensions/UIView+Additions.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

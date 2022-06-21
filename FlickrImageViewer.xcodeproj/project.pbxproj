@@ -13,6 +13,12 @@
 		B23A30D92860507F00E976C8 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D82860507F00E976C8 /* ProfileViewController.m */; };
 		B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DB2860508D00E976C8 /* UploadViewController.m */; };
 		B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DF2860573400E976C8 /* UIView+Additions.m */; };
+		B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30E928606FEA00E976C8 /* HMAC-sha1.m */; };
+		B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30EE28607FCB00E976C8 /* NSString+Additions.m */; };
+		B23A30F42861602800E976C8 /* TDOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30F32861602800E976C8 /* TDOAuth.m */; };
+		B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30F728616CD300E976C8 /* OMGUserAgent.m */; };
+		B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FC28616E4800E976C8 /* UserAgent.m */; };
+		B23A310028616E8F00E976C8 /* OAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FF28616E8F00E976C8 /* OAuth.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
 		B29CBB592859D2B20058B382 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB572859D2B20058B382 /* Main.storyboard */; };
 		B29CBB5B2859D2B60058B382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB5A2859D2B60058B382 /* Assets.xcassets */; };
@@ -53,6 +59,19 @@
 		B23A30DB2860508D00E976C8 /* UploadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
 		B23A30DE2860573400E976C8 /* UIView+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		B23A30DF2860573400E976C8 /* UIView+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
+		B23A30E72860624600E976C8 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		B23A30E828606FEA00E976C8 /* HMAC-sha1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HMAC-sha1.h"; sourceTree = "<group>"; };
+		B23A30E928606FEA00E976C8 /* HMAC-sha1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "HMAC-sha1.m"; sourceTree = "<group>"; };
+		B23A30ED28607FCB00E976C8 /* NSString+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		B23A30EE28607FCB00E976C8 /* NSString+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
+		B23A30F22861602800E976C8 /* TDOAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDOAuth.h; sourceTree = "<group>"; };
+		B23A30F32861602800E976C8 /* TDOAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDOAuth.m; sourceTree = "<group>"; };
+		B23A30F628616CD300E976C8 /* OMGUserAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OMGUserAgent.h; sourceTree = "<group>"; };
+		B23A30F728616CD300E976C8 /* OMGUserAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OMGUserAgent.m; sourceTree = "<group>"; };
+		B23A30FB28616E4800E976C8 /* UserAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgent.h; sourceTree = "<group>"; };
+		B23A30FC28616E4800E976C8 /* UserAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgent.m; sourceTree = "<group>"; };
+		B23A30FE28616E8F00E976C8 /* OAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuth.h; sourceTree = "<group>"; };
+		B23A30FF28616E8F00E976C8 /* OAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuth.m; sourceTree = "<group>"; };
 		B29CBB4B2859D2B20058B382 /* FlickrImageViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrImageViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB4E2859D2B20058B382 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B29CBB4F2859D2B20058B382 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -171,9 +190,67 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B23A30E62860623400E976C8 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30E72860624600E976C8 /* Constants.h */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		B23A30EB286070C000E976C8 /* Hash */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30E828606FEA00E976C8 /* HMAC-sha1.h */,
+				B23A30E928606FEA00E976C8 /* HMAC-sha1.m */,
+			);
+			path = Hash;
+			sourceTree = "<group>";
+		};
+		B23A30F128615FF800E976C8 /* TDOAuth */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30F528616C6C00E976C8 /* OMGHTTPURLRQ */,
+				B23A30F22861602800E976C8 /* TDOAuth.h */,
+				B23A30F32861602800E976C8 /* TDOAuth.m */,
+			);
+			path = TDOAuth;
+			sourceTree = "<group>";
+		};
+		B23A30F528616C6C00E976C8 /* OMGHTTPURLRQ */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30F628616CD300E976C8 /* OMGUserAgent.h */,
+				B23A30F728616CD300E976C8 /* OMGUserAgent.m */,
+			);
+			path = OMGHTTPURLRQ;
+			sourceTree = "<group>";
+		};
+		B23A30F928616E1100E976C8 /* OAuth1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30FA28616E3300E976C8 /* UserAgent */,
+				B23A30FE28616E8F00E976C8 /* OAuth.h */,
+				B23A30FF28616E8F00E976C8 /* OAuth.m */,
+			);
+			path = OAuth1.0;
+			sourceTree = "<group>";
+		};
+		B23A30FA28616E3300E976C8 /* UserAgent */ = {
+			isa = PBXGroup;
+			children = (
+				B23A30FB28616E4800E976C8 /* UserAgent.h */,
+				B23A30FC28616E4800E976C8 /* UserAgent.m */,
+			);
+			path = UserAgent;
+			sourceTree = "<group>";
+		};
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B23A30F928616E1100E976C8 /* OAuth1.0 */,
+				B23A30F128615FF800E976C8 /* TDOAuth */,
+				B23A30EB286070C000E976C8 /* Hash */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -183,6 +260,8 @@
 			children = (
 				B23A30DE2860573400E976C8 /* UIView+Additions.h */,
 				B23A30DF2860573400E976C8 /* UIView+Additions.m */,
+				B23A30ED28607FCB00E976C8 /* NSString+Additions.h */,
+				B23A30EE28607FCB00E976C8 /* NSString+Additions.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -278,6 +357,7 @@
 		B29CBB842859D32F0058B382 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B23A30E62860623400E976C8 /* Constants */,
 				B2410886286020C4005B08BC /* Extensions */,
 				B2410885286020BD005B08BC /* Utilities */,
 			);
@@ -448,10 +528,16 @@
 			files = (
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
+				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
+				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
+				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
+				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
+				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
+				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
 				B23A30D92860507F00E976C8 /* ProfileViewController.m in Sources */,
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
 			);
