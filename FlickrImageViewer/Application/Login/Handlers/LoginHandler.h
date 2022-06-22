@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)parseTokenAndVerifierFromQuery:(NSString *)queryString;
 
+- (void)removeUserAccessTokenAndSecret;
+
 NS_ASSUME_NONNULL_END
 
 @end

@@ -15,17 +15,20 @@
 
 @implementation AppDelegate
 
++ (AppDelegate *)shared {
+    return (AppDelegate *)UIApplication.sharedApplication.delegate;
+}
+
+- (RootViewController *)rootViewController {
+    return (RootViewController *)self.window.rootViewController;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
     self.window = [[UIWindow alloc] init];
-    
-    if ( isLoggedIn() ) {
-        [self switchToHomeView];
-    } else {
-        [self switchToLoginView];
-    }
-    
+    RootViewController *rootVC = [[RootViewController alloc] init];
+    self.window.rootViewController = rootVC;
+    [self.window makeKeyAndVisible];
+//    NSLog(@"%s : is Logged in? %d", __func__, isLoggedIn());
     return YES;
 }
 
@@ -64,10 +67,10 @@
     return YES;
 }
 
-#pragma mark - Helpers
-BOOL isLoggedIn(void) {
-    return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
-}
+//#pragma mark - Helpers
+//BOOL isLoggedIn(void) {
+//    return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
+//}
 
 
 

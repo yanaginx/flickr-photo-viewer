@@ -6,6 +6,7 @@
 //
 
 #import "ProfileViewController.h"
+#import "../../Login/Handlers/LoginHandler.h"
 
 @interface ProfileViewController ()
 
@@ -17,16 +18,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.magentaColor;
+    // Temporary logout button to test the flow
+    UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout"
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(logout)];
+    [self.navigationItem setLeftBarButtonItem:logoutButton animated:YES];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - Private methods
+- (void)logout {
+    [LoginHandler.sharedLoginHandler removeUserAccessTokenAndSecret];
+    /// Navigate to Login Screen
+     
 }
-*/
 
 @end

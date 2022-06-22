@@ -6,10 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
+@property (class, readonly, strong) AppDelegate *shared;
+
+- (RootViewController *)rootViewController;
 
 - (void)switchToLoginView;
 - (void)switchToHomeView;

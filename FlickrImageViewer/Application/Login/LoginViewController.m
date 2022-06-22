@@ -132,7 +132,7 @@
             NSLog(@"[DEBUG] %s : user token: %@", __func__, LoginHandler.sharedLoginHandler.userAccessToken);
             NSLog(@"[DEBUG] %s : user tokenSecret: %@", __func__, LoginHandler.sharedLoginHandler.userTokenSecret);
             dispatch_async(dispatch_get_main_queue(), ^{
-                // redirect user to the tabbar controller
+                /// Redirect user to the tabbar controller
                 // this is only for checking token's validity, the screen flow will be edited later
                 AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
                 [appDelegate switchToHomeView];
@@ -154,12 +154,9 @@
     self.safariViewController = [[SFSafariViewController alloc] initWithURL:LoginHandler.sharedLoginHandler.authorizationURL];
     self.safariViewController.delegate = self;
     [self presentViewController:self.safariViewController animated:YES completion:nil];
-    NSLog(@"BOOM!");
 }
 
 - (void)safariLogin:(NSNotification *)notification {
-//    [self removeObservers];
-    
     if ([notification.object isKindOfClass:[NSString class]]) {
         NSString *query = notification.object;
         [LoginHandler.sharedLoginHandler parseTokenAndVerifierFromQuery:query];

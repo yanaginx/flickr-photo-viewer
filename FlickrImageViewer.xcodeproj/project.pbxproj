@@ -28,6 +28,8 @@
 		B29CBB6B2859D2B60058B382 /* FlickrImageViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB6A2859D2B60058B382 /* FlickrImageViewerTests.m */; };
 		B29CBB752859D2B60058B382 /* FlickrImageViewerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB742859D2B60058B382 /* FlickrImageViewerUITests.m */; };
 		B29CBB772859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB762859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m */; };
+		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
+		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,10 @@
 		B29CBB702859D2B60058B382 /* FlickrImageViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrImageViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB742859D2B60058B382 /* FlickrImageViewerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickrImageViewerUITests.m; sourceTree = "<group>"; };
 		B29CBB762859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickrImageViewerUITestsLaunchTests.m; sourceTree = "<group>"; };
+		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
+		B2CED1802863069600606615 /* SplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,14 +284,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B24108882860211B005B08BC /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				B241088B2860216B005B08BC /* Views */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		B241088928602120005B08BC /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,13 +296,6 @@
 			sourceTree = "<group>";
 		};
 		B241088A2860215F005B08BC /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B241088B2860216B005B08BC /* Views */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -390,10 +381,10 @@
 		B29CBB862859D33B0058B382 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				B23A30CD28604F0700E976C8 /* Home */,
 				B23A30CB28604BB400E976C8 /* Error */,
+				B23A30CD28604F0700E976C8 /* Home */,
+				B2CED17E2863036F00606615 /* Splash */,
 				B241088928602120005B08BC /* Login */,
-				B24108882860211B005B08BC /* Onboarding */,
 				B29CBB872859D36B0058B382 /* Main */,
 			);
 			path = Application;
@@ -405,8 +396,19 @@
 				B29CBB4E2859D2B20058B382 /* AppDelegate.h */,
 				B29CBB4F2859D2B20058B382 /* AppDelegate.m */,
 				B29CBB602859D2B60058B382 /* main.m */,
+				B2CED17A2862F57A00606615 /* RootViewController.h */,
+				B2CED17B2862F57A00606615 /* RootViewController.m */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		B2CED17E2863036F00606615 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				B2CED17F2863069600606615 /* SplashViewController.h */,
+				B2CED1802863069600606615 /* SplashViewController.m */,
+			);
+			path = Splash;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,7 +542,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
+				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
+				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
