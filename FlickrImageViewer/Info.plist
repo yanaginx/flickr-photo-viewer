@@ -5,12 +5,12 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>vn.vng.com.duongvc.Flickrz</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>flickrz</string>
 			</array>
-			<key>CFBundleURLName</key>
-			<string>vn.vng.com.duongvc.Flickrz</string>
 		</dict>
 	</array>
 </dict>

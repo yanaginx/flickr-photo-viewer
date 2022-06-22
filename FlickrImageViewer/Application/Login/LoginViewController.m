@@ -7,6 +7,7 @@
 
 #import "LoginViewController.h"
 #import "../Home/HomeViewController.h"
+#import "../Main/AppDelegate.h"
 
 #import "Handlers/LoginHandler.h"
 #import "../../Common/Extensions/UIView+Additions.h"
@@ -43,6 +44,10 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+}
+
+- (void)dealloc {
+    NSLog(@"Login view controller did dealloc");
 }
 
 
@@ -129,8 +134,8 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 // redirect user to the tabbar controller
                 // this is only for checking token's validity, the screen flow will be edited later
-                HomeViewController *homeVC = [[HomeViewController alloc] init];
-                [self presentViewController:homeVC animated:YES completion:nil];
+                AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
+                [appDelegate switchToHomeView];
             });
         }
         
