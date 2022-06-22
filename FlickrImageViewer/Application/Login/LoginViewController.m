@@ -132,10 +132,13 @@
             NSLog(@"[DEBUG] %s : user token: %@", __func__, LoginHandler.sharedLoginHandler.userAccessToken);
             NSLog(@"[DEBUG] %s : user tokenSecret: %@", __func__, LoginHandler.sharedLoginHandler.userTokenSecret);
             dispatch_async(dispatch_get_main_queue(), ^{
-                /// Redirect user to the tabbar controller
+                /// Navigate to Home screen
+                [AppDelegate.shared.rootViewController switchToHomeScreen];
+                /*
                 // this is only for checking token's validity, the screen flow will be edited later
                 AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
                 [appDelegate switchToHomeView];
+                */
             });
         }
         

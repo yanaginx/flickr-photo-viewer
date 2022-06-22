@@ -6,6 +6,7 @@
 //
 
 #import "ProfileViewController.h"
+#import "../../Main/AppDelegate.h"
 #import "../../Login/Handlers/LoginHandler.h"
 
 @interface ProfileViewController ()
@@ -31,7 +32,7 @@
 - (void)logout {
     [LoginHandler.sharedLoginHandler removeUserAccessTokenAndSecret];
     /// Navigate to Login Screen
-     
+    [AppDelegate.shared.rootViewController switchToLogOut];
 }
 
 @end

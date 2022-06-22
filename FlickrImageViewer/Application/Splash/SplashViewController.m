@@ -6,6 +6,7 @@
 //
 
 #import "SplashViewController.h"
+#import "../Main/AppDelegate.h"
 
 @interface SplashViewController ()
 
@@ -35,8 +36,10 @@
         [self.activityIndicator stopAnimating];
         if (isLoggedIn()) {
             /// Navigate to Home view
+            [AppDelegate.shared.rootViewController switchToHomeScreen];
         } else {
             /// Navigate to Login view
+            [AppDelegate.shared.rootViewController switchToLogOut];
         }
     });
 }

@@ -39,28 +39,33 @@
 #pragma mark - Navigation methods
 - (void)showLoginScreen {
     LoginViewController *loginVC = [[LoginViewController alloc] init];
-    UINavigationController *newNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     
-    [self addChildViewController:newNavi];
-    newNavi.view.frame = self.view.bounds;
-    [self.view addSubview:newNavi.view];
-    [newNavi didMoveToParentViewController:self];
+    [self addChildViewController:loginNavi];
+    loginNavi.view.frame = self.view.bounds;
+    [self.view addSubview:loginNavi.view];
+    [loginNavi didMoveToParentViewController:self];
     
     [self.currentVC willMoveToParentViewController:nil];
     [self.currentVC.view removeFromSuperview];
     [self.currentVC removeFromParentViewController];
     
-    self.currentVC = newNavi;
+    self.currentVC = loginNavi;
 }
 
 - (void)switchToHomeScreen {
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     UINavigationController *homeNavi = [[UINavigationController alloc] initWithRootViewController:homeVC];
-    
-    
+    [self animateFadeTransitionToNewViewController:homeNavi completion:nil];
 }
 
-- (void)animateFadeTransitionToNewViewController:(UIViewController *)newVC completion:(void(^)(void))completion {
+- (void)switchToLogOut {
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    [self animateFadeTransitionToNewViewController:loginNavi completion:nil];
+}
+
+- (void)animateFadeTransitionToNewViewController:(UIViewController *)newVC completion:(void(^ __nullable)(void))completion {
     [self.currentVC willMoveToParentViewController:nil];
     [self addChildViewController:newVC];
     
@@ -68,12 +73,28 @@
         [self.currentVC removeFromParentViewController];
         [newVC didMoveToParentViewController:self];
         self.currentVC = newVC;
-        completion();
+        if (completion) completion();
     }];
 }
 
-- (void)switchToLogOut {
+- (void)animateDismissTransitionToNewViewController:(UIViewController *)newVC completion:(void(^ __nullable)(void))completion {
+    CGRect initialFrame = CGRectMake(-self.view.bounds.size.width, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    [self.currentVC willMoveToParentViewController:nil];
+    [self addChildViewController:newVC];
+    newVC.view.frame = initialFrame;
     
+    [self transitionFromViewController:self.currentVC toViewController:newVC duration:0.3 options:UIViewAnimationOptionTransitionNone animations:^{
+        newVC.view.frame = self.view.bounds;
+    } completion:^(BOOL finished) {
+        [self.currentVC removeFromParentViewController];
+        [newVC didMoveToParentViewController:self];
+        self.currentVC = newVC;
+        if (completion) completion();
+    }];
 }
+
+
+
+
 
 @end
