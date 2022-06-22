@@ -18,14 +18,30 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    self.window = [UIWindow new];
-    [self.window makeKeyAndVisible];
+    self.window = [[UIWindow alloc] init];
     
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    if ( isLoggedIn() ) {
+        [self switchToHomeView];
+    } else {
+        [self switchToLoginView];
+    }
     
-    self.window.rootViewController = loginVC;
-
     return YES;
+}
+
+- (void)switchToHomeView {
+    NSLog(@"%s", __func__);
+    HomeViewController *homeVC = [[HomeViewController alloc] init];
+    self.window.rootViewController = homeVC;
+    [self.window makeKeyAndVisible];
+}
+
+- (void)switchToLoginView {
+    NSLog(@"%s", __func__);
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    self.window.rootViewController = loginVC;
+    [self.window makeKeyAndVisible];
+
 }
 
 
@@ -35,21 +51,9 @@
     NSLog(@"url: %@", !url.baseURL ? @"No base URL" : url.baseURL.absoluteString);
     NSLog(@"url query: %@", !url.query ? @"No query string" : url.query);
     
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    
     // Sending the message to notification center whenever
     // the listener get the message from the sender
     if (url.query) {
-        NSArray *queryItem = [url.query componentsSeparatedByString:@"&"];
-        
-        for (NSString *pair in queryItem) {
-            NSArray *item = [pair componentsSeparatedByString:@"="];
-            if (item.count == 2) {
-                [params setValue:item[1] forKey:item[0]];
-            }
-        }
-        
-//        NSString *message = [params objectForKey:@"oauth_token"];
         NSString *message = url.query;
         if (message) {
             NSNotificationName notiName = @"CallbackReceived";
@@ -60,9 +64,11 @@
     return YES;
 }
 
-#pragma mark - <Initial setup>
-- (void)checkForConsumerKeyAndSecret {
-    
+#pragma mark - Helpers
+BOOL isLoggedIn(void) {
+    return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
 }
+
+
 
 @end

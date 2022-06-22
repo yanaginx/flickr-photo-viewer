@@ -6,10 +6,12 @@
 //
 
 #import "LoginViewController.h"
+#import "../Home/HomeViewController.h"
 
 #import "Handlers/LoginHandler.h"
 #import "../../Common/Extensions/UIView+Additions.h"
 #import "../../Common/Extensions/NSString+Additions.h"
+
 
 
 @interface LoginViewController () <SFSafariViewControllerDelegate>
@@ -36,6 +38,7 @@
     [self.label setFont:[UIFont systemFontOfSize:32]];
     
     [self addAuthorizationObserver];
+    [self addAccessTokenRequestObserver];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -56,24 +59,22 @@
 #pragma mark - Private methods
 
 - (void)addAuthorizationObserver {
-//    [NSNotificationCenter.defaultCenter addObserver:self
-//                                           selector:@selector(showLoginWebView)
-//                                               name:@"AuthorizationURLReady"
-//                                             object:nil];
     [NSNotificationCenter.defaultCenter addObserverForName:@"AuthorizationURLReady"
                                                     object:nil
                                                      queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification * _Nonnull note) {
+                                                usingBlock:^(NSNotification *notification) {
         [self showLoginWebView];
     }];
 }
 
+- (void)addAccessTokenRequestObserver {
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(getAccessToken)
+                                               name:@"AuthorizationSuccessful"
+                                             object:nil];
+}
+
 - (void)addCallbackObserver {
-    // Subsribing the notification center for the message
-//    [NSNotificationCenter.defaultCenter addObserver:self
-//                                           selector:@selector(safariLogin:)
-//                                               name:@"CallbackReceived"
-//                                             object:nil];
     [NSNotificationCenter.defaultCenter addObserverForName:@"CallbackReceived"
                                                     object:nil
                                                      queue:[NSOperationQueue mainQueue]
@@ -82,9 +83,11 @@
     }];
 }
 
+
 - (void)removeObservers {
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"CallbackReceived" object:nil];
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationURLReady" object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationSuccessful" object:nil];
 }
 
 - (void)onClickGetStarted {
@@ -99,18 +102,43 @@
 }
 
 - (void)getRequestToken {
-        [LoginHandler.sharedLoginHandler getRequestTokenWithCompletionHandler:^(NSString * _Nullable token,
-                                                                              NSString * _Nullable secret,
-                                                                              NSError * _Nullable error) {
-        NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
-        NSLog(@"[DEBUG] %s : result data received: %@, %@", __func__, token, secret);
-        if (token && secret) {
-//            [NSUserDefaults.standardUserDefaults setObject:token forKey:@"request_oauth_token"];
-//            [NSUserDefaults.standardUserDefaults setObject:secret forKey:@"request_oauth_token_secret"];
+    [LoginHandler.sharedLoginHandler getRequestTokenWithCompletionHandler:^(NSString * _Nullable token,
+                                                                            NSString * _Nullable secret,
+                                                                            NSError * _Nullable error) {
+        if (![token isEqualToString:@""] &&
+            ![secret isEqualToString:@""]) {
             NSLog(@"[DEBUG] %s : authorizationURL built: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
             [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
                                                               object:self];
         }
+        // error handling
+        if (error) {
+            NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
+        }
+    }];
+}
+
+- (void)getAccessToken {
+    [LoginHandler.sharedLoginHandler getAccessTokenWithCompletionHandler:^(NSString * _Nullable token,
+                                                                           NSString * _Nullable tokenSecret,
+                                                                           NSError * _Nullable error) {
+        if (![token isEqualToString:@""] &&
+            ![tokenSecret isEqualToString:@""]) {
+            NSLog(@"[DEBUG] %s : user token: %@", __func__, LoginHandler.sharedLoginHandler.userAccessToken);
+            NSLog(@"[DEBUG] %s : user tokenSecret: %@", __func__, LoginHandler.sharedLoginHandler.userTokenSecret);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // redirect user to the tabbar controller
+                // this is only for checking token's validity, the screen flow will be edited later
+                HomeViewController *homeVC = [[HomeViewController alloc] init];
+                [self presentViewController:homeVC animated:YES completion:nil];
+            });
+        }
+        
+        if (error) {
+            NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
+        }
+        
+        [self removeObservers];
     }];
 }
 
@@ -125,18 +153,23 @@
 }
 
 - (void)safariLogin:(NSNotification *)notification {
-    [self removeObservers];
+//    [self removeObservers];
     
     if ([notification.object isKindOfClass:[NSString class]]) {
         NSString *query = notification.object;
-        NSLog(@"[DEBUG] %s : query result: %@", __func__, query);
         [LoginHandler.sharedLoginHandler parseTokenAndVerifierFromQuery:query];
-    } else {
-        NSLog(@"Went somewhere");
     }
     [self.safariViewController dismissViewControllerAnimated:YES completion:^{
-        NSString *verifier = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_verifier"];
-        self.label.text = verifier;
+        // Check if the verifier retrieved
+        if ([NSUserDefaults.standardUserDefaults objectForKey:@"request_oauth_verifier"] == nil) {
+            // display error using toast, then let the user retry
+            NSLog(@"No verifier to be found!");
+            self.label.text = @"No verifier to be found! Please try again";
+            return;
+        }
+        // if no error then proceed the getting access token
+        [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationSuccessful"
+                                                          object:nil];
     }];
 }
 

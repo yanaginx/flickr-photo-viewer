@@ -19,15 +19,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (class, nonnull, readonly, strong) LoginHandler *sharedLoginHandler;
 
-- (NSURLRequest *)requestTokenURLRequest;
 
 - (NSURL *)authorizationURL;
+
+- (NSString *)userAccessToken;
+- (NSString *)userTokenSecret;
 
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                        NSString * _Nullable oauthTokenSecret,
                                                        NSError * _Nullable error))completion;
 
-- (void)parseTokenAndSecretFromQuery:(NSString *)queryString;
+- (void)getAccessTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
+                                                      NSString * _Nullable oauthTokenSecret,
+                                                      NSError * _Nullable error))completion;
+
 - (void)parseTokenAndVerifierFromQuery:(NSString *)queryString;
 
 NS_ASSUME_NONNULL_END

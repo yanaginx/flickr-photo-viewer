@@ -11,5 +11,8 @@
 
 @property (nonatomic, strong) UIWindow *window;
 
+- (void)switchToLoginView;
+- (void)switchToHomeView;
+
 @end
 
