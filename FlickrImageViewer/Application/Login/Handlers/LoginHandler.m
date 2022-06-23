@@ -232,6 +232,9 @@ BOOL isValidAccessTokenResponse(NSString *responseString) {
 }
 
 - (void)removeUserAccessTokenAndSecret {
+    [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_verifier"];
+    [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_token_secret"];
+    [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_token"];
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"user_oauth_token"];
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"user_oauth_token_secret"];
 }

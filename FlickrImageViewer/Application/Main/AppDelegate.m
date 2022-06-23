@@ -6,8 +6,6 @@
 //
 
 #import "AppDelegate.h"
-#import "../Login/LoginViewController.h"
-#import "../Home/HomeViewController.h"
 
 @interface AppDelegate ()
 
@@ -28,25 +26,8 @@
     RootViewController *rootVC = [[RootViewController alloc] init];
     self.window.rootViewController = rootVC;
     [self.window makeKeyAndVisible];
-//    NSLog(@"%s : is Logged in? %d", __func__, isLoggedIn());
     return YES;
 }
-
-- (void)switchToHomeView {
-    NSLog(@"%s", __func__);
-    HomeViewController *homeVC = [[HomeViewController alloc] init];
-    self.window.rootViewController = homeVC;
-    [self.window makeKeyAndVisible];
-}
-
-- (void)switchToLoginView {
-    NSLog(@"%s", __func__);
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
-    self.window.rootViewController = loginVC;
-    [self.window makeKeyAndVisible];
-
-}
-
 
 #pragma mark - <UIApplicationDelegate>
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
@@ -66,12 +47,5 @@
     
     return YES;
 }
-
-//#pragma mark - Helpers
-//BOOL isLoggedIn(void) {
-//    return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
-//}
-
-
 
 @end

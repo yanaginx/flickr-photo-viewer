@@ -34,7 +34,7 @@
                    dispatch_get_main_queue(),
                    ^{
         [self.activityIndicator stopAnimating];
-        if (isLoggedIn()) {
+        if (isUserLoggedIn()) {
             /// Navigate to Home view
             [AppDelegate.shared.rootViewController switchToHomeScreen];
         } else {
@@ -53,7 +53,7 @@
 }
 
 #pragma mark - Helpers
-BOOL isLoggedIn(void) {
+BOOL isUserLoggedIn(void) {
     return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
 }
 

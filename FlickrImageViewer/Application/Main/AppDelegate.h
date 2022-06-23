@@ -15,8 +15,5 @@
 
 - (RootViewController *)rootViewController;
 
-- (void)switchToLoginView;
-- (void)switchToHomeView;
-
 @end
 

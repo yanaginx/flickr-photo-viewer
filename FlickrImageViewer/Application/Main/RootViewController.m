@@ -18,8 +18,7 @@
 
 @implementation RootViewController
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.currentVC = [[SplashViewController alloc] init];
@@ -62,7 +61,7 @@
 - (void)switchToLogOut {
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
-    [self animateFadeTransitionToNewViewController:loginNavi completion:nil];
+    [self animateDismissTransitionToNewViewController:loginNavi completion:nil];
 }
 
 - (void)animateFadeTransitionToNewViewController:(UIViewController *)newVC completion:(void(^ __nullable)(void))completion {
@@ -83,7 +82,7 @@
     [self addChildViewController:newVC];
     newVC.view.frame = initialFrame;
     
-    [self transitionFromViewController:self.currentVC toViewController:newVC duration:0.3 options:UIViewAnimationOptionTransitionNone animations:^{
+    [self transitionFromViewController:self.currentVC toViewController:newVC duration:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
         newVC.view.frame = self.view.bounds;
     } completion:^(BOOL finished) {
         [self.currentVC removeFromParentViewController];

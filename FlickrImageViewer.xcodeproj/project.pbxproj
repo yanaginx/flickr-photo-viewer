@@ -30,6 +30,7 @@
 		B29CBB772859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB762859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m */; };
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
+		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,8 @@
 		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		B2CED1802863069600606615 /* SplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
+		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
+		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +364,7 @@
 		B29CBB842859D32F0058B382 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B2CED18228635C5400606615 /* ViewComponents */,
 				B23A30E62860623400E976C8 /* Constants */,
 				B2410886286020C4005B08BC /* Extensions */,
 				B2410885286020BD005B08BC /* Utilities */,
@@ -409,6 +413,23 @@
 				B2CED1802863069600606615 /* SplashViewController.m */,
 			);
 			path = Splash;
+			sourceTree = "<group>";
+		};
+		B2CED18228635C5400606615 /* ViewComponents */ = {
+			isa = PBXGroup;
+			children = (
+				B2CED18328635C6200606615 /* Buttons */,
+			);
+			path = ViewComponents;
+			sourceTree = "<group>";
+		};
+		B2CED18328635C6200606615 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				B2CED18428635C7900606615 /* LoadingButton.h */,
+				B2CED18528635C7900606615 /* LoadingButton.m */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -549,6 +570,7 @@
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
+				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,

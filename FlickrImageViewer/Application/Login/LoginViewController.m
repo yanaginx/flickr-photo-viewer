@@ -13,30 +13,36 @@
 #import "../../Common/Extensions/UIView+Additions.h"
 #import "../../Common/Extensions/NSString+Additions.h"
 
+#import "../../Common/ViewComponents/Buttons/LoadingButton.h"
 
 
 @interface LoginViewController () <SFSafariViewControllerDelegate>
 
-@property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) UIButton *getStartedButton;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *captionLabel;
+@property (nonatomic, strong) LoadingButton *beginButton;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 
 @end
 
 @implementation LoginViewController
 
+static CGFloat buttonMargin = 50;
+static CGFloat frameHeight = 60;
+static CGFloat frameWidth = 200;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.cyanColor;
-    [self.view addSubview:self.label];
-    [self.view addSubview:self.getStartedButton];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    backgroundImage.image = [UIImage imageNamed:@"onboarding_background"];
+    [self.view insertSubview:backgroundImage atIndex:0];
+    [self.view addSubview:self.titleLabel];
+    [self.view addSubview:self.captionLabel];
+    [self.view addSubview:self.beginButton];
     
-    [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
-    [self.getStartedButton addTarget:self action:@selector(getRequestToken) forControlEvents:UIControlEventTouchUpInside];
-    [self.label setAnchorCenterX:self.label.superview.centerXAnchor centerY:self.label.superview.centerYAnchor];
-    
-    self.label.text = @"FLICKRz";
-    [self.label setFont:[UIFont systemFontOfSize:32]];
+    [self.beginButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
+    [self.beginButton addTarget:self action:@selector(onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
     
     [self addAuthorizationObserver];
     [self addAccessTokenRequestObserver];
@@ -96,6 +102,7 @@
 }
 
 - (void)onClickGetStarted {
+    [self.beginButton showLoading];
     if (LoginHandler.sharedLoginHandler.authorizationURL) {
         NSLog(@"[DEBUG] %s : authorizationURL received: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
         [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
@@ -118,6 +125,8 @@
         }
         // error handling
         if (error) {
+            // disable the loading on button
+            [self.beginButton hideLoading];
             NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
         }
     }];
@@ -132,6 +141,7 @@
             NSLog(@"[DEBUG] %s : user token: %@", __func__, LoginHandler.sharedLoginHandler.userAccessToken);
             NSLog(@"[DEBUG] %s : user tokenSecret: %@", __func__, LoginHandler.sharedLoginHandler.userTokenSecret);
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self.beginButton hideLoading];
                 /// Navigate to Home screen
                 [AppDelegate.shared.rootViewController switchToHomeScreen];
                 /*
@@ -143,7 +153,9 @@
         }
         
         if (error) {
+            [self.beginButton hideLoading];
             NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
+            return;
         }
         
         [self removeObservers];
@@ -169,7 +181,8 @@
         if ([NSUserDefaults.standardUserDefaults objectForKey:@"request_oauth_verifier"] == nil) {
             // display error using toast, then let the user retry
             NSLog(@"No verifier to be found!");
-            self.label.text = @"No verifier to be found! Please try again";
+            // disable the animation
+            [self.beginButton hideLoading];
             return;
         }
         // if no error then proceed the getting access token
@@ -178,21 +191,58 @@
     }];
 }
 
-#pragma mark - Custom Accessors
+#pragma mark - SFSafariViewControllerDelegate
 
-- (UILabel *)label {
-    if (_label) return _label;
-    
-    _label = [[UILabel alloc] init];
-    return _label;
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    if ([NSUserDefaults.standardUserDefaults objectForKey:@"request_oauth_verifier"] == nil) {
+        // display error using toast, then let the user retry
+        NSLog(@"No verifier to be found!");
+        // disable the animation
+        [self.beginButton hideLoading];
+    }
 }
 
-- (UIButton *)getStartedButton {
-    if (_getStartedButton) return _getStartedButton;
+#pragma mark - Custom Accessors
+
+- (UILabel *)titleLabel {
+    if (_titleLabel) return _titleLabel;
     
-    _getStartedButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _getStartedButton.frame = CGRectMake(self.view.center.x - 100, self.view.center.y + (self.view.frame.size.height / 4), 200, 60);
-    return _getStartedButton;
+    _titleLabel = [[UILabel alloc] init];
+    [_titleLabel setFont:[UIFont systemFontOfSize:32 weight:UIFontWeightBold]];
+    _titleLabel.text = @"FLICKRz";
+    _titleLabel.textColor = UIColor.whiteColor;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    _titleLabel.frame = CGRectMake(self.view.center.x - frameWidth/2 ,
+                                   self.view.center.y - (self.view.frame.size.height/4),
+                                   frameWidth,
+                                   frameHeight);
+    return _titleLabel;
+}
+
+- (UILabel *)captionLabel {
+    if (_captionLabel) return _captionLabel;
+    
+    _captionLabel = [[UILabel alloc] init];
+    _captionLabel.text = @"From photos to moments";
+    _captionLabel.textColor = UIColor.whiteColor;
+    _captionLabel.textAlignment = NSTextAlignmentCenter;
+    _captionLabel.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - buttonMargin * 2) / 2,
+                                    self.view.center.y + (self.view.frame.size.height / 10),
+                                    self.view.frame.size.width - buttonMargin * 2,
+                                    frameHeight);
+    return _captionLabel;
+}
+
+- (LoadingButton *)beginButton {
+    if (_beginButton) return _beginButton;
+    
+    _beginButton = [[LoadingButton alloc] init];
+        
+    _beginButton.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - buttonMargin * 2) / 2,
+                                    self.view.center.y + (self.view.frame.size.height / 4),
+                                    self.view.frame.size.width - buttonMargin * 2,
+                                    frameHeight);
+    return _beginButton;
 }
 
 @end
