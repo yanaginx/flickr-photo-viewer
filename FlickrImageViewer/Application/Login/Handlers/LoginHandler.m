@@ -10,6 +10,7 @@
 #import "../../../Common/Utilities/TDOAuth/TDOAuth.h"
 #import "../../../Common/Utilities/OAuth1.0/OAuth.h"
 
+
 @interface LoginHandler ()
 
 - (NSURLRequest *)requestTokenURLRequest;
@@ -99,6 +100,43 @@ static NSString *accessTokenPath = @"/access_token";
     return [NSURL URLWithString:authorizationURLString];
 }
 
+- (NSString *)callbackURLScheme {
+    return @"flickrz";
+}
+
+#pragma mark - Authorization Session
+- (ASWebAuthenticationSession *)authSessionWithCompletionHandler:(void (^)(NSString * _Nullable token,
+                                                                           NSString * _Nullable verifier,
+                                                                           NSError * _Nullable error))completion {
+    ASWebAuthenticationSession *session = [[ASWebAuthenticationSession alloc] initWithURL:self.authorizationURL
+                                                                        callbackURLScheme:self.callbackURLScheme
+                                                                        completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        if (error) {
+            completion(nil, nil, error);
+            return;
+        }
+        if (callbackURL == nil) {
+            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                                 code:LoginHandlerErrorNetworkError
+                                             userInfo:nil];
+            completion(nil, nil, error);
+        }
+        NSLog(@"[DEBUG] %s: url: %@", __func__, !callbackURL.baseURL ? @"No base URL" : callbackURL.baseURL.absoluteString);
+        NSLog(@"[DEBUG] %s: url query: %@", __func__, !callbackURL.query ? @"No query string" : callbackURL.query);
+        if (callbackURL.query == nil || !isValidAuthorizationResponse(callbackURL.query)) {
+            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                                 code:LoginHandlerErrorNotValidData
+                                             userInfo:nil];
+            completion(nil, nil, error);
+        }
+        [self parseTokenAndVerifierFromQuery:callbackURL.query];
+        NSString *token = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
+        NSString *tokenVerifier = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_verifier"];
+        completion(token, tokenVerifier, nil);
+    }];
+    return session;
+}
+
 #pragma mark - Make request
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                        NSString * _Nullable oauthTokenSecret,
@@ -182,6 +220,16 @@ BOOL isValidAccessTokenResponse(NSString *responseString) {
         NSArray *item = [pair componentsSeparatedByString:@"="];
         if (item.count != 2) return NO;
         if ([item[0] isEqualToString:@"user_nsid"]) return YES;
+    }
+    return NO;
+}
+
+BOOL isValidAuthorizationResponse(NSString *responseString) {
+    NSArray *queryItem = [responseString componentsSeparatedByString:@"&"];
+    for (NSString *pair in queryItem) {
+        NSArray *item = [pair componentsSeparatedByString:@"="];
+        if (item.count != 2) return NO;
+        if ([item[0] isEqualToString:@"oauth_verifier"]) return YES;
     }
     return NO;
 }

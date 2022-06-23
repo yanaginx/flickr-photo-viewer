@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import<AuthenticationServices/AuthenticationServices.h>
 
 typedef NS_ENUM(NSUInteger, LoginHandlerError) {
     LoginHandlerErrorInvalidURL,
@@ -21,9 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (NSURL *)authorizationURL;
-
+- (NSString *)callbackURLScheme;
 - (NSString *)userAccessToken;
 - (NSString *)userTokenSecret;
+
+- (ASWebAuthenticationSession *)authSessionWithCompletionHandler:(void (^)(NSString * _Nullable token,
+                                                                           NSString * _Nullable verifier,
+                                                                           NSError * _Nullable error))completion;
 
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                        NSString * _Nullable oauthTokenSecret,
@@ -32,8 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getAccessTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                       NSString * _Nullable oauthTokenSecret,
                                                       NSError * _Nullable error))completion;
-
-- (void)parseTokenAndVerifierFromQuery:(NSString *)queryString;
 
 - (void)removeUserAccessTokenAndSecret;
 

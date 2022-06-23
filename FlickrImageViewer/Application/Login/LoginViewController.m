@@ -16,12 +16,12 @@
 #import "../../Common/ViewComponents/Buttons/LoadingButton.h"
 
 
-@interface LoginViewController () <SFSafariViewControllerDelegate>
+@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *captionLabel;
 @property (nonatomic, strong) LoadingButton *beginButton;
-@property (nonatomic, strong) SFSafariViewController *safariViewController;
+@property (nonatomic, strong) ASWebAuthenticationSession *authSession;
 
 @end
 
@@ -56,17 +56,6 @@ static CGFloat frameWidth = 200;
     NSLog(@"Login view controller did dealloc");
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - Private methods
 
 - (void)addAuthorizationObserver {
@@ -84,16 +73,6 @@ static CGFloat frameWidth = 200;
                                                name:@"AuthorizationSuccessful"
                                              object:nil];
 }
-
-- (void)addCallbackObserver {
-    [NSNotificationCenter.defaultCenter addObserverForName:@"CallbackReceived"
-                                                    object:nil
-                                                     queue:[NSOperationQueue mainQueue]
-                                                usingBlock:^(NSNotification *notification) {
-        [self safariLogin:notification];
-    }];
-}
-
 
 - (void)removeObservers {
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"CallbackReceived" object:nil];
@@ -162,45 +141,34 @@ static CGFloat frameWidth = 200;
     }];
 }
 
+
+
 #pragma mark - Notification selectors
 
 - (void)showLoginWebView {
-    [self addCallbackObserver];
-    self.safariViewController = [[SFSafariViewController alloc] initWithURL:LoginHandler.sharedLoginHandler.authorizationURL];
-    self.safariViewController.delegate = self;
-    [self presentViewController:self.safariViewController animated:YES completion:nil];
-}
-
-- (void)safariLogin:(NSNotification *)notification {
-    if ([notification.object isKindOfClass:[NSString class]]) {
-        NSString *query = notification.object;
-        [LoginHandler.sharedLoginHandler parseTokenAndVerifierFromQuery:query];
-    }
-    [self.safariViewController dismissViewControllerAnimated:YES completion:^{
-        // Check if the verifier retrieved
-        if ([NSUserDefaults.standardUserDefaults objectForKey:@"request_oauth_verifier"] == nil) {
-            // display error using toast, then let the user retry
-            NSLog(@"No verifier to be found!");
-            // disable the animation
+    self.authSession = [LoginHandler.sharedLoginHandler authSessionWithCompletionHandler:^(NSString * _Nullable token,
+                                                                                           NSString * _Nullable verifier,
+                                                                                           NSError * _Nullable error) {
+        if (error) {
+            // error handling
+            NSLog(@"[DEBUG] %s: error: %@", __func__, error);
             [self.beginButton hideLoading];
-            return;
         }
-        // if no error then proceed the getting access token
+        NSLog(@"[DEBUG] %s: verifier: %@", __func__, verifier);
+        NSLog(@"[DEBUG] %s: token: %@", __func__, token);
+        if (!token || !verifier) return;
         [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationSuccessful"
                                                           object:nil];
-    }];
+    }];;
+    self.authSession.presentationContextProvider = self;
+    [self.authSession start];
 }
 
-#pragma mark - SFSafariViewControllerDelegate
-
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
-    if ([NSUserDefaults.standardUserDefaults objectForKey:@"request_oauth_verifier"] == nil) {
-        // display error using toast, then let the user retry
-        NSLog(@"No verifier to be found!");
-        // disable the animation
-        [self.beginButton hideLoading];
-    }
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session {
+    return self.view.window;
 }
+
 
 #pragma mark - Custom Accessors
 
