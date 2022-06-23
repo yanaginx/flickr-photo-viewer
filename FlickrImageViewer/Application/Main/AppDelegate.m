@@ -29,23 +29,4 @@
     return YES;
 }
 
-#pragma mark - <UIApplicationDelegate>
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-    NSLog(@"application: %@", app);
-    NSLog(@"url: %@", !url.baseURL ? @"No base URL" : url.baseURL.absoluteString);
-    NSLog(@"url query: %@", !url.query ? @"No query string" : url.query);
-    
-    // Sending the message to notification center whenever
-    // the listener get the message from the sender
-    if (url.query) {
-        NSString *message = url.query;
-        if (message) {
-            NSNotificationName notiName = @"CallbackReceived";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notiName object:message];
-        }
-    }
-    
-    return YES;
-}
-
 @end
