@@ -75,7 +75,6 @@ static CGFloat frameWidth = 200;
 }
 
 - (void)removeObservers {
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"CallbackReceived" object:nil];
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationURLReady" object:nil];
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationSuccessful" object:nil];
 }
