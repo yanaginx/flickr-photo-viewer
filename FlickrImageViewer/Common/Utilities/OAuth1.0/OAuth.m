@@ -208,17 +208,17 @@ static NSString* timestamp() {
                         tokenSecret:(NSString *)tokenSecret {
     
     return [OAuth URLRequestForPath:unencodedPathWithoutQuery
-                           parameters:unencodedParameters
-                                 host:host
-                          consumerKey:consumerKey
-                       consumerSecret:consumerSecret
-                          accessToken:accessToken
-                          tokenSecret:tokenSecret
-                               scheme:@"http"
-                        requestMethod:@"GET"
-                         dataEncoding:OAuthContentTypeUrlEncodedForm
-                         headerValues:nil
-                      signatureMethod:OAuthSignatureMethodHmacSha1];
+                         parameters:unencodedParameters
+                               host:host
+                        consumerKey:consumerKey
+                     consumerSecret:consumerSecret
+                        accessToken:accessToken
+                        tokenSecret:tokenSecret
+                             scheme:@"http"
+                      requestMethod:@"GET"
+                       dataEncoding:OAuthContentTypeUrlEncodedForm
+                       headerValues:nil
+                    signatureMethod:OAuthSignatureMethodHmacSha1];
 }
 
 
@@ -268,8 +268,7 @@ static NSString* timestamp() {
                                                     scheme, host, path]];
         rq = [oauth requestWithHeaderValues:headerValues];
     }
-    else
-    {
+    else {
         oauth->url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@%@",
                                                     scheme, host, encodedPathWithoutQuery]];
         if ((dataEncoding == OAuthContentTypeUrlEncodedForm) || (unencodedParameters == nil)) {
@@ -282,8 +281,7 @@ static NSString* timestamp() {
                 [rq setValue:[NSString stringWithFormat:@"%lu", (unsigned long)rq.HTTPBody.length] forHTTPHeaderField:@"Content-Length"];
             }
         }
-        else if (dataEncoding == OAuthContentTypeJsonObject)
-        {
+        else if (dataEncoding == OAuthContentTypeJsonObject) {
             NSError *error;
             NSData *postbody = [NSJSONSerialization dataWithJSONObject:unencodedParameters options:0 error:&error];
             if (error || !postbody) {
@@ -299,8 +297,8 @@ static NSString* timestamp() {
                 }
             }
         }
-        else // invalid type
-        {
+        // invalid type
+        else {
             oauth = nil;
             rq = nil;
         }
@@ -318,17 +316,17 @@ static NSString* timestamp() {
                         accessToken:(NSString *)accessToken
                         tokenSecret:(NSString *)tokenSecret; {
     return [OAuth URLRequestForPath:unencodedPathWithoutQuery
-                           parameters:unencodedParameters
-                                 host:host
-                          consumerKey:consumerKey
-                       consumerSecret:consumerSecret
-                          accessToken:accessToken
-                          tokenSecret:tokenSecret
-                               scheme:scheme
-                        requestMethod:@"GET"
-                         dataEncoding:OAuthContentTypeUrlEncodedForm
-                         headerValues:nil
-                      signatureMethod:OAuthSignatureMethodHmacSha1];
+                         parameters:unencodedParameters
+                               host:host
+                        consumerKey:consumerKey
+                     consumerSecret:consumerSecret
+                        accessToken:accessToken
+                        tokenSecret:tokenSecret
+                             scheme:scheme
+                      requestMethod:@"GET"
+                       dataEncoding:OAuthContentTypeUrlEncodedForm
+                       headerValues:nil
+                    signatureMethod:OAuthSignatureMethodHmacSha1];
 }
 
 + (NSURLRequest *)URLRequestForPath:(NSString *)unencodedPath
@@ -373,11 +371,11 @@ static NSString* timestamp() {
                     signatureMethod:OAuthSignatureMethodHmacSha1];
 }
 
-+(int)utcTimeOffset {
++ (int)utcTimeOffset {
     return OAuthUTCTimeOffset;
 }
 
-+(void)setUtcTimeOffset:(int)offset {
++ (void)setUtcTimeOffset:(int)offset {
     OAuthUTCTimeOffset = offset;
 }
 

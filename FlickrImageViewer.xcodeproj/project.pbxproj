@@ -31,6 +31,7 @@
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
+		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,8 @@
 		B2CED1802863069600606615 /* SplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
+		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
+		B2CED18E286460AE00606615 /* ImageURLBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageURLBuilder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +272,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2CED18C2864609C00606615 /* ImageURLBuilder */,
 				B23A30F928616E1100E976C8 /* OAuth1.0 */,
 				B23A30F128615FF800E976C8 /* TDOAuth */,
 				B23A30EB286070C000E976C8 /* Hash */,
@@ -432,6 +436,15 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		B2CED18C2864609C00606615 /* ImageURLBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				B2CED18D286460AE00606615 /* ImageURLBuilder.h */,
+				B2CED18E286460AE00606615 /* ImageURLBuilder.m */,
+			);
+			path = ImageURLBuilder;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -573,6 +586,7 @@
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
+				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
