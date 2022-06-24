@@ -20,6 +20,7 @@
     self = [super init];
     if (self) {
         self.layer.borderWidth = 1.0f;
+        self.layer.cornerRadius = 5.0f;
         self.layer.borderColor = UIColor.whiteColor.CGColor;
         [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         [self setTitleColor:UIColor.blackColor forState:UIControlStateFocused];

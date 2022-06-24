@@ -19,20 +19,24 @@
     
     UIViewController *popularVC = [[PopularViewController alloc] init];
     UINavigationController *popularNavi = [[UINavigationController alloc] initWithRootViewController:popularVC];
-    popularVC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFavorites
-                                                                      tag:0];
+    UIImage *popularIcon = [[UIImage imageNamed:@"ic_dashboard"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    popularVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Dashboard"
+                                                         image:popularIcon
+                                                           tag:0];
     
     UIViewController *uploadVC = [[UploadViewController alloc] init];
     UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
-    uploadVC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore
-                                                                     tag:1];
+    UIImage *uploadIcon = [[UIImage imageNamed:@"ic_publish"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    uploadVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Upload"
+                                                        image:uploadIcon
+                                                          tag:1];
     
     UIViewController *profileVC = [[ProfileViewController alloc] init];
     UINavigationController *profileNavi = [[UINavigationController alloc] initWithRootViewController:profileVC];
-    profileNavi.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts
-                                                                        tag:2];
-
-    
+    UIImage *profileIcon = [[UIImage imageNamed:@"ic_person"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    profileVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Profile"
+                                                         image:profileIcon
+                                                           tag:2];
 
     self.viewControllers = [NSArray arrayWithObjects:
                             popularNavi,
