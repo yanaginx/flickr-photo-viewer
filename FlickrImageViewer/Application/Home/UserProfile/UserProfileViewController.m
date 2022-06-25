@@ -1,24 +1,24 @@
 //
-//  ProfileViewController.m
+//  UserProfileViewController.m
 //  FlickrImageViewer
 //
-//  Created by LAP14121 on 20/06/2022.
+//  Created by LAP14121 on 25/06/2022.
 //
 
-#import "ProfileViewController.h"
+#import "UserProfileViewController.h"
 #import "../../Main/AppDelegate.h"
 #import "../../Login/Handlers/LoginHandler.h"
 
-@interface ProfileViewController ()
+@interface UserProfileViewController ()
 
 @end
 
-@implementation ProfileViewController
+@implementation UserProfileViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = UIColor.magentaColor;
+    self.view.backgroundColor = UIColor.whiteColor;
     // Temporary logout button to test the flow
     UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout"
                                                                      style:UIBarButtonItemStylePlain
@@ -28,7 +28,7 @@
 }
 
 
-#pragma mark - Private methods
+//#pragma mark - Private methods
 - (void)logout {
     [LoginHandler.sharedLoginHandler removeUserAccessTokenAndSecret];
     /// Navigate to Login Screen
@@ -36,3 +36,4 @@
 }
 
 @end
+

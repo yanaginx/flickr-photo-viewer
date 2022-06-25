@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Popular/PopularViewController.h"
-#import "Profile/ProfileViewController.h"
+#import "UserProfile/UserProfileViewController.h"
 #import "Upload/UploadViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN

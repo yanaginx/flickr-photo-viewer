@@ -20,28 +20,34 @@
     UIViewController *popularVC = [[PopularViewController alloc] init];
     UINavigationController *popularNavi = [[UINavigationController alloc] initWithRootViewController:popularVC];
     UIImage *popularIcon = [[UIImage imageNamed:@"ic_dashboard"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *popularIconOutlined = [[UIImage imageNamed:@"ic_dashboard_outlined"]
+                                    imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     popularVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Dashboard"
-                                                         image:popularIcon
-                                                           tag:0];
+                                                         image:popularIconOutlined
+                                                 selectedImage:popularIcon];
     
     UIViewController *uploadVC = [[UploadViewController alloc] init];
     UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
     UIImage *uploadIcon = [[UIImage imageNamed:@"ic_publish"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *uploadIconOutlined = [[UIImage imageNamed:@"ic_publish_outlined"]
+                                   imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     uploadVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Upload"
-                                                        image:uploadIcon
-                                                          tag:1];
+                                                        image:uploadIconOutlined
+                                                selectedImage:uploadIcon];
     
-    UIViewController *profileVC = [[ProfileViewController alloc] init];
-    UINavigationController *profileNavi = [[UINavigationController alloc] initWithRootViewController:profileVC];
+    UIViewController *userVC = [[UserProfileViewController alloc] init];
+    UINavigationController *userNavi = [[UINavigationController alloc] initWithRootViewController:userVC];
     UIImage *profileIcon = [[UIImage imageNamed:@"ic_person"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    profileVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Profile"
-                                                         image:profileIcon
-                                                           tag:2];
+    UIImage *profileIconOutlined = [[UIImage imageNamed:@"ic_person_outlined"]
+                                    imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    userVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Profile"
+                                                      image:profileIconOutlined
+                                              selectedImage:profileIcon];
 
     self.viewControllers = [NSArray arrayWithObjects:
                             popularNavi,
                             uploadNavi,
-                            profileNavi,
+                            userNavi,
                             nil];
 }
 
