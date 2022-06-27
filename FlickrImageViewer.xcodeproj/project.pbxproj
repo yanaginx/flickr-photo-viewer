@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2001FB42869894F002EB17F /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB32869894F002EB17F /* Photo.m */; };
+		B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB628698AD6002EB17F /* PopularPhotoManager.m */; };
 		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
 		B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C928604B9D00E976C8 /* PopularViewController.m */; };
 		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
@@ -55,6 +57,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B2001FB22869894F002EB17F /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		B2001FB32869894F002EB17F /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		B2001FB528698AD6002EB17F /* PopularPhotoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoManager.h; sourceTree = "<group>"; };
+		B2001FB628698AD6002EB17F /* PopularPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoManager.m; sourceTree = "<group>"; };
 		B23A30BF286047EF00E976C8 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		B23A30C0286047EF00E976C8 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		B23A30C828604B9D00E976C8 /* PopularViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularViewController.h; sourceTree = "<group>"; };
@@ -136,9 +142,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B2001FB12869893A002EB17F /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				B2001FB22869894F002EB17F /* Photo.h */,
+				B2001FB32869894F002EB17F /* Photo.m */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
 		B23A30C628604B7D00E976C8 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
+				B2001FB12869893A002EB17F /* DataModel */,
 				B26447DC286977B500D09C10 /* Handlers */,
 				B23A30C728604B8A00E976C8 /* Views */,
 				B23A30C828604B9D00E976C8 /* PopularViewController.h */,
@@ -334,6 +350,8 @@
 		B26447DC286977B500D09C10 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				B2001FB528698AD6002EB17F /* PopularPhotoManager.h */,
+				B2001FB628698AD6002EB17F /* PopularPhotoManager.m */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -622,6 +640,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */,
 				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
@@ -641,6 +660,7 @@
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
+				B2001FB42869894F002EB17F /* Photo.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
 				B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */,
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,

@@ -9,6 +9,7 @@
 
 #import "../../../Common/Utilities/TDOAuth/TDOAuth.h"
 #import "../../../Common/Utilities/OAuth1.0/OAuth.h"
+#import "../../../Common/Constants/Constants.h"
 
 
 @interface LoginHandler ()
@@ -20,9 +21,9 @@
 @implementation LoginHandler
 
 static NSString *authorizationEndpoint = @"https://www.flickr.com/services/oauth/authorize";
-static NSString *oauthConsumerKey = @"68fb93124728e9d210ca6dd75e1ba96d";
-static NSString *oauthConsumerSecret = @"b55ec59d57a6e559";
-static NSString *oauthCallbackURL = @"flickrz://";
+static NSString *oauthConsumerKey = kConsumerKey;
+static NSString *oauthConsumerSecret = kConsumerSecret;
+static NSString *oauthCallbackURL = kCallbackURL;
 static NSString *oauthHost = @"www.flickr.com/services/oauth";
 
 static NSString *requestTokenPath = @"/request_token";

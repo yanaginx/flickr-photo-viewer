@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (NSURL *)authorizationURL;
-- (NSString *)callbackURLScheme;
 - (NSString *)userAccessToken;
 - (NSString *)userTokenSecret;
 

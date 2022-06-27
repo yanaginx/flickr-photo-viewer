@@ -6,6 +6,7 @@
 //
 
 #import "PopularViewController.h"
+#import "Handlers/PopularPhotoManager.h"
 
 @interface PopularViewController ()
 
@@ -17,6 +18,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
+    
+    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoWithCompletionHandler:^(NSMutableArray<Photo *> * _Nullable photos,
+                                                                                          NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"[DEBUG] %s : error: %@",
+                  __func__,
+                  error.localizedDescription);
+        }
+    }];
 }
 
 
