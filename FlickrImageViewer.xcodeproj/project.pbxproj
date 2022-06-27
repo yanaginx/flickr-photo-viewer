@@ -19,6 +19,9 @@
 		B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FC28616E4800E976C8 /* UserAgent.m */; };
 		B23A310028616E8F00E976C8 /* OAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FF28616E8F00E976C8 /* OAuth.m */; };
 		B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A310928619FE700E976C8 /* LoginHandler.m */; };
+		B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = B26447C82869510100D09C10 /* DynamicSizeCalculator.m */; };
+		B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B26447CB2869521C00D09C10 /* DynamicCollectionViewLayout.m */; };
+		B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B26447CE2869541800D09C10 /* FixedFlowLayout.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
 		B29CBB592859D2B20058B382 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB572859D2B20058B382 /* Main.storyboard */; };
 		B29CBB5B2859D2B60058B382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B29CBB5A2859D2B60058B382 /* Assets.xcassets */; };
@@ -77,6 +80,12 @@
 		B23A30FF28616E8F00E976C8 /* OAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuth.m; sourceTree = "<group>"; };
 		B23A310828619FE700E976C8 /* LoginHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginHandler.h; sourceTree = "<group>"; };
 		B23A310928619FE700E976C8 /* LoginHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginHandler.m; sourceTree = "<group>"; };
+		B26447C72869510100D09C10 /* DynamicSizeCalculator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicSizeCalculator.h; sourceTree = "<group>"; };
+		B26447C82869510100D09C10 /* DynamicSizeCalculator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicSizeCalculator.m; sourceTree = "<group>"; };
+		B26447CA2869521C00D09C10 /* DynamicCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicCollectionViewLayout.h; sourceTree = "<group>"; };
+		B26447CB2869521C00D09C10 /* DynamicCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicCollectionViewLayout.m; sourceTree = "<group>"; };
+		B26447CD2869541800D09C10 /* FixedFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FixedFlowLayout.h; sourceTree = "<group>"; };
+		B26447CE2869541800D09C10 /* FixedFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FixedFlowLayout.m; sourceTree = "<group>"; };
 		B29CBB4B2859D2B20058B382 /* FlickrImageViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrImageViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB4E2859D2B20058B382 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B29CBB4F2859D2B20058B382 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -130,6 +139,7 @@
 		B23A30C628604B7D00E976C8 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
+				B26447DC286977B500D09C10 /* Handlers */,
 				B23A30C728604B8A00E976C8 /* Views */,
 				B23A30C828604B9D00E976C8 /* PopularViewController.h */,
 				B23A30C928604B9D00E976C8 /* PopularViewController.m */,
@@ -292,6 +302,42 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B26447C4286950A200D09C10 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				B26447C6286950AF00D09C10 /* DynamicLayout */,
+				B26447C5286950A700D09C10 /* FixedLayout */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
+		B26447C5286950A700D09C10 /* FixedLayout */ = {
+			isa = PBXGroup;
+			children = (
+				B26447CD2869541800D09C10 /* FixedFlowLayout.h */,
+				B26447CE2869541800D09C10 /* FixedFlowLayout.m */,
+			);
+			path = FixedLayout;
+			sourceTree = "<group>";
+		};
+		B26447C6286950AF00D09C10 /* DynamicLayout */ = {
+			isa = PBXGroup;
+			children = (
+				B26447C72869510100D09C10 /* DynamicSizeCalculator.h */,
+				B26447C82869510100D09C10 /* DynamicSizeCalculator.m */,
+				B26447CA2869521C00D09C10 /* DynamicCollectionViewLayout.h */,
+				B26447CB2869521C00D09C10 /* DynamicCollectionViewLayout.m */,
+			);
+			path = DynamicLayout;
+			sourceTree = "<group>";
+		};
+		B26447DC286977B500D09C10 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		B29CBB422859D2B20058B382 = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +397,7 @@
 		B29CBB842859D32F0058B382 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B26447C4286950A200D09C10 /* Layouts */,
 				B2CED18228635C5400606615 /* ViewComponents */,
 				B23A30E62860623400E976C8 /* Constants */,
 				B2410886286020C4005B08BC /* Extensions */,
@@ -575,9 +622,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
+				B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */,
 				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
@@ -593,6 +642,7 @@
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
+				B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */,
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
