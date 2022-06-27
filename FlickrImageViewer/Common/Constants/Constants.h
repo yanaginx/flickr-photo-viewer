@@ -14,5 +14,7 @@
 #define kEndpoint @"api.flickr.com/services/rest/"
 //#define kPopularUserID @"69522958@N04"
 #define kPopularUserID @"72489705@N00"
+#define kBigSizeSuffix @"b"
+#define kSmallSizeSuffix @"w"
 
 #endif

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSURL *)photoURLFromServerID:(NSString *)serverID
                         photoID:(NSString *)photoID
                          secret:(NSString *)secret
-                     sizeSuffix:(NSString *)sizeSuffix;
+                     sizeSuffix:(NSString * _Nullable)sizeSuffix;
 
 + (NSURL *)buddyIconURLFromIconFarm:(NSInteger)iconFarm
                          iconServer:(NSString *)iconServer

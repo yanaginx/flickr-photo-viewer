@@ -14,17 +14,29 @@
 
 @implementation PopularViewController
 
+static NSInteger currentPage = 1;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
     
-    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoWithCompletionHandler:^(NSMutableArray<Photo *> * _Nullable photos,
-                                                                                          NSError * _Nullable error) {
+    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoWithPage:currentPage
+                                                         completionHandler:^(NSMutableArray<NSURL *> * _Nullable photos,
+                                                                             NSError * _Nullable error) {
         if (error) {
-            NSLog(@"[DEBUG] %s : error: %@",
-                  __func__,
-                  error.localizedDescription);
+            switch (error.code) {
+                case PopularPhotoManagerErrorNetworkError:
+                    // Network error view
+                    break;
+                default:
+                    // Error occur view
+                    break;
+            }
+        }
+        
+        for (NSURL *url in photos) {
+            NSLog(@"[DEBUG] %s : photo URL: %@", __func__, url.absoluteString);
         }
     }];
 }

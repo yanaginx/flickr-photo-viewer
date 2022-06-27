@@ -13,11 +13,19 @@
                         photoID:(NSString *)photoID
                          secret:(NSString *)secret
                      sizeSuffix:(NSString *)sizeSuffix {
-    NSString *URLString = [NSString stringWithFormat:@"https://live.staticflickr.com/%@/%@_%@_%@.jpg",
-                           serverID,
-                           photoID,
-                           secret,
-                           sizeSuffix];;
+    NSString *URLString = @"";
+    if (sizeSuffix == nil || [sizeSuffix isEqualToString:@""]) {
+        URLString = [NSString stringWithFormat:@"https://live.staticflickr.com/%@/%@_%@_%@.jpg",
+                     serverID,
+                     photoID,
+                     secret,
+                     sizeSuffix];
+    }
+    URLString = [NSString stringWithFormat:@"https://live.staticflickr.com/%@/%@_%@.jpg",
+                 serverID,
+                 photoID,
+                 secret];
+    
     return [NSURL URLWithString:URLString];
 }
 
