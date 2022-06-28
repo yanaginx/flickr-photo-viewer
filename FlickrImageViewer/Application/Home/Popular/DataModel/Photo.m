@@ -9,4 +9,13 @@
 
 @implementation Photo
 
+- (instancetype)initWithImageURL:(NSURL *)imageURL {
+    self = [super init];
+    if (self) {
+        self.identifier = [[NSUUID alloc] init];
+        self.imageURL = imageURL;
+    }
+    return self;
+}
+
 @end

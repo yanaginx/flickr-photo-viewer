@@ -18,8 +18,7 @@
 
 static CGFloat spacing = 6.0f;
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.minimumLineSpacing = spacing;
@@ -77,7 +76,7 @@ static CGFloat spacing = 6.0f;
 - (DynamicSizeCalculator *)dynamic {
     if (!_dynamic) {
         _dynamic = [[DynamicSizeCalculator alloc] init];
-        _dynamic.rowMaximumHeight = 100;
+        _dynamic.rowMaximumHeight = 200;
         _dynamic.fixedHeight = NO;
         _dynamic.dataSource = self;
     }

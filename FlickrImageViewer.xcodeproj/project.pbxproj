@@ -38,6 +38,9 @@
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
+		B2F69877286B224400CA596B /* Scope.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69876286B224400CA596B /* Scope.m */; };
+		B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */; };
+		B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +121,14 @@
 		B2CED18E286460AE00606615 /* ImageURLBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageURLBuilder.m; sourceTree = "<group>"; };
 		B2D7F5912866E2E3008A2805 /* UserProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
 		B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
+		B2F69875286B224400CA596B /* Scope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scope.h; sourceTree = "<group>"; };
+		B2F69876286B224400CA596B /* Scope.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scope.m; sourceTree = "<group>"; };
+		B2F69878286B225500CA596B /* metamacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
+		B2F69879286B22BE00CA596B /* Defer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defer.h; sourceTree = "<group>"; };
+		B2F6987B286B24D200CA596B /* AsyncImageFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncImageFetcher.h; sourceTree = "<group>"; };
+		B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcher.m; sourceTree = "<group>"; };
+		B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncImageFetcherOperation.h; sourceTree = "<group>"; };
+		B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcherOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +297,9 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2F6987A286B247100CA596B /* AsyncFetcher */,
+				B2F69874286B219C00CA596B /* Scope */,
+				B2F69873286B219600CA596B /* Defer */,
 				B2CED18C2864609C00606615 /* ImageURLBuilder */,
 				B23A30F928616E1100E976C8 /* OAuth1.0 */,
 				B23A30F128615FF800E976C8 /* TDOAuth */,
@@ -515,6 +529,43 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B2F69873286B219600CA596B /* Defer */ = {
+			isa = PBXGroup;
+			children = (
+				B2F69879286B22BE00CA596B /* Defer.h */,
+			);
+			path = Defer;
+			sourceTree = "<group>";
+		};
+		B2F69874286B219C00CA596B /* Scope */ = {
+			isa = PBXGroup;
+			children = (
+				B2F69875286B224400CA596B /* Scope.h */,
+				B2F69876286B224400CA596B /* Scope.m */,
+				B2F69878286B225500CA596B /* metamacros.h */,
+			);
+			path = Scope;
+			sourceTree = "<group>";
+		};
+		B2F6987A286B247100CA596B /* AsyncFetcher */ = {
+			isa = PBXGroup;
+			children = (
+				B2F6987E286B25C300CA596B /* Operation */,
+				B2F6987B286B24D200CA596B /* AsyncImageFetcher.h */,
+				B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */,
+			);
+			path = AsyncFetcher;
+			sourceTree = "<group>";
+		};
+		B2F6987E286B25C300CA596B /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */,
+				B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */,
+			);
+			path = Operation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -654,6 +705,7 @@
 				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
+				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
@@ -661,6 +713,8 @@
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
+				B2F69877286B224400CA596B /* Scope.m in Sources */,
+				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,

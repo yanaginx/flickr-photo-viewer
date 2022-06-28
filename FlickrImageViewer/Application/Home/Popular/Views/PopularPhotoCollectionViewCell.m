@@ -10,6 +10,10 @@
 
 @implementation PopularPhotoCollectionViewCell
 
++ (NSString *)reuseIdentifier {
+    return @"PopularPhotoCell";
+}
+
 #pragma mark - Initialization
 
 - (instancetype)initWithFrame:(CGRect)frame {

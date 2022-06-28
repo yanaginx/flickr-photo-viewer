@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PopularPhotoCollectionViewCell : UICollectionViewCell
 
 @property (nullable, nonatomic) UIImageView *photoImageView;
+@property NSUUID *representedIdentifier;
 
++ (NSString *)reuseIdentifier;
 - (void)configureWithImage:(UIImage * _Nullable)image;
 
 @end

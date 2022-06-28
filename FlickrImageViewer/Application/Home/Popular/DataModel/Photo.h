@@ -11,10 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Photo : NSObject
 
-@property NSString *ID;
-@property NSString *secret;
-@property NSString *server;
-@property NSString *sizeSuffix;
+@property (nonatomic, strong) NSUUID *identifier;
+@property (nonatomic, strong) NSURL *imageURL;
+
+- (instancetype)initWithImageURL:(NSURL *)imageURL;
 
 @end
 
