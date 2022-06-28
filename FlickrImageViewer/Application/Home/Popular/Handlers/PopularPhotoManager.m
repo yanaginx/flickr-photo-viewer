@@ -37,8 +37,8 @@ static NSString *perPage = @"20";
 
 #pragma mark - Make request
 
-- (void)getPopularPhotoWithPage:(NSInteger)pageNum
-              completionHandler:(void (^)(NSMutableArray<NSURL *> * _Nullable,
+- (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
+                  completionHandler:(void (^)(NSMutableArray<NSURL *> * _Nullable,
                                           NSError * _Nullable))completion {
     
     NSURLRequest *request = [self popularPhotoURLRequestWithPageNum:pageNum];

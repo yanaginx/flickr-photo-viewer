@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B2001FB42869894F002EB17F /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB32869894F002EB17F /* Photo.m */; };
 		B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB628698AD6002EB17F /* PopularPhotoManager.m */; };
+		B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */; };
 		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
 		B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C928604B9D00E976C8 /* PopularViewController.m */; };
 		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
@@ -61,6 +62,8 @@
 		B2001FB32869894F002EB17F /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		B2001FB528698AD6002EB17F /* PopularPhotoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoManager.h; sourceTree = "<group>"; };
 		B2001FB628698AD6002EB17F /* PopularPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoManager.m; sourceTree = "<group>"; };
+		B2001FB82869B247002EB17F /* PopularPhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		B23A30BF286047EF00E976C8 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		B23A30C0286047EF00E976C8 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		B23A30C828604B9D00E976C8 /* PopularViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularViewController.h; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 		B23A30C728604B8A00E976C8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B2001FB82869B247002EB17F /* PopularPhotoCollectionViewCell.h */,
+				B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -659,6 +664,7 @@
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
+				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
 				B2001FB42869894F002EB17F /* Photo.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,

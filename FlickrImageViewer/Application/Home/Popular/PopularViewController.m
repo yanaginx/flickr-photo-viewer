@@ -6,9 +6,20 @@
 //
 
 #import "PopularViewController.h"
+
 #import "Handlers/PopularPhotoManager.h"
 
-@interface PopularViewController ()
+#import "../../../Common/Layouts/DynamicLayout/DynamicCollectionViewLayout.h"
+#import "Views/PopularPhotoCollectionViewCell.h"
+
+
+@interface PopularViewController () <DynamicCollectionViewLayoutDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, strong) NSMutableArray<NSURL *> *photoURLs;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) DynamicCollectionViewLayout *dynamicLayout;
+// cache for getting the image size
+@property (nonatomic, strong) NSCache *photoImagesCache;
 
 @end
 
@@ -20,10 +31,16 @@ static NSInteger currentPage = 1;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
-    
-    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoWithPage:currentPage
-                                                         completionHandler:^(NSMutableArray<NSURL *> * _Nullable photos,
-                                                                             NSError * _Nullable error) {
+    [self getPhotoURLsForPage:currentPage];
+}
+
+
+#pragma mark - Private methods
+
+- (void)getPhotoURLsForPage:(NSInteger)pageNum {
+     [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
+                                                             completionHandler:^(NSMutableArray<NSURL *> * _Nullable photos,
+                                                                                 NSError * _Nullable error) {
         if (error) {
             switch (error.code) {
                 case PopularPhotoManagerErrorNetworkError:
@@ -34,12 +51,24 @@ static NSInteger currentPage = 1;
                     break;
             }
         }
-        
-        for (NSURL *url in photos) {
-            NSLog(@"[DEBUG] %s : photo URL: %@", __func__, url.absoluteString);
-        }
+        self.photoURLs = photos;
     }];
 }
 
+#pragma mark - DynamicCollectionViewLayoutDataSource
+- (CGSize)dynamicCollectionViewLayout:(DynamicCollectionViewLayout *)layout
+         originalImageSizeAtIndexPath:(NSIndexPath *)indexPath {
+    // Return the image size to the FixedHViewLayout
+    return CGSizeMake(0.1, 0.1);
+}
+
+#pragma mark - Custom Accessors
+- (DynamicCollectionViewLayout *)dynamicLayout {
+    if (_dynamicLayout) return _dynamicLayout;
+
+    _dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
+    _dynamicLayout.dataSource = self;
+    return _dynamicLayout;
+}
 
 @end
