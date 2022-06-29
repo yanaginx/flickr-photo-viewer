@@ -9,8 +9,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ServerErrorViewController : UIViewController
+@protocol ServerErrorViewDelegate <NSObject>
+
+- (void)onRetryForServerErrorClicked;
 
 @end
+
+@interface ServerErrorViewController : UIViewController
+
+@property (nonatomic, weak) id<ServerErrorViewDelegate> delegate;
+
+@end
+
 
 NS_ASSUME_NONNULL_END

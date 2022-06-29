@@ -5,9 +5,14 @@
 //  Created by LAP14121 on 29/06/2022.
 //
 
-#import "SomeErrorViewController.h"
+#import "ServerErrorViewController.h"
+#import "ErrorViewConstants.h"
 
 @interface ServerErrorViewController ()
+
+@property (nonatomic, strong) UIButton *retryButton;
+@property (nonatomic, strong) UIImageView *serverErrorImageView;
+@property (nonatomic, strong) UILabel *serverErrorCaption;
 
 @end
 
@@ -15,17 +20,58 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = UIColor.whiteColor;
     // Do any additional setup after loading the view.
+    [self.view addSubview:self.retryButton];
+    [self.view addSubview:self.serverErrorCaption];
+    [self.view addSubview:self.serverErrorImageView];
+    self.navigationItem.hidesBackButton = YES;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - Handler
+- (void)onRetryButtonClicked {
+    [self.delegate onRetryForServerErrorClicked];
 }
-*/
+
+#pragma mark - Custom Accessors
+
+- (UILabel *)serverErrorCaption {
+    if (_serverErrorCaption) return _serverErrorCaption;
+    
+    _serverErrorCaption = [[UILabel alloc] init];
+    [_serverErrorCaption setFont:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]];
+    _serverErrorCaption.text = @"Something went wrong!\nPlease try again";
+    _serverErrorCaption.textAlignment = NSTextAlignmentCenter;
+    _serverErrorCaption.numberOfLines = 0;
+    _serverErrorCaption.frame = CGRectMake(kLabelX, kLabelY, kLabelWidth, kLabelHeight);
+    return _serverErrorCaption;
+}
+
+- (UIButton *)retryButton {
+    if (_retryButton) return _retryButton;
+    
+    _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    
+//    NSLog(@"[DEBUG] %s : buttonX: %f, buttonY: %f, width: %f, height: %f", __func__, kButtonX, kButtonY, kButtonWidth, kButtonHeight);
+    _retryButton.frame = CGRectMake(kButtonX, kButtonY, kButtonWidth, kButtonHeight);
+    _retryButton.layer.borderWidth = 1.0f;
+    _retryButton.layer.cornerRadius = kButtonWidth / 8;
+    _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
+    [_retryButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
+    [_retryButton addTarget:self
+                     action:@selector(onRetryButtonClicked)
+           forControlEvents:UIControlEventTouchUpInside];
+    return _retryButton;
+}
+
+- (UIImageView *)serverErrorImageView {
+    if (_serverErrorImageView) return _serverErrorImageView;
+    
+    _serverErrorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_server_error"]];
+//    NSLog(@"[DEBUG] %s : labelX: %f, labelY: %f, width: %f, height: %f", __func__, kImageX, kImageY, kImageWidth, kImageHeight);
+    _serverErrorImageView.frame = CGRectMake(kImageX, kImageY, kImageWidth, kImageHeight);
+    _serverErrorImageView.contentMode = UIViewContentModeScaleAspectFill;
+    return _serverErrorImageView;
+}
 
 @end

@@ -13,8 +13,8 @@
 #define kCallbackURL @"flickrz://"
 #define kEndpoint @"api.flickr.com/services/rest/"
 //#define kPopularUserID @"69522958@N04"
-#define kPopularUserID @"72489705@N00"
-//#define kPopularUserID @"27420180@N08"
+//#define kPopularUserID @"72489705@N00"
+#define kPopularUserID @"27420180@N08"
 #define kBigSizeSuffix @"b"
 #define kSmallSizeSuffix @"w"
 #define kNetworkError 150900

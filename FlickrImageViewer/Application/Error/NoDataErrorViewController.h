@@ -9,7 +9,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol NoDataErrorViewDelegate <NSObject>
+
+- (void)onRetryForNoDataErrorClicked;
+
+@end
+
 @interface NoDataErrorViewController : UIViewController
+
+@property (nonatomic, weak) id<NoDataErrorViewDelegate> delegate;
 
 @end
 

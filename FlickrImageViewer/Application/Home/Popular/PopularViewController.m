@@ -26,7 +26,9 @@
                                      UICollectionViewDelegateFlowLayout,
                                      UICollectionViewDataSource,
                                      UICollectionViewDataSourcePrefetching,
-                                     NetworkErrorViewDelegate>
+                                     NetworkErrorViewDelegate,
+                                     ServerErrorViewDelegate,
+                                     NoDataErrorViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<NSURL *> *photoURLs;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -37,10 +39,6 @@
 @property (nonatomic, strong) NSMutableDictionary<NSURL *, NSValue *> *originalImageSize;
 @property (nonatomic, strong) AsyncImageFetcher *asyncFetcher;
 
-// Error views
-@property (nonatomic, strong) NetworkErrorViewController *networkErrorVC;
-@property (nonatomic, strong) ServerErrorViewController *serverErrorVC;
-@property (nonatomic, strong) NoDataErrorViewController *noDataErrorVC;
 
 @end
 
@@ -65,6 +63,10 @@ static BOOL isLastPage = NO;
     [self getPhotoURLsForPage:currentPage];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [self removeObservers];
+}
+
 
 #pragma mark - Private methods
 
@@ -72,6 +74,7 @@ static BOOL isLastPage = NO;
     [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
                                                              completionHandler:^(NSMutableArray<NSURL *> * _Nullable photoURLs,
                                                                                  NSError * _Nullable error) {
+        NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
             switch (error.code) {
                 case kNetworkError:
@@ -227,7 +230,19 @@ static BOOL isLastPage = NO;
 #pragma mark - NetworkErrorViewDelegate
 
 - (void)onRetryForNetworkErrorClicked {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:NO];
+    [self getPhotoURLsForPage:1];
+}
+
+#pragma mark - ServerErrorViewDelegate
+- (void)onRetryForServerErrorClicked {
+    [self.navigationController popViewControllerAnimated:NO];
+    [self getPhotoURLsForPage:1];
+}
+
+#pragma mark - NoDataErrorViewDelegate
+- (void)onRetryForNoDataErrorClicked {
+    [self.navigationController popViewControllerAnimated:NO];
     [self getPhotoURLsForPage:1];
 }
 
@@ -239,6 +254,7 @@ static BOOL isLastPage = NO;
                                                 usingBlock:^(NSNotification *notification) {
         
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
+        networkErrorVC.delegate = self;
         [self.navigationController pushViewController:networkErrorVC animated:NO];
     }];
     
@@ -248,6 +264,7 @@ static BOOL isLastPage = NO;
                                                 usingBlock:^(NSNotification *notification) {
         
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
+        serverErrorVC.delegate = self;
         [self.navigationController pushViewController:serverErrorVC animated:NO];
     }];
     
@@ -257,8 +274,15 @@ static BOOL isLastPage = NO;
                                                 usingBlock:^(NSNotification *notification) {
         
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
+        noDataErrorVC.delegate = self;
         [self.navigationController pushViewController:noDataErrorVC animated:NO];
     }];
+}
+
+- (void)removeObservers {
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NetworkError" object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"ServerError" object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NoDataError" object:nil];
 }
 
 #pragma mark - Custom Accessors
