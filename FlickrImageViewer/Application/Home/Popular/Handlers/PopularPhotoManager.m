@@ -45,9 +45,11 @@ static NSString *perPage = @"20";
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
-            if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."]) {
+            NSLog(@"[DEBUG] error: %@", error.localizedDescription);
+            if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."] ||
+                [error.localizedDescription isEqualToString:@"The request timed out."]) {
                 error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                            code:PopularPhotoManagerErrorNetworkError
+                                            code:kNetworkError
                                         userInfo:nil];
             }
             completion(nil, error);
@@ -56,7 +58,7 @@ static NSString *perPage = @"20";
         
         if (!data) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:PopularPhotoManagerErrorNetworkError
+                                                 code:kNetworkError
                                              userInfo:nil];
             completion(nil, error);
             return;
@@ -70,13 +72,21 @@ static NSString *perPage = @"20";
         }
         if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"]) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:PopularPhotoManagerErrorNotValidData
+                                                 code:kSomeError
                                              userInfo:nil];
             completion(nil, error);
             return;
         }
         
         NSArray *photos = [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"];
+        if (photos.count == 0) {
+            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                                 code:kNoDataError
+                                             userInfo:nil];
+            completion(nil, error);
+            return;
+        }
+        
         NSMutableArray *photoURLs = [NSMutableArray array];
         for (NSDictionary *photoObject in photos) {
             NSString *photoID = (NSString *)[photoObject objectForKey:@"id"];

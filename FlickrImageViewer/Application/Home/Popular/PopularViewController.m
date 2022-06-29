@@ -11,6 +11,7 @@
 
 #import "../../../Common/Utilities/AsyncFetcher/AsyncImageFetcher.h"
 #import "../../../Common/Layouts/DynamicLayout/DynamicCollectionViewLayout.h"
+#import "../../../Common/Constants/Constants.h"
 
 #import "Views/PopularPhotoCollectionViewCell.h"
 #import "DataModel/Photo.h"
@@ -31,6 +32,8 @@
 @implementation PopularViewController
 
 static NSInteger currentPage = 1;
+static NSInteger totalPage = 5;
+static NSInteger numOfPhotosBeforeNewFetch = 5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,29 +53,34 @@ static NSInteger currentPage = 1;
 #pragma mark - Private methods
 
 - (void)getPhotoURLsForPage:(NSInteger)pageNum {
-     [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
+    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
                                                              completionHandler:^(NSMutableArray<NSURL *> * _Nullable photoURLs,
                                                                                  NSError * _Nullable error) {
-         if (error) {
-             switch (error.code) {
-                 case PopularPhotoManagerErrorNetworkError:
-                     // Network error view
-                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                     break;
-                 default:
-                     // Error occur view
-                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                     break;
-             }
-             return;
-         }
-         for (NSURL *url in photoURLs) {
-             Photo *photo = [[Photo alloc] initWithImageURL:url];
-             [self.photos addObject:photo];
-         }
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self.collectionView reloadData];
-         });
+        if (error) {
+            switch (error.code) {
+                case kNetworkError:
+                    // Network error view
+                    NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                    break;
+                case kNoDataError:
+                    // No data error view
+                    NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                    break;
+                default:
+                    // Error occur view
+                    NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                    break;
+            }
+            return;
+        }
+        for (NSURL *url in photoURLs) {
+//            NSLog(@"[DEBUG] url: %@", url.absoluteString);
+            Photo *photo = [[Photo alloc] initWithImageURL:url];
+            [self.photos addObject:photo];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
     }];
 }
 
@@ -147,6 +155,16 @@ static NSInteger currentPage = 1;
         }];
     }
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (currentPage < totalPage &&
+        indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch) {
+        currentPage += 1;
+        [self getPhotoURLsForPage:currentPage];
+    }
 }
 
 #pragma mark - <UICollectionViewDataSourcePrefetching>
