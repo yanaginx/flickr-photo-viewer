@@ -41,6 +41,9 @@
 		B2F69877286B224400CA596B /* Scope.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69876286B224400CA596B /* Scope.m */; };
 		B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */; };
 		B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */; };
+		B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */; };
+		B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */; };
+		B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +132,13 @@
 		B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcher.m; sourceTree = "<group>"; };
 		B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncImageFetcherOperation.h; sourceTree = "<group>"; };
 		B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcherOperation.m; sourceTree = "<group>"; };
+		B2F69891286C3AF400CA596B /* NetworkErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkErrorViewController.h; sourceTree = "<group>"; };
+		B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkErrorViewController.m; sourceTree = "<group>"; };
+		B2F69894286C3B0100CA596B /* NoDataErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoDataErrorViewController.h; sourceTree = "<group>"; };
+		B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoDataErrorViewController.m; sourceTree = "<group>"; };
+		B2F69897286C3B0F00CA596B /* ServerErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerErrorViewController.h; sourceTree = "<group>"; };
+		B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerErrorViewController.m; sourceTree = "<group>"; };
+		B2F6989A286C3B3100CA596B /* ErrorViewConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorViewConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +200,13 @@
 			isa = PBXGroup;
 			children = (
 				B23A30CC28604BD800E976C8 /* Views */,
+				B2F69891286C3AF400CA596B /* NetworkErrorViewController.h */,
+				B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */,
+				B2F69897286C3B0F00CA596B /* ServerErrorViewController.h */,
+				B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */,
+				B2F69894286C3B0100CA596B /* NoDataErrorViewController.h */,
+				B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */,
+				B2F6989A286C3B3100CA596B /* ErrorViewConstants.h */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -698,8 +715,10 @@
 			files = (
 				B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */,
 				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
+				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
+				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
 				B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */,
 				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
@@ -724,6 +743,7 @@
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
 				B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */,
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
+				B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

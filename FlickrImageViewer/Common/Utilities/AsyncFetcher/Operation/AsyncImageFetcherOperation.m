@@ -26,15 +26,15 @@
 
 #pragma mark - Operation override
 - (void)main {
-    UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:self.imageURL]];
+    NSError *error = nil;
+    UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:self.imageURL
+                                                                   options:NSDataReadingMappedIfSafe
+                                                                     error:&error]];
     if (!self.isCancelled) {
         if (image) {
             self.fetchedData = image;
         }
         else {
-            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:1
-                                             userInfo:nil];
             self.error = error;
         }
     }

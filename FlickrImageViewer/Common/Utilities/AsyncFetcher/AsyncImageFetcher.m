@@ -113,6 +113,8 @@
         operation.completionBlock = ^{
             @strongify(operation)
             UIImage *fetchedData = operation.fetchedData;
+            NSError *error = operation.error;
+            if (error) NSLog(@"[DEBUG] %s : error : %@", __func__, error);
             if (fetchedData == nil) return;
             [self.cache setObject:fetchedData forKey:identifier];
             

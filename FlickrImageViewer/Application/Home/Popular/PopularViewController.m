@@ -13,11 +13,20 @@
 #import "../../../Common/Layouts/DynamicLayout/DynamicCollectionViewLayout.h"
 #import "../../../Common/Constants/Constants.h"
 
+#import "../../Error/NetworkErrorViewController.h"
+#import "../../Error/ServerErrorViewController.h"
+#import "../../Error/NoDataErrorViewController.h"
+
 #import "Views/PopularPhotoCollectionViewCell.h"
 #import "DataModel/Photo.h"
 
 
-@interface PopularViewController () <DynamicCollectionViewLayoutDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching>
+@interface PopularViewController () <DynamicCollectionViewLayoutDataSource,
+                                     UICollectionViewDelegate,
+                                     UICollectionViewDelegateFlowLayout,
+                                     UICollectionViewDataSource,
+                                     UICollectionViewDataSourcePrefetching,
+                                     NetworkErrorViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<NSURL *> *photoURLs;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -27,6 +36,11 @@
 @property (nonatomic, strong) NSMutableArray<Photo *> *photos;
 @property (nonatomic, strong) NSMutableDictionary<NSURL *, NSValue *> *originalImageSize;
 @property (nonatomic, strong) AsyncImageFetcher *asyncFetcher;
+
+// Error views
+@property (nonatomic, strong) NetworkErrorViewController *networkErrorVC;
+@property (nonatomic, strong) ServerErrorViewController *serverErrorVC;
+@property (nonatomic, strong) NoDataErrorViewController *noDataErrorVC;
 
 @end
 
@@ -47,6 +61,7 @@ static BOOL isLastPage = NO;
     self.collectionView.prefetchDataSource = self;
     self.collectionView.delegate = self;
     
+    [self addObservers];
     [self getPhotoURLsForPage:currentPage];
 }
 
@@ -62,14 +77,21 @@ static BOOL isLastPage = NO;
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                    [NSNotificationCenter.defaultCenter postNotificationName:@"NetworkError"
+                                                                      object:self];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                    [NSNotificationCenter.defaultCenter postNotificationName:@"NoDataError"
+                                                                      object:self];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                    [NSNotificationCenter.defaultCenter postNotificationName:@"ServerError"
+                                                                      object:self];
+
                     break;
             }
             return;
@@ -202,6 +224,42 @@ static BOOL isLastPage = NO;
     }
 }
 
+#pragma mark - NetworkErrorViewDelegate
+
+- (void)onRetryForNetworkErrorClicked {
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self getPhotoURLsForPage:1];
+}
+
+#pragma mark - Private methods
+- (void)addObservers {
+    [NSNotificationCenter.defaultCenter addObserverForName:@"NetworkError"
+                                                    object:nil
+                                                     queue:NSOperationQueue.mainQueue
+                                                usingBlock:^(NSNotification *notification) {
+        
+        NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
+        [self.navigationController pushViewController:networkErrorVC animated:NO];
+    }];
+    
+    [NSNotificationCenter.defaultCenter addObserverForName:@"ServerError"
+                                                    object:nil
+                                                     queue:NSOperationQueue.mainQueue
+                                                usingBlock:^(NSNotification *notification) {
+        
+        ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
+        [self.navigationController pushViewController:serverErrorVC animated:NO];
+    }];
+    
+    [NSNotificationCenter.defaultCenter addObserverForName:@"NoDataError"
+                                                    object:nil
+                                                     queue:NSOperationQueue.mainQueue
+                                                usingBlock:^(NSNotification *notification) {
+        
+        NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
+        [self.navigationController pushViewController:noDataErrorVC animated:NO];
+    }];
+}
 
 #pragma mark - Custom Accessors
 - (DynamicCollectionViewLayout *)dynamicLayout {
