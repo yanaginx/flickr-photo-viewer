@@ -79,7 +79,7 @@ static NSString *perPage = @"20";
         }
         
         NSArray *photos = [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"];
-        if (photos.count == 0) {
+        if (photos.count == 0 && pageNum == 1) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNoDataError
                                              userInfo:nil];

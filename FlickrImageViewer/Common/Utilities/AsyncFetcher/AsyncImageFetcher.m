@@ -182,6 +182,8 @@
 - (NSCache<NSUUID *, UIImage *> *)cache {
     if (_cache) return _cache;
     _cache = [[NSCache alloc] init];
+    [_cache setTotalCostLimit:500 * 1024 * 1024];
+    [_cache setCountLimit:500];
     return _cache;
 }
 

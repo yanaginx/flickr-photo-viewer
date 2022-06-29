@@ -25,6 +25,7 @@
 // cache for getting the image size
 @property (nonatomic, strong) NSCache<NSUUID *, UIImage *> *photoImagesCache;
 @property (nonatomic, strong) NSMutableArray<Photo *> *photos;
+@property (nonatomic, strong) NSMutableDictionary<NSURL *, NSValue *> *originalImageSize;
 @property (nonatomic, strong) AsyncImageFetcher *asyncFetcher;
 
 @end
@@ -32,8 +33,8 @@
 @implementation PopularViewController
 
 static NSInteger currentPage = 1;
-static NSInteger totalPage = 5;
 static NSInteger numOfPhotosBeforeNewFetch = 5;
+static BOOL isLastPage = NO;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -73,6 +74,10 @@ static NSInteger numOfPhotosBeforeNewFetch = 5;
             }
             return;
         }
+        
+        if (photoURLs.count == 0) {
+            isLastPage = YES;
+        }
         for (NSURL *url in photoURLs) {
 //            NSLog(@"[DEBUG] url: %@", url.absoluteString);
             Photo *photo = [[Photo alloc] initWithImageURL:url];
@@ -89,8 +94,17 @@ static NSInteger numOfPhotosBeforeNewFetch = 5;
          originalImageSizeAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.photos.count) {
         Photo *photo = self.photos[indexPath.row];
-        UIImage *photoImage = [self.asyncFetcher.cache objectForKey:photo.identifier];
-        if (photoImage) return photoImage.size;
+        if ([self.originalImageSize objectForKey:photo.imageURL] == nil) {
+            UIImage *photoImage = [self.asyncFetcher.cache objectForKey:photo.identifier];
+            if (photoImage) {
+                CGSize photoSize = photoImage.size;
+                [self.originalImageSize setObject:[NSValue valueWithCGSize:photoSize]
+                                           forKey:photo.imageURL];
+                return photoSize;
+            }
+        }
+        CGSize originalPhotoSize = [self.originalImageSize objectForKey:photo.imageURL].CGSizeValue;
+        return originalPhotoSize;
     }
     return CGSizeMake(0.1, 0.1);
 }
@@ -160,9 +174,9 @@ static NSInteger numOfPhotosBeforeNewFetch = 5;
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (currentPage < totalPage &&
-        indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch) {
+    if (indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
         currentPage += 1;
+        NSLog(@"[DEBUG] %s : API called!", __func__);
         [self getPhotoURLsForPage:currentPage];
     }
 }
@@ -195,6 +209,8 @@ static NSInteger numOfPhotosBeforeNewFetch = 5;
 
     _dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
     _dynamicLayout.dataSource = self;
+    _dynamicLayout.fixedHeight = NO;
+    _dynamicLayout.rowMaximumHeight = 200;
     return _dynamicLayout;
 }
 
@@ -223,6 +239,12 @@ static NSInteger numOfPhotosBeforeNewFetch = 5;
     
     _photos = [NSMutableArray array];
     return _photos;
+}
+
+- (NSMutableDictionary *)originalImageSize {
+    if (_originalImageSize) return _originalImageSize;
+    _originalImageSize = [NSMutableDictionary dictionary];
+    return _originalImageSize;
 }
 
 
