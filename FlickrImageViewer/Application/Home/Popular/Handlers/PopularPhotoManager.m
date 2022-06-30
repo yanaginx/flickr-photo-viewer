@@ -38,7 +38,7 @@ static NSString *perPage = @"20";
 #pragma mark - Make request
 
 - (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
-                  completionHandler:(void (^)(NSMutableArray<NSURL *> * _Nullable,
+                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
                                           NSError * _Nullable))completion {
     
     NSURLRequest *request = [self popularPhotoURLRequestWithPageNum:pageNum];
@@ -78,8 +78,8 @@ static NSString *perPage = @"20";
             return;
         }
         
-        NSArray *photos = [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"];
-        if (photos.count == 0 && pageNum == 1) {
+        NSArray *photoObjects = [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"];
+        if (photoObjects.count == 0 && pageNum == 1) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNoDataError
                                              userInfo:nil];
@@ -87,8 +87,8 @@ static NSString *perPage = @"20";
             return;
         }
         
-        NSMutableArray *photoURLs = [NSMutableArray array];
-        for (NSDictionary *photoObject in photos) {
+        NSMutableArray *photos = [NSMutableArray array];
+        for (NSDictionary *photoObject in photoObjects) {
             NSString *photoID = (NSString *)[photoObject objectForKey:@"id"];
             NSString *photoSecret = (NSString *)[photoObject objectForKey:@"secret"];
             NSString *photoServer = (NSString *)[photoObject objectForKey:@"server"];
@@ -96,9 +96,26 @@ static NSString *perPage = @"20";
                                                             photoID:photoID
                                                              secret:photoSecret
                                                          sizeSuffix:nil];
-            [photoURLs addObject:photoURL];
+            
+            NSNumber *heightFetched = (NSNumber *)[photoObject objectForKey:@"height_t"];
+            NSNumber *widthFetched = (NSNumber *)[photoObject objectForKey:@"width_t"];
+            CGFloat aspectRatio = heightFetched.floatValue / widthFetched.floatValue;
+            CGFloat height_m = 0;
+            CGFloat width_m = 0;
+            if (heightFetched.longValue == 100) {
+                height_m = 500;
+                width_m = height_m / aspectRatio;
+            } else if (widthFetched.longValue == 100) {
+                width_m = 500;
+                height_m = width_m * aspectRatio;
+            }
+            CGSize imageSize = CGSizeMake(width_m, height_m);
+            
+            Photo *photo = [[Photo alloc] initWithImageURL:photoURL
+                                                 imageSize:imageSize];
+            [photos addObject:photo];
         }
-        completion(photoURLs, nil);
+        completion(photos, nil);
         
     }] resume];
 }
@@ -112,6 +129,7 @@ static NSString *perPage = @"20";
     [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:format forKey:@"format"];
     [params setObject:perPage forKey:@"per_page"];
+    [params setObject:@"url_t" forKey:@"extras"];
     
     NSString *page = [NSString stringWithFormat:@"%ld", pageNum];
     [params setObject:page forKey:@"page"];

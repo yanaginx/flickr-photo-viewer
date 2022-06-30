@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,8 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSUUID *identifier;
 @property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic) CGSize imageSize;
 
-- (instancetype)initWithImageURL:(NSURL *)imageURL;
+- (instancetype)initWithImageURL:(NSURL *)imageURL
+                       imageSize:(CGSize)size;
 
 @end
 

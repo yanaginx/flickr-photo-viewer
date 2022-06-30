@@ -72,7 +72,7 @@ static BOOL isLastPage = NO;
 
 - (void)getPhotoURLsForPage:(NSInteger)pageNum {
     [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
-                                                             completionHandler:^(NSMutableArray<NSURL *> * _Nullable photoURLs,
+                                                             completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                                                  NSError * _Nullable error) {
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
@@ -100,14 +100,10 @@ static BOOL isLastPage = NO;
             return;
         }
         
-        if (photoURLs.count == 0) {
+        if (photosFetched.count == 0) {
             isLastPage = YES;
         }
-        for (NSURL *url in photoURLs) {
-//            NSLog(@"[DEBUG] url: %@", url.absoluteString);
-            Photo *photo = [[Photo alloc] initWithImageURL:url];
-            [self.photos addObject:photo];
-        }
+        [self.photos addObjectsFromArray:photosFetched];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
         });
@@ -119,17 +115,7 @@ static BOOL isLastPage = NO;
          originalImageSizeAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < self.photos.count) {
         Photo *photo = self.photos[indexPath.row];
-        if ([self.originalImageSize objectForKey:photo.imageURL] == nil) {
-            UIImage *photoImage = [self.asyncFetcher.cache objectForKey:photo.identifier];
-            if (photoImage) {
-                CGSize photoSize = photoImage.size;
-                [self.originalImageSize setObject:[NSValue valueWithCGSize:photoSize]
-                                           forKey:photo.imageURL];
-                return photoSize;
-            }
-        }
-        CGSize originalPhotoSize = [self.originalImageSize objectForKey:photo.imageURL].CGSizeValue;
-        return originalPhotoSize;
+        return photo.imageSize;
     }
     return CGSizeMake(0.1, 0.1);
 }
