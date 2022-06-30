@@ -33,6 +33,9 @@
 		B29CBB6B2859D2B60058B382 /* FlickrImageViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB6A2859D2B60058B382 /* FlickrImageViewerTests.m */; };
 		B29CBB752859D2B60058B382 /* FlickrImageViewerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB742859D2B60058B382 /* FlickrImageViewerUITests.m */; };
 		B29CBB772859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB762859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m */; };
+		B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BEB286D4A7E001189EE /* PublicPhotosViewController.m */; };
+		B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BEE286D4A9E001189EE /* AlbumViewController.m */; };
+		B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BF1286D4B92001189EE /* HeaderViewController.m */; };
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
@@ -114,6 +117,13 @@
 		B29CBB702859D2B60058B382 /* FlickrImageViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrImageViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29CBB742859D2B60058B382 /* FlickrImageViewerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickrImageViewerUITests.m; sourceTree = "<group>"; };
 		B29CBB762859D2B60058B382 /* FlickrImageViewerUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickrImageViewerUITestsLaunchTests.m; sourceTree = "<group>"; };
+		B2A10BEA286D4A7E001189EE /* PublicPhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotosViewController.h; sourceTree = "<group>"; };
+		B2A10BEB286D4A7E001189EE /* PublicPhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotosViewController.m; sourceTree = "<group>"; };
+		B2A10BED286D4A9E001189EE /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
+		B2A10BEE286D4A9E001189EE /* AlbumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
+		B2A10BF0286D4B92001189EE /* HeaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderViewController.h; sourceTree = "<group>"; };
+		B2A10BF1286D4B92001189EE /* HeaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderViewController.m; sourceTree = "<group>"; };
+		B2A10BF4286D5095001189EE /* UserProfileConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfileConstants.h; sourceTree = "<group>"; };
 		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
@@ -494,6 +504,19 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		B2A10BF3286D4B9F001189EE /* SubViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B2A10BEA286D4A7E001189EE /* PublicPhotosViewController.h */,
+				B2A10BEB286D4A7E001189EE /* PublicPhotosViewController.m */,
+				B2A10BED286D4A9E001189EE /* AlbumViewController.h */,
+				B2A10BEE286D4A9E001189EE /* AlbumViewController.m */,
+				B2A10BF0286D4B92001189EE /* HeaderViewController.h */,
+				B2A10BF1286D4B92001189EE /* HeaderViewController.m */,
+			);
+			path = SubViewControllers;
+			sourceTree = "<group>";
+		};
 		B2CED17E2863036F00606615 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,9 +555,11 @@
 		B2D7F58F2866E2C6008A2805 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				B2A10BF3286D4B9F001189EE /* SubViewControllers */,
 				B2D7F5902866E2CE008A2805 /* Views */,
 				B2D7F5912866E2E3008A2805 /* UserProfileViewController.h */,
 				B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */,
+				B2A10BF4286D5095001189EE /* UserProfileConstants.h */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -731,13 +756,16 @@
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
+				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
+				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,
 				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
 				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
+				B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
 				B2001FB42869894F002EB17F /* Photo.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
