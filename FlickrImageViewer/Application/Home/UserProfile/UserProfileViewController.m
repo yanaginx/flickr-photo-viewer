@@ -75,7 +75,7 @@
     [[self.headerViewController.view.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor] setActive:YES];
     [[self.headerViewController.view.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor] setActive:YES];
     [[self.headerViewController.view.topAnchor constraintEqualToAnchor:self.view.topAnchor
-                                                              constant:kTabBarHeight] setActive:YES];
+                                                              constant:kStatusBarHeight] setActive:YES];
     [[self.headerViewController.view.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor
                                                                  constant:kHeaderBottomConstant] setActive:YES];
     
