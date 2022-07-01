@@ -11,9 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (Additions)
 
-// Xem builder pattern
-// Goi va tra lai chinh no
-
 - (void)setAnchorTop:(NSLayoutYAxisAnchor *)top
                 left:(NSLayoutXAxisAnchor *)left
               bottom:(NSLayoutYAxisAnchor *)bottom
@@ -37,6 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setAnchorHeight:(CGFloat)height;
 
 - (void)setAnchorCenterX:(NSLayoutXAxisAnchor *)centerX centerY:(NSLayoutYAxisAnchor *)centerY;
+
+- (void)setX:(CGFloat)x;
+- (void)setY:(CGFloat)y;
+- (void)setWidth:(CGFloat)width;
+- (void)setHeight:(CGFloat)height;
+
 
 @end
 

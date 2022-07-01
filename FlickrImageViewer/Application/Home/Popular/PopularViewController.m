@@ -61,6 +61,15 @@ static BOOL isLastPage = NO;
     
     [self addObservers];
     [self getPhotoURLsForPage:currentPage];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDarkContent;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

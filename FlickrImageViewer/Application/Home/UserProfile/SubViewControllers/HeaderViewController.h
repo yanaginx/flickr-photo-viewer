@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HeaderViewController : UIViewController
 
+@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *numberOfPhotosLabel;
+
 @end
 
 NS_ASSUME_NONNULL_END
