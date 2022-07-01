@@ -17,7 +17,6 @@
 
 static NSString *oauthConsumerKey = kConsumerKey;
 static NSString *endpoint = kEndpoint;
-static NSString *publicPhotosMethod = @"flickr.people.getPublicPhotos";
 static NSString *userProfileMethod = @"flickr.people.getInfo";
 static NSString *isNoJSONCallback = @"1";
 static NSString *format = @"json";
@@ -138,30 +137,7 @@ static NSString *perPage = @"20";
 }
 
 
-- (NSURLRequest *)publicPhotoURLRequestWithPageNum:(NSInteger)pageNum {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthConsumerKey forKey:@"api_key"];
-    [params setObject:publicPhotosMethod forKey:@"method"];
-    [params setObject:kUserNSID forKey:@"user_id"];
-    [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
-    [params setObject:format forKey:@"format"];
-    [params setObject:perPage forKey:@"per_page"];
-    [params setObject:@"url_t" forKey:@"extras"];
-    
-    NSString *page = [NSString stringWithFormat:@"%ld", pageNum];
-    [params setObject:page forKey:@"page"];
-    
-        
-    NSURLRequest *request = [OAuth URLRequestForPath:@"/"
-                                       GETParameters:params
-                                              scheme:@"https"
-                                                host:endpoint
-                                         consumerKey:oauthConsumerKey
-                                      consumerSecret:nil
-                                         accessToken:nil
-                                         tokenSecret:nil];
-    return request;
-}
+
 
 
 @end

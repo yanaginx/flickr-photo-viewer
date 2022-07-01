@@ -21,7 +21,11 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.currentVC = [[SplashViewController alloc] init];
+        if (isUserLoggedIn()) {
+            self.currentVC = [[HomeViewController alloc] init];
+        } else {
+            self.currentVC = [[LoginViewController alloc] init];
+        }
     }
     return self;
 }
@@ -33,6 +37,11 @@
     self.currentVC.view.frame = self.view.bounds;
     [self.view addSubview:self.currentVC.view];
     [self.currentVC didMoveToParentViewController:self];
+}
+
+#pragma mark - Helper
+BOOL isUserLoggedIn(void) {
+    return ([NSUserDefaults.standardUserDefaults objectForKey:@"user_oauth_token"] != nil);
 }
 
 #pragma mark - Navigation methods
@@ -55,13 +64,13 @@
 - (void)switchToHomeScreen {
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     UINavigationController *homeNavi = [[UINavigationController alloc] initWithRootViewController:homeVC];
-    [self animateFadeTransitionToNewViewController:homeNavi completion:nil];
+    [self animateFadeTransitionToNewViewController:homeVC completion:nil];
 }
 
 - (void)switchToLogOut {
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
-    [self animateDismissTransitionToNewViewController:loginNavi completion:nil];
+    [self animateDismissTransitionToNewViewController:loginVC completion:nil];
 }
 
 - (void)animateFadeTransitionToNewViewController:(UIViewController *)newVC completion:(void(^ __nullable)(void))completion {
