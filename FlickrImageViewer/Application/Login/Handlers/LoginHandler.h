@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURL *)authorizationURL;
 - (NSString *)userAccessToken;
 - (NSString *)userTokenSecret;
+- (NSString *)userNSID;
 
 - (ASWebAuthenticationSession *)authSessionWithCompletionHandler:(void (^)(NSString * _Nullable token,
                                                                            NSString * _Nullable verifier,

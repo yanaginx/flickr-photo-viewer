@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B2001FB42869894F002EB17F /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB32869894F002EB17F /* Photo.m */; };
+		B2001FB42869894F002EB17F /* Photo_old.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB32869894F002EB17F /* Photo_old.m */; };
 		B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB628698AD6002EB17F /* PopularPhotoManager.m */; };
 		B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */; };
 		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
@@ -36,6 +36,8 @@
 		B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BEB286D4A7E001189EE /* PublicPhotosViewController.m */; };
 		B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BEE286D4A9E001189EE /* AlbumViewController.m */; };
 		B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BF1286D4B92001189EE /* HeaderViewController.m */; };
+		B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BF9286EA038001189EE /* UserProfileManager.m */; };
+		B2A10BFD286EA16D001189EE /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BFC286EA16D001189EE /* Photo.m */; };
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
@@ -67,8 +69,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B2001FB22869894F002EB17F /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
-		B2001FB32869894F002EB17F /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		B2001FB22869894F002EB17F /* Photo_old.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo_old.h; sourceTree = "<group>"; };
+		B2001FB32869894F002EB17F /* Photo_old.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo_old.m; sourceTree = "<group>"; };
 		B2001FB528698AD6002EB17F /* PopularPhotoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoManager.h; sourceTree = "<group>"; };
 		B2001FB628698AD6002EB17F /* PopularPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoManager.m; sourceTree = "<group>"; };
 		B2001FB82869B247002EB17F /* PopularPhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -124,6 +126,10 @@
 		B2A10BF0286D4B92001189EE /* HeaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderViewController.h; sourceTree = "<group>"; };
 		B2A10BF1286D4B92001189EE /* HeaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderViewController.m; sourceTree = "<group>"; };
 		B2A10BF4286D5095001189EE /* UserProfileConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfileConstants.h; sourceTree = "<group>"; };
+		B2A10BF8286EA038001189EE /* UserProfileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfileManager.h; sourceTree = "<group>"; };
+		B2A10BF9286EA038001189EE /* UserProfileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
+		B2A10BFB286EA16D001189EE /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		B2A10BFC286EA16D001189EE /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
@@ -179,8 +185,8 @@
 		B2001FB12869893A002EB17F /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				B2001FB22869894F002EB17F /* Photo.h */,
-				B2001FB32869894F002EB17F /* Photo.m */,
+				B2001FB22869894F002EB17F /* Photo_old.h */,
+				B2001FB32869894F002EB17F /* Photo_old.m */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -454,6 +460,8 @@
 		B29CBB832859D3270058B382 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B2A10BFB286EA16D001189EE /* Photo.h */,
+				B2A10BFC286EA16D001189EE /* Photo.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -517,6 +525,15 @@
 			path = SubViewControllers;
 			sourceTree = "<group>";
 		};
+		B2A10BF7286EA01B001189EE /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				B2A10BF8286EA038001189EE /* UserProfileManager.h */,
+				B2A10BF9286EA038001189EE /* UserProfileManager.m */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		B2CED17E2863036F00606615 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -555,6 +572,7 @@
 		B2D7F58F2866E2C6008A2805 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				B2A10BF7286EA01B001189EE /* Handlers */,
 				B2A10BF3286D4B9F001189EE /* SubViewControllers */,
 				B2D7F5902866E2CE008A2805 /* Views */,
 				B2D7F5912866E2E3008A2805 /* UserProfileViewController.h */,
@@ -742,6 +760,7 @@
 				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
+				B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */,
 				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
 				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
@@ -749,6 +768,7 @@
 				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
+				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
@@ -767,7 +787,7 @@
 				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
 				B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
-				B2001FB42869894F002EB17F /* Photo.m in Sources */,
+				B2001FB42869894F002EB17F /* Photo_old.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
 				B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */,
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,

@@ -12,13 +12,13 @@
 #import "../../../Common/Utilities/AsyncFetcher/AsyncImageFetcher.h"
 #import "../../../Common/Layouts/DynamicLayout/DynamicCollectionViewLayout.h"
 #import "../../../Common/Constants/Constants.h"
+#import "../../../Models/Photo.h"
 
 #import "../../Error/NetworkErrorViewController.h"
 #import "../../Error/ServerErrorViewController.h"
 #import "../../Error/NoDataErrorViewController.h"
 
 #import "Views/PopularPhotoCollectionViewCell.h"
-#import "DataModel/Photo.h"
 
 
 @interface PopularViewController () <DynamicCollectionViewLayoutDataSource,

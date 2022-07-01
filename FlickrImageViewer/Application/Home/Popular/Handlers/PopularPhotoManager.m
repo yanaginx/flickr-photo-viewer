@@ -6,7 +6,7 @@
 //
 
 #import "PopularPhotoManager.h"
-#import "../DataModel/Photo.h"
+#import "../../../../Models/Photo.h"
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Constants/Constants.h"

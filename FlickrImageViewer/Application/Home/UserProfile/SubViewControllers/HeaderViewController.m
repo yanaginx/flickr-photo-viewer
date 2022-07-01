@@ -7,6 +7,8 @@
 
 #import "HeaderViewController.h"
 #import "../UserProfileConstants.h"
+#import "../../../../Common/Constants/Constants.h"
+#import "../Handlers/UserProfileManager.h"
 
 @interface HeaderViewController ()
 
@@ -23,6 +25,8 @@
     blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:blurEffectView atIndex:0];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_person_outlined"]];
+    
+    [self getUserProfile];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -36,7 +40,67 @@
     NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.width);
 }
 
+#pragma mark - Operations
+- (void)getUserProfile {
+    [UserProfileManager.sharedUserProfileManager getUserProfileWithCompletionHandler:^(NSURL * _Nullable avatarURL,
+                                                                                       NSString * _Nullable name,
+                                                                                       NSString * _Nullable numberOfPhotos,
+                                                                                       NSError * _Nullable error) {
+
+        NSLog(@"[DEBUG] %s : API called!", __func__);
+        if (error) {
+            switch (error.code) {
+                case kNetworkError:
+                    // Network error view
+                    NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                    break;
+                case kNoDataError:
+                    // No data error view
+                    NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                    break;
+                default:
+                    // Error occur view
+                    NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                    break;
+            }
+            return;
+        }
+        
+        [self configureNameWithString:name];
+        [self configureAvatarWithImageURL:avatarURL];
+        [self configureNumberOfPhotosWithString:numberOfPhotos];
+    }];
+}
+
 #pragma mark - Helpers
+
+- (void)configureAvatarWithImageURL:(NSURL *)avatarImageURL {
+    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(globalQueue, ^{
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:avatarImageURL];
+        if (imageData) {
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            // Get the main queue and execute the UI change in the main queue
+            dispatch_queue_main_t mainQueue = dispatch_get_main_queue();
+            dispatch_async(mainQueue, ^{
+                self.avatarImageView.image = image;
+            });
+        }
+    });
+}
+
+- (void)configureNameWithString:(NSString *)nameString {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.nameLabel.text = nameString;
+    });
+}
+
+- (void)configureNumberOfPhotosWithString:(NSString *)numberOfPhotos {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.numberOfPhotosLabel.text = [NSString stringWithFormat:@"%@ Photos", numberOfPhotos];
+    });
+}
+
 - (void)setAvatarImageViewAnchor {
     [[self.avatarImageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor
                                                     constant:kAvatarLead] setActive:YES];;
@@ -73,14 +137,11 @@
 
 - (UIImageView *)avatarImageView {
     if (_avatarImageView) return _avatarImageView;
-//    _avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kAvatarX,
-//                                                                     kAvatarY,
-//                                                                     kAvatarSize,
-//                                                                     kAvatarSize)];
     _avatarImageView = [[UIImageView alloc] init];
     _avatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
     _avatarImageView.layer.cornerRadius = kAvatarSize / 2;
     _avatarImageView.layer.borderWidth = 1.0f;
+    _avatarImageView.layer.masksToBounds = YES;
     _avatarImageView.layer.borderColor = UIColor.whiteColor.CGColor;
     _avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
     _avatarImageView.image = [UIImage imageNamed:@"ic_person"];
@@ -89,10 +150,6 @@
 
 - (UILabel *)nameLabel {
     if (_nameLabel) return _nameLabel;
-//    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kNameLabelX,
-//                                                           kNameLabelY,
-//                                                           kNameLabelWidth,
-//                                                           kNameLabelHeight)];
     _nameLabel = [[UILabel alloc] init];
     _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _nameLabel.textAlignment = NSTextAlignmentCenter;
@@ -103,10 +160,6 @@
 
 - (UILabel *)numberOfPhotosLabel {
     if (_numberOfPhotosLabel) return _numberOfPhotosLabel;
-//    _numberOfPhotosLabel = [[UILabel alloc] initWithFrame:CGRectMake(kNumberOfPhotoLabelX,
-//                                                                     kNumberOfPhotoLabelY,
-//                                                                     kNumberOfPhotoLabelWidth,
-//                                                                     kNumberOfPhotoLabelHeight)];
     _numberOfPhotosLabel = [[UILabel alloc] init];
     _numberOfPhotosLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _numberOfPhotosLabel.textAlignment = NSTextAlignmentCenter;

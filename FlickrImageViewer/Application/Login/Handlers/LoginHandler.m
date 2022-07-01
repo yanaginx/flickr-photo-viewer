@@ -89,6 +89,10 @@ static NSString *accessTokenPath = @"/access_token";
     return [NSUserDefaults.standardUserDefaults stringForKey:@"user_oauth_token_secret"];
 }
 
+- (NSString *)userNSID {
+    return [NSUserDefaults.standardUserDefaults stringForKey:@"user_nsid"];
+}
+
 - (NSURL *)authorizationURL {
     NSString *requestOAuthToken = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
     NSString *requestOAuthTokenSecret = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token_secret"];
@@ -269,13 +273,17 @@ BOOL isValidAuthorizationResponse(NSString *responseString) {
     NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
     NSString *token = @"";
     NSString *secret = @"";
+    NSString *userNSID = @"";
     for (NSString *pair in queryItem) {
         NSArray *item = [pair componentsSeparatedByString:@"="];
         if (item.count != 2) continue;
         if ([item[0] isEqualToString:@"oauth_token"]) token = item[1];
         if ([item[0] isEqualToString:@"oauth_token_secret"]) secret = item[1];
+        if ([item[0] isEqualToString:@"user_nsid"]) userNSID = item[1];
     }
     if ([token isEqualToString:@""] || [secret isEqualToString:@""]) return;
+    userNSID = [userNSID stringByRemovingPercentEncoding];
+    [NSUserDefaults.standardUserDefaults setObject:userNSID forKey:@"user_nsid"];
     [NSUserDefaults.standardUserDefaults setObject:token forKey:@"user_oauth_token"];
     [NSUserDefaults.standardUserDefaults setObject:secret forKey:@"user_oauth_token_secret"];
 }
@@ -286,6 +294,7 @@ BOOL isValidAuthorizationResponse(NSString *responseString) {
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_token"];
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"user_oauth_token"];
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"user_oauth_token_secret"];
+    [NSUserDefaults.standardUserDefaults removeObjectForKey:@"user_nsid"];
 }
 
 
