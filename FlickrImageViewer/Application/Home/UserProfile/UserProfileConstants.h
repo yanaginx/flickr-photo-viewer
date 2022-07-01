@@ -39,9 +39,12 @@
 #define kNumberOfPhotoLabelY (self.view.center.y - kAvatarSize / 2)
 
 #define kSettingButtonMargin 10
-#define kSettingButtonSize 40
+#define kSettingButtonSize 30
 #define kSettingButtonX (self.view.center.x + (self.view.frame.size.width / 2 - kSettingButtonMargin - kSettingButtonSize))
 #define kSettingButtonY (self.view.center.y - self.view.frame.size.height)
+
+#define kLayoutSegmentedControlHeight 35
+#define kLayoutSegmentedControlWidth 120
 
 
 #endif /* UserProfileConstants_h */

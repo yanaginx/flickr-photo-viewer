@@ -160,6 +160,7 @@ static CGFloat frameWidth = 200;
                                                           object:nil];
     }];;
     self.authSession.presentationContextProvider = self;
+    self.authSession.prefersEphemeralWebBrowserSession = YES;
     [self.authSession start];
 }
 

@@ -8,6 +8,9 @@
 #ifndef Constants_h
 #define Constants_h
 
+// Password
+// ZU?Gu?6GX?$+x)e
+
 #define kConsumerKey @"68fb93124728e9d210ca6dd75e1ba96d"
 #define kConsumerSecret @"b55ec59d57a6e559"
 #define kCallbackURL @"flickrz://"
@@ -18,6 +21,7 @@
 //#define kPopularUserID @"27420180@N08"
 #define kBigSizeSuffix @"b"
 #define kSmallSizeSuffix @"w"
+#define kCellHeight 200
 #define kNetworkError 150900
 #define kSomeError 150901
 #define kNoDataError 150902

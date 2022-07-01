@@ -22,10 +22,17 @@
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.whiteColor;
     // Do any additional setup after loading the view.
+
     [self.view addSubview:self.retryButton];
     [self.view addSubview:self.noDataErrorCaption];
     [self.view addSubview:self.noDataErrorImageView];
     self.navigationItem.hidesBackButton = YES;
+}
+
+- (void)viewWillLayoutSubviews {
+    self.noDataErrorCaption.frame = CGRectMake(kLabelX, kLabelY, kLabelWidth, kLabelHeight);
+    self.retryButton.frame = CGRectMake(kButtonX, kButtonY, kButtonWidth, kButtonHeight);
+    self.noDataErrorImageView.frame = CGRectMake(kImageX, kImageY, kImageWidth, kImageHeight);
 }
 
 #pragma mark - Handler
@@ -43,7 +50,6 @@
     _noDataErrorCaption.text = @"No photo yet!";
     _noDataErrorCaption.textAlignment = NSTextAlignmentCenter;
     _noDataErrorCaption.numberOfLines = 0;
-    _noDataErrorCaption.frame = CGRectMake(kLabelX, kLabelY, kLabelWidth, kLabelHeight);
     return _noDataErrorCaption;
 }
 
@@ -53,7 +59,6 @@
     _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
     
 //    NSLog(@"[DEBUG] %s : buttonX: %f, buttonY: %f, width: %f, height: %f", __func__, kButtonX, kButtonY, kButtonWidth, kButtonHeight);
-    _retryButton.frame = CGRectMake(kButtonX, kButtonY, kButtonWidth, kButtonHeight);
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kButtonWidth / 8;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
@@ -69,7 +74,6 @@
     
     _noDataErrorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_no_data"]];
 //    NSLog(@"[DEBUG] %s : labelX: %f, labelY: %f, width: %f, height: %f", __func__, kImageX, kImageY, kImageWidth, kImageHeight);
-    _noDataErrorImageView.frame = CGRectMake(kImageX, kImageY, kImageWidth, kImageHeight);
     _noDataErrorImageView.contentMode = UIViewContentModeScaleAspectFill;
     return _noDataErrorImageView;
 }

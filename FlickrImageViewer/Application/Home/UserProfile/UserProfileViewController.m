@@ -23,6 +23,7 @@
 @property (nonatomic, strong) HeaderViewController *headerViewController;
 @property (nonatomic, strong) PublicPhotosViewController *publicPhotoViewController;
 @property (nonatomic, strong) AlbumViewController *albumViewController;
+@property (nonatomic, strong) UINavigationController *publicPhotoNavi;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @end
@@ -46,6 +47,7 @@
     self.navigationController.navigationBar.shadowImage = [UIImage new];////UIImageNamed:@"transparent.png"
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];
+    
     [self setupView];
 }
 
@@ -126,9 +128,9 @@
 - (void)updateView {
     if (self.segmentedControl.selectedSegmentIndex == 0) {
         [self removeAsChildViewController:self.albumViewController];
-        [self addAsChildViewController:self.publicPhotoViewController];
+        [self addAsChildViewController:self.publicPhotoNavi];
     } else {
-        [self removeAsChildViewController:self.publicPhotoViewController];
+        [self removeAsChildViewController:self.publicPhotoNavi];
         [self addAsChildViewController:self.albumViewController];
     }
 }
@@ -201,6 +203,12 @@
     
     _albumViewController = [[AlbumViewController alloc] init];
     return _albumViewController;
+}
+
+- (UINavigationController *)publicPhotoNavi {
+    if (_publicPhotoNavi) return _publicPhotoNavi;
+    _publicPhotoNavi = [[UINavigationController alloc] initWithRootViewController:self.publicPhotoViewController];
+    return _publicPhotoNavi;
 }
 
 @end

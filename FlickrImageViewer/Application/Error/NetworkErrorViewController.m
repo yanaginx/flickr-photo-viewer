@@ -28,6 +28,12 @@
     self.navigationItem.hidesBackButton = YES;
 }
 
+- (void)viewWillLayoutSubviews {
+    self.retryButton.frame = CGRectMake(kButtonX, kButtonY, kButtonWidth, kButtonHeight);
+    self.networkErrorCaption.frame = CGRectMake(kLabelX, kLabelY, kLabelWidth, kLabelHeight);
+    self.networkErrorImageView.frame = CGRectMake(kImageX, kImageY, kImageWidth, kImageHeight);
+}
+
 #pragma mark - Handler
 - (void)onRetryButtonClicked {
     [self.delegate onRetryForNetworkErrorClicked];
@@ -43,7 +49,6 @@
     _networkErrorCaption.text = @"Network problem occured!\nPlease try again";
     _networkErrorCaption.textAlignment = NSTextAlignmentCenter;
     _networkErrorCaption.numberOfLines = 0;
-    _networkErrorCaption.frame = CGRectMake(kLabelX, kLabelY, kLabelWidth, kLabelHeight);
     return _networkErrorCaption;
 }
 
@@ -53,7 +58,6 @@
     _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
     
 //    NSLog(@"[DEBUG] %s : buttonX: %f, buttonY: %f, width: %f, height: %f", __func__, kButtonX, kButtonY, kButtonWidth, kButtonHeight);
-    _retryButton.frame = CGRectMake(kButtonX, kButtonY, kButtonWidth, kButtonHeight);
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kButtonWidth / 8;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
@@ -68,7 +72,6 @@
     
     _networkErrorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_no_network"]];
 //    NSLog(@"[DEBUG] %s : labelX: %f, labelY: %f, width: %f, height: %f", __func__, kImageX, kImageY, kImageWidth, kImageHeight);
-    _networkErrorImageView.frame = CGRectMake(kImageX, kImageY, kImageWidth, kImageHeight);
     _networkErrorImageView.contentMode = UIViewContentModeScaleAspectFill;
     return _networkErrorImageView;
 }

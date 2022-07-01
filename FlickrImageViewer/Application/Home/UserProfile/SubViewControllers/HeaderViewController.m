@@ -25,8 +25,12 @@
     blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:blurEffectView atIndex:0];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_person_outlined"]];
-    
-    [self getUserProfile];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if ([self.nameLabel.text isEqualToString:@"Display name"]) {
+        [self getUserProfile];
+    }
 }
 
 - (void)viewWillLayoutSubviews {
