@@ -43,6 +43,7 @@
 		B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06D328702D4B002F4B1B /* NSUserDefaults+Additions.m */; };
 		B2BF06DD28703AFF002F4B1B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06DC28703AFF002F4B1B /* User.m */; };
 		B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */; };
+		B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */; };
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
@@ -145,6 +146,8 @@
 		B2BF06DC28703AFF002F4B1B /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		B2BF06DF28708DD6002F4B1B /* PopularPhotoDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoDataSource.h; sourceTree = "<group>"; };
 		B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoDataSource.m; sourceTree = "<group>"; };
+		B2BF06E32870980E002F4B1B /* PublicPhotoDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoDataSource.h; sourceTree = "<group>"; };
+		B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoDataSource.m; sourceTree = "<group>"; };
 		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
@@ -526,6 +529,7 @@
 		B2A10BF3286D4B9F001189EE /* SubViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B2BF06E228709765002F4B1B /* DataSource */,
 				B2A10BEA286D4A7E001189EE /* PublicPhotosViewController.h */,
 				B2A10BEB286D4A7E001189EE /* PublicPhotosViewController.m */,
 				B2A10BED286D4A9E001189EE /* AlbumViewController.h */,
@@ -561,6 +565,15 @@
 			children = (
 				B2BF06DF28708DD6002F4B1B /* PopularPhotoDataSource.h */,
 				B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		B2BF06E228709765002F4B1B /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				B2BF06E32870980E002F4B1B /* PublicPhotoDataSource.h */,
+				B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -807,6 +820,7 @@
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */,
+				B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,

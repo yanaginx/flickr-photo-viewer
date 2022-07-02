@@ -47,14 +47,14 @@ static BOOL isLastPage = NO;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
     [self.view addSubview:self.collectionView];
-    self.collectionView.frame = self.view.bounds;
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.collectionView.dataSource = self.dataSource;
-    self.collectionView.prefetchDataSource = self.dataSource;
-    self.collectionView.delegate = self;
-    
+
+    [self setupCollectionView];
     [self getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)viewWillLayoutSubviews {
+    self.collectionView.frame = self.view.bounds;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -104,6 +104,13 @@ static BOOL isLastPage = NO;
             [self.collectionView reloadData];
         });
     }];
+}
+
+- (void)setupCollectionView {
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.collectionView.dataSource = self.dataSource;
+    self.collectionView.prefetchDataSource = self.dataSource;
+    self.collectionView.delegate = self;
 }
 
 #pragma mark - DynamicCollectionViewLayoutDataSource

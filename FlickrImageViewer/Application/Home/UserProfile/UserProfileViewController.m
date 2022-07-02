@@ -34,13 +34,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
-//     Temporary logout button to test the flow
-//    UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout"
-//                                                                     style:UIBarButtonItemStylePlain
-//                                                                    target:self
-//                                                                    action:@selector(onLogoutButtonClicked)];
-    
-//    [self.navigationItem setLeftBarButtonItem:logoutButton animated:YES];
     [self.navigationItem setRightBarButtonItem:self.settingButton animated:NO];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
                          forBarMetrics:UIBarMetricsDefault]; //UIImageNamed:@"transparent.png"
@@ -172,7 +165,7 @@
     }];
     UIMenu *settingMenu = [UIMenu menuWithChildren:@[logoutAction]];
     _settingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings"]
-                                                                       menu:settingMenu];
+                                                       menu:settingMenu];
     return _settingButton;
 }
 
