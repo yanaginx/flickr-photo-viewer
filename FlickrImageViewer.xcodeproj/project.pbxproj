@@ -40,6 +40,9 @@
 		B2A10BFD286EA16D001189EE /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BFC286EA16D001189EE /* Photo.m */; };
 		B2BF06CA286ED052002F4B1B /* PublicPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06C9286ED052002F4B1B /* PublicPhotoManager.m */; };
 		B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06CC286ED968002F4B1B /* PublicPhotoCollectionViewCell.m */; };
+		B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06D028702BA7002F4B1B /* AccountManager.m */; };
+		B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06D328702D4B002F4B1B /* NSUserDefaults+Additions.m */; };
+		B2BF06DD28703AFF002F4B1B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06DC28703AFF002F4B1B /* User.m */; };
 		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
 		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
@@ -136,6 +139,12 @@
 		B2BF06C9286ED052002F4B1B /* PublicPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoManager.m; sourceTree = "<group>"; };
 		B2BF06CB286ED968002F4B1B /* PublicPhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		B2BF06CC286ED968002F4B1B /* PublicPhotoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		B2BF06CF28702BA7002F4B1B /* AccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountManager.h; sourceTree = "<group>"; };
+		B2BF06D028702BA7002F4B1B /* AccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountManager.m; sourceTree = "<group>"; };
+		B2BF06D228702D4B002F4B1B /* NSUserDefaults+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Additions.h"; sourceTree = "<group>"; };
+		B2BF06D328702D4B002F4B1B /* NSUserDefaults+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Additions.m"; sourceTree = "<group>"; };
+		B2BF06DB28703AFF002F4B1B /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		B2BF06DC28703AFF002F4B1B /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
@@ -336,6 +345,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2BF06CE28702B8E002F4B1B /* AccountManager */,
 				B2F6987A286B247100CA596B /* AsyncFetcher */,
 				B2F69874286B219C00CA596B /* Scope */,
 				B2F69873286B219600CA596B /* Defer */,
@@ -354,6 +364,8 @@
 				B23A30DF2860573400E976C8 /* UIView+Additions.m */,
 				B23A30ED28607FCB00E976C8 /* NSString+Additions.h */,
 				B23A30EE28607FCB00E976C8 /* NSString+Additions.m */,
+				B2BF06D228702D4B002F4B1B /* NSUserDefaults+Additions.h */,
+				B2BF06D328702D4B002F4B1B /* NSUserDefaults+Additions.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -468,6 +480,8 @@
 			children = (
 				B2A10BFB286EA16D001189EE /* Photo.h */,
 				B2A10BFC286EA16D001189EE /* Photo.m */,
+				B2BF06DB28703AFF002F4B1B /* User.h */,
+				B2BF06DC28703AFF002F4B1B /* User.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -540,6 +554,15 @@
 				B2A10BF9286EA038001189EE /* UserProfileManager.m */,
 			);
 			path = Handlers;
+			sourceTree = "<group>";
+		};
+		B2BF06CE28702B8E002F4B1B /* AccountManager */ = {
+			isa = PBXGroup;
+			children = (
+				B2BF06CF28702BA7002F4B1B /* AccountManager.h */,
+				B2BF06D028702BA7002F4B1B /* AccountManager.m */,
+			);
+			path = AccountManager;
 			sourceTree = "<group>";
 		};
 		B2CED17E2863036F00606615 /* Splash */ = {
@@ -774,6 +797,7 @@
 				B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */,
 				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
 				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,
+				B2BF06DD28703AFF002F4B1B /* User.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
 				B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */,
 				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
@@ -786,8 +810,10 @@
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
+				B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
+				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,

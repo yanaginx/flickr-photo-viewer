@@ -80,7 +80,6 @@
                                                               constant:kStatusBarHeight] setActive:YES];
     [[self.headerViewController.view.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor
                                                                  constant:kHeaderBottomConstant] setActive:YES];
-    
     self.headerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.headerViewController didMoveToParentViewController:self];
 }

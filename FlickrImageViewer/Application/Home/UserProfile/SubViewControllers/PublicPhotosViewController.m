@@ -63,8 +63,9 @@ static NSInteger fixedLayoutIdx = 1;
     [self.view addSubview:self.layoutSegmentedControl];
     [self setupLayoutSegmentedControl];
     [self setupCollectionView];
-        
-    [self addObservers];
+    
+    if (currentPage != 1) currentPage = 1;
+    
     [self getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -88,10 +89,6 @@ static NSInteger fixedLayoutIdx = 1;
     self.navigationController.navigationBar.hidden = YES;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [self removeObservers];
-}
-
 
 #pragma mark - Private methods
 
@@ -105,21 +102,17 @@ static NSInteger fixedLayoutIdx = 1;
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"NetworkErrorPublic"
-                                                                      object:self];
+                    [self viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"NoDataErrorPublic"
-                                                                      object:self];
+                    [self viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"ServerErrorPublic"
-                                                                      object:self];
-
+                    [self viewServerError];
                     break;
             }
             return;
@@ -260,49 +253,35 @@ static NSInteger fixedLayoutIdx = 1;
 }
 
 #pragma mark - Private methods
-- (void)addObservers {
-    [NSNotificationCenter.defaultCenter addObserverForName:@"NetworkErrorPublic"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
+- (void)viewNetworkError {
+    dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         networkErrorVC.view.frame = self.view.bounds;
         networkErrorVC.delegate = self;
         [self.navigationController pushViewController:networkErrorVC animated:NO];
-    }];
-    
-    [NSNotificationCenter.defaultCenter addObserverForName:@"ServerErrorPublic"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
+    });
+}
+
+- (void)viewNoDataError {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
+        noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        noDataErrorVC.view.frame = self.navigationController.view.bounds;
+        noDataErrorVC.delegate = self;
+        [self.navigationController pushViewController:noDataErrorVC animated:NO];
+    });
+}
+
+- (void)viewServerError {
+    dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
         serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         serverErrorVC.view.frame = self.view.bounds;
         serverErrorVC.delegate = self;
         [self.navigationController pushViewController:serverErrorVC animated:NO];
-    }];
     
-    [NSNotificationCenter.defaultCenter addObserverForName:@"NoDataErrorPublic"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
-        NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
-        noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        noDataErrorVC.view.frame = self.navigationController.view.bounds;
-        noDataErrorVC.delegate = self;
-
-        [self.navigationController pushViewController:noDataErrorVC animated:NO];
-    }];
-}
-
-- (void)removeObservers {
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NetworkErrorPublic" object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"ServerErrorPublic" object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NoDataErrorPublic" object:nil];
+    });
 }
 
 - (void)setupLayoutSegmentedControl {
@@ -339,21 +318,29 @@ static NSInteger fixedLayoutIdx = 1;
 
 - (void)updateLayout {
     if (self.layoutSegmentedControl.selectedSegmentIndex == dynamicLayoutIdx) {
-        [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
-        [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
-        if (self.photos.count > 0) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-            [self.collectionView scrollToItemAtIndexPath:indexPath
-                                        atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-        }
+        [self switchToDynamicLayout];
     } else {
-        [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
-        [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
-        if (self.photos.count > 0) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-            [self.collectionView scrollToItemAtIndexPath:indexPath
-                                        atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-        }
+        [self switchToFixedLayout];
+    }
+}
+
+- (void)switchToDynamicLayout {
+    [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
+    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+    if (self.photos.count > 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath
+                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    }
+}
+
+- (void)switchToFixedLayout {
+    [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
+    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+    if (self.photos.count > 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath
+                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     }
 }
 

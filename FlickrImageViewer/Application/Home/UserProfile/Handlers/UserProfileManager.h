@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (class, nonnull, readonly, strong) UserProfileManager *sharedUserProfileManager;
 
-- (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
-                 completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
-                                             NSError * _Nullable error))completion;
 
 - (void)getUserProfileWithCompletionHandler:(void (^)(NSURL * _Nullable avatarURL,
                                                       NSString * _Nullable name,

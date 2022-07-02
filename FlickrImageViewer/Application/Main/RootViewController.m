@@ -30,6 +30,10 @@
     return self;
 }
 
+// Tach viec quan ly trang thai login ra
+// 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -63,13 +67,13 @@ BOOL isUserLoggedIn(void) {
 
 - (void)switchToHomeScreen {
     HomeViewController *homeVC = [[HomeViewController alloc] init];
-    UINavigationController *homeNavi = [[UINavigationController alloc] initWithRootViewController:homeVC];
+//    UINavigationController *homeNavi = [[UINavigationController alloc] initWithRootViewController:homeVC];
     [self animateFadeTransitionToNewViewController:homeVC completion:nil];
 }
 
 - (void)switchToLogOut {
     LoginViewController *loginVC = [[LoginViewController alloc] init];
-    UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
+//    UINavigationController *loginNavi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     [self animateDismissTransitionToNewViewController:loginVC completion:nil];
 }
 

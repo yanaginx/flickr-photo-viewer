@@ -44,7 +44,7 @@ static CGFloat frameWidth = 200;
     [self.beginButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.beginButton addTarget:self action:@selector(onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
     
-    [self addAuthorizationObserver];
+//    [self addAuthorizationObserver];
     [self addAccessTokenRequestObserver];
 }
 
@@ -58,14 +58,14 @@ static CGFloat frameWidth = 200;
 
 #pragma mark - Private methods
 
-- (void)addAuthorizationObserver {
-    [NSNotificationCenter.defaultCenter addObserverForName:@"AuthorizationURLReady"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        [self showLoginWebView];
-    }];
-}
+//- (void)addAuthorizationObserver {
+//    [NSNotificationCenter.defaultCenter addObserverForName:@"AuthorizationURLReady"
+//                                                    object:nil
+//                                                     queue:NSOperationQueue.mainQueue
+//                                                usingBlock:^(NSNotification *notification) {
+//        [self showLoginWebView];
+//    }];
+//}
 
 - (void)addAccessTokenRequestObserver {
     [NSNotificationCenter.defaultCenter addObserver:self
@@ -75,7 +75,7 @@ static CGFloat frameWidth = 200;
 }
 
 - (void)removeObservers {
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationURLReady" object:nil];
+//    [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationURLReady" object:nil];
     [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationSuccessful" object:nil];
 }
 
@@ -83,8 +83,9 @@ static CGFloat frameWidth = 200;
     [self.beginButton showLoading];
     if (LoginHandler.sharedLoginHandler.authorizationURL) {
         NSLog(@"[DEBUG] %s : authorizationURL received: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
-        [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
-                                                          object:self];
+//        [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
+//                                                          object:self];
+        [self showLoginWebView];
     } else {
         [self getRequestToken];
     }
@@ -98,8 +99,9 @@ static CGFloat frameWidth = 200;
         if (![token isEqualToString:@""] &&
             ![secret isEqualToString:@""]) {
             NSLog(@"[DEBUG] %s : authorizationURL built: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
-            [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
-                                                              object:self];
+//            [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
+//                                                              object:self];
+            [self showLoginWebView];
         }
         // error handling
         if (error) {
@@ -161,7 +163,9 @@ static CGFloat frameWidth = 200;
     }];;
     self.authSession.presentationContextProvider = self;
     self.authSession.prefersEphemeralWebBrowserSession = YES;
-    [self.authSession start];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.authSession start];
+    });
 }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding

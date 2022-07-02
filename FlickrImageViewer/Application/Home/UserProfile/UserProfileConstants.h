@@ -8,7 +8,8 @@
 #ifndef UserProfileConstants_h
 #define UserProfileConstants_h
 
-#define kStatusBarHeight UIApplication.sharedApplication.statusBarFrame.size.height
+//#define kStatusBarHeight UIApplication.sharedApplication.statusBarFrame.size.height
+#define kStatusBarHeight 0
 #define kTabBarHeight self.tabBarController.tabBar.frame.size.height
 #define kSpacing 20
 #define kHeaderHeight 200

@@ -23,7 +23,7 @@
 #define kSmallSizeSuffix @"w"
 #define kCellHeight 200
 #define kNetworkError 150900
-#define kSomeError 150901
+#define kServerError 150901
 #define kNoDataError 150902
 
 #endif

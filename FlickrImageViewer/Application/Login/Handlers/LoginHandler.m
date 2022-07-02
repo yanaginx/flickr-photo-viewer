@@ -125,6 +125,7 @@ static NSString *accessTokenPath = @"/access_token";
                                                  code:LoginHandlerErrorNetworkError
                                              userInfo:nil];
             completion(nil, nil, error);
+            return;
         }
         NSLog(@"[DEBUG] %s: url: %@", __func__, !callbackURL.baseURL ? @"No base URL" : callbackURL.baseURL.absoluteString);
         NSLog(@"[DEBUG] %s: url query: %@", __func__, !callbackURL.query ? @"No query string" : callbackURL.query);
@@ -133,6 +134,7 @@ static NSString *accessTokenPath = @"/access_token";
                                                  code:LoginHandlerErrorNotValidData
                                              userInfo:nil];
             completion(nil, nil, error);
+            return;
         }
         [self parseTokenAndVerifierFromQuery:callbackURL.query];
         NSString *token = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
@@ -146,6 +148,7 @@ static NSString *accessTokenPath = @"/access_token";
 - (void)getRequestTokenWithCompletionHandler:(void (^)(NSString * _Nullable oauthToken,
                                                        NSString * _Nullable oauthTokenSecret,
                                                        NSError * _Nullable error))completion {
+    
     NSURLRequest *request = [self requestTokenURLRequest];
     [[[NSURLSession sharedSession]
       dataTaskWithRequest:request
@@ -288,6 +291,7 @@ BOOL isValidAuthorizationResponse(NSString *responseString) {
     [NSUserDefaults.standardUserDefaults setObject:secret forKey:@"user_oauth_token_secret"];
 }
 
+//- (void)_removeUserAccessTokenAndSecret {
 - (void)removeUserAccessTokenAndSecret {
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_verifier"];
     [NSUserDefaults.standardUserDefaults removeObjectForKey:@"request_oauth_token_secret"];

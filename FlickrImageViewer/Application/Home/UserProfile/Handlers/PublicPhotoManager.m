@@ -71,9 +71,10 @@ static NSString *perPage = @"20";
             completion(nil, localError);
             return;
         }
-        if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"]) {
+        if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"] ||
+            [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"] == nil) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:kSomeError
+                                                 code:kServerError
                                              userInfo:nil];
             completion(nil, error);
             return;

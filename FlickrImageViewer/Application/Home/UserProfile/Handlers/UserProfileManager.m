@@ -72,9 +72,6 @@ static NSString *perPage = @"20";
             return;
         }
         
-//        NSLog(@"[DEBUG] %s : userNSID: %@", __func__, LoginHandler.sharedLoginHandler.userNSID);
-//        NSLog(@"[DEBUG] %s : data fetched: %@", __func__, [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
-        
         NSError *localError = nil;
         NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
         if (localError) {
@@ -83,14 +80,13 @@ static NSString *perPage = @"20";
         }
         if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"]) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:kSomeError
+                                                 code:kServerError
                                              userInfo:nil];
             completion(nil, nil, nil, error);
             return;
         }
         
         NSDictionary *personProfile = [parsedObject objectForKey:@"person"];
-//        NSLog(@"[DEBUG] %s : profile fetched: %@", __func__, personProfile);
         
         NSNumber *iconFarmValue = (NSNumber *)[personProfile objectForKey:@"iconfarm"];
         NSInteger iconFarm = 0;
@@ -99,16 +95,13 @@ static NSString *perPage = @"20";
         NSURL *avatarURL = [ImageURLBuilder buddyIconURLFromIconFarm:iconFarm
                                                           iconServer:iconServer
                                                                 nsid:kUserNSID];
-//        NSLog(@"[DEBUG] %s : avatar URL: %@", __func__, avatarURL.absoluteString);
         
         NSString *name = (NSString *)[[personProfile objectForKey:@"realname"]
                                       objectForKey:@"_content"];
-//        NSLog(@"[DEBUG] %s : name: %@", __func__, name);
         
         NSString *photosCount = (NSString *)[[[personProfile objectForKey:@"photos"]
                                               objectForKey:@"count"]
                                               objectForKey:@"_content"];
-//        NSLog(@"[DEBUG] %s : count: %@", __func__, photosCount);
         
         completion(avatarURL, name, photosCount, nil);
     }] resume];
