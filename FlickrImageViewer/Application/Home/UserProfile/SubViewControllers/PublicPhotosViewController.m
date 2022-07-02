@@ -254,12 +254,40 @@ static NSInteger fixedLayoutIdx = 1;
 
 #pragma mark - Private methods
 - (void)viewNetworkError {
+    // Check if there is any image appear:
+    if (self.photos.count > 0) {
+        // Display toast only
+        [self displayNetworkErrorToast];
+    } else {
+        [self displayNetworkErrorView];
+    }
+}
+
+- (void)displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         networkErrorVC.view.frame = self.view.bounds;
         networkErrorVC.delegate = self;
         [self.navigationController pushViewController:networkErrorVC animated:NO];
+    });
+}
+
+- (void)displayNetworkErrorToast {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *message = @"Network connection unavailable";
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        int duration = 1; // duration in seconds
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        });
     });
 }
 

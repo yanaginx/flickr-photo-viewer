@@ -59,7 +59,6 @@ static BOOL isLastPage = NO;
     self.collectionView.prefetchDataSource = self;
     self.collectionView.delegate = self;
     
-    [self addObservers];
     [self getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -72,9 +71,6 @@ static BOOL isLastPage = NO;
     self.navigationController.navigationBar.hidden = YES;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [self removeObservers];
-}
 
 
 #pragma mark - Private methods
@@ -89,21 +85,17 @@ static BOOL isLastPage = NO;
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"NetworkError"
-                                                                      object:self];
+                    [self viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"NoDataError"
-                                                                      object:self];
+                    [self viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"ServerError"
-                                                                      object:self];
-
+                    [self viewServerError];
                     break;
             }
             return;
@@ -242,43 +234,65 @@ static BOOL isLastPage = NO;
 }
 
 #pragma mark - Private methods
-- (void)addObservers {
-    [NSNotificationCenter.defaultCenter addObserverForName:@"NetworkError"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
-        NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
-        networkErrorVC.delegate = self;
-        [self.navigationController pushViewController:networkErrorVC animated:NO];
-    }];
-    
-    [NSNotificationCenter.defaultCenter addObserverForName:@"ServerError"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
-        ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
-        serverErrorVC.delegate = self;
-        [self.navigationController pushViewController:serverErrorVC animated:NO];
-    }];
-    
-    [NSNotificationCenter.defaultCenter addObserverForName:@"NoDataError"
-                                                    object:nil
-                                                     queue:NSOperationQueue.mainQueue
-                                                usingBlock:^(NSNotification *notification) {
-        
-        NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
-        noDataErrorVC.delegate = self;
-        [self.navigationController pushViewController:noDataErrorVC animated:NO];
-    }];
+- (void)viewNetworkError {
+    // Check if there is any image appear:
+    if (self.photos.count > 0) {
+        // Display toast only
+        [self displayNetworkErrorToast];
+    } else {
+        [self displayNetworkErrorView];
+    }
 }
 
-- (void)removeObservers {
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NetworkError" object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"ServerError" object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"NoDataError" object:nil];
+- (void)displayNetworkErrorView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
+        networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        networkErrorVC.view.frame = self.view.bounds;
+        networkErrorVC.delegate = self;
+        [self.navigationController pushViewController:networkErrorVC animated:NO];
+    });
 }
+
+- (void)displayNetworkErrorToast {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *message = @"Network connection unavailable";
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        int duration = 1; // duration in seconds
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        });
+    });
+}
+
+- (void)viewNoDataError {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
+        noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        noDataErrorVC.view.frame = self.navigationController.view.bounds;
+        noDataErrorVC.delegate = self;
+        [self.navigationController pushViewController:noDataErrorVC animated:NO];
+    });
+}
+
+- (void)viewServerError {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
+        serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        serverErrorVC.view.frame = self.view.bounds;
+        serverErrorVC.delegate = self;
+        [self.navigationController pushViewController:serverErrorVC animated:NO];
+    
+    });
+}
+
 
 #pragma mark - Custom Accessors
 - (DynamicCollectionViewLayout *)dynamicLayout {
