@@ -26,7 +26,7 @@
 #define kAvatarTop (self.view.frame.size.height / 3 - kAvatarSize / 3)
 #define kAvatarBottom -(self.view.frame.size.height * 2 / 3 - kAvatarSize * 2 / 3)
 
-#define kNameLabelBottom -(self.view.frame.size.height / 6)
+#define kNameLabelBottom -(self.view.frame.size.height / 4)
 #define kNumberOfPhotoBottom -(self.view.frame.size.height / 6)
 
 #define kNameLabelWidth self.view.frame.size.width

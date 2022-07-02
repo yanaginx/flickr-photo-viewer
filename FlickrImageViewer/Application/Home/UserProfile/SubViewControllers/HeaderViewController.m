@@ -135,7 +135,7 @@
     [[self.numberOfPhotosLabel.topAnchor constraintEqualToAnchor:self.nameLabel.bottomAnchor
                                                 constant:0] setActive:YES];
     [[self.numberOfPhotosLabel.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor
-                                                   constant:0] setActive:YES];
+                                                   constant:kNumberOfPhotoBottom] setActive:YES];
 }
 #pragma mark - Custom accessors
 
