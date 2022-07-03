@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString * _Nullable)userAccessToken;
 + (NSString * _Nullable)userSecretToken;
 + (BOOL)isUserLoggedIn;
++ (BOOL)isUserInfoSetSuccessful;
 
 + (void)setAccountInfoWithUserNSID:(NSString *)nsid
                    userAccessToken:(NSString *)accessToken

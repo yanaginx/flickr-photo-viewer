@@ -13,7 +13,7 @@
 
 #import "../../../Common/Extensions/UIView+Additions.h"
 #import "../../Main/AppDelegate.h"
-#import "../../Login/Handlers/LoginHandler.h"
+#import "../../../Common/Utilities/AccountManager/AccountManager.h"
 
 @interface UserProfileViewController ()
 
@@ -129,9 +129,9 @@
 
 
 - (void)logout {
-    [LoginHandler.sharedLoginHandler removeUserAccessTokenAndSecret];
     /// Navigate to Login Screen
-    [AppDelegate.shared.rootViewController switchToLogOut];
+    [AccountManager removeAccountInfo];
+    [AppDelegate.shared updateView];
 }
 
 #pragma mark - Custom accessors

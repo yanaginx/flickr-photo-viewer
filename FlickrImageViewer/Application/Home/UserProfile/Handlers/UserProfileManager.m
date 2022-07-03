@@ -11,16 +11,17 @@
 #import "../../../../Models/Photo.h"
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
+#import "../../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../../Common/Constants/Constants.h"
 
 @implementation UserProfileManager
 
 static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *endpoint = kEndpoint;
-static NSString *userProfileMethod = @"flickr.people.getInfo";
-static NSString *isNoJSONCallback = @"1";
-static NSString *format = @"json";
-static NSString *perPage = @"20";
+static NSString *endpoint = kAPIEndpoint;
+static NSString *userProfileMethod = kUserProfileMethod;
+static NSString *isNoJSONCallback = kIsNoJSONCallback;
+static NSString *format = kResponseFormat;
+static NSString *perPage = kResultsPerPage;
 
 + (instancetype)sharedUserProfileManager {
     static dispatch_once_t onceToken;
@@ -94,7 +95,7 @@ static NSString *perPage = @"20";
         NSString *iconServer = (NSString *)[personProfile objectForKey:@"iconserver"];
         NSURL *avatarURL = [ImageURLBuilder buddyIconURLFromIconFarm:iconFarm
                                                           iconServer:iconServer
-                                                                nsid:kUserNSID];
+                                                                nsid:AccountManager.userNSID];
         
         NSString *name = (NSString *)[[personProfile objectForKey:@"realname"]
                                       objectForKey:@"_content"];
@@ -112,7 +113,7 @@ static NSString *perPage = @"20";
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:oauthConsumerKey forKey:@"api_key"];
     [params setObject:userProfileMethod forKey:@"method"];
-    [params setObject:kUserNSID forKey:@"user_id"];
+    [params setObject:AccountManager.userNSID forKey:@"user_id"];
     [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:format forKey:@"format"];
     [params setObject:perPage forKey:@"per_page"];

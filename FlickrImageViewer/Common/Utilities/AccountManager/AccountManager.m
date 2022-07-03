@@ -46,6 +46,10 @@
     return nil;
 }
 
++ (BOOL)isUserInfoSetSuccessful {
+    return self.isUserLoggedIn;
+}
+
 + (BOOL)isUserLoggedIn {
     return [NSUserDefaults.standardUserDefaults boolForKey:@"isLoggedIn"];
 }
@@ -64,13 +68,16 @@
     User *user = [[User alloc] initWithNSID:nsid
                                 accessToken:accessToken
                                 secretToken:secretToken];
-    [NSUserDefaults.standardUserDefaults saveUserObject:user
-                                                    key:kCurrentUserKey];
-    [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"isLoggedIn"];
+    NSError * error = [NSUserDefaults.standardUserDefaults saveUserObject:user
+                                                                      key:kCurrentUserKey];
+    if (error == nil) {
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"isLoggedIn"];
+    }
 }
 
 + (void)removeAccountInfo {
     [NSUserDefaults.standardUserDefaults removeObjectForKey:kCurrentUserKey];
+    [NSUserDefaults.standardUserDefaults removeObjectForKey:@"isLoggedIn"];
 }
 
 

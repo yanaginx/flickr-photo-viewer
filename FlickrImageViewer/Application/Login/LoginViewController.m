@@ -16,12 +16,14 @@
 #import "../../Common/ViewComponents/Buttons/LoadingButton.h"
 
 
-@interface LoginViewController () <ASWebAuthenticationPresentationContextProviding>
+@interface LoginViewController () <LoginHandlerDelegate,
+                                   ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *captionLabel;
 @property (nonatomic, strong) LoadingButton *beginButton;
 @property (nonatomic, strong) ASWebAuthenticationSession *authSession;
+@property (nonatomic, strong) LoginHandler *loginHandler;
 
 @end
 
@@ -44,8 +46,8 @@ static CGFloat frameWidth = 200;
     [self.beginButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.beginButton addTarget:self action:@selector(onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
     
-//    [self addAuthorizationObserver];
-    [self addAccessTokenRequestObserver];
+    self.loginHandler.delegate = self;
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -58,109 +60,50 @@ static CGFloat frameWidth = 200;
 
 #pragma mark - Private methods
 
-//- (void)addAuthorizationObserver {
-//    [NSNotificationCenter.defaultCenter addObserverForName:@"AuthorizationURLReady"
-//                                                    object:nil
-//                                                     queue:NSOperationQueue.mainQueue
-//                                                usingBlock:^(NSNotification *notification) {
-//        [self showLoginWebView];
-//    }];
-//}
-
-- (void)addAccessTokenRequestObserver {
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(getAccessToken)
-                                               name:@"AuthorizationSuccessful"
-                                             object:nil];
-}
-
-- (void)removeObservers {
-//    [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationURLReady" object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:@"AuthorizationSuccessful" object:nil];
-}
-
 - (void)onClickGetStarted {
     [self.beginButton showLoading];
-    if (LoginHandler.sharedLoginHandler.authorizationURL) {
-        NSLog(@"[DEBUG] %s : authorizationURL received: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
-//        [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
-//                                                          object:self];
-        [self showLoginWebView];
-    } else {
-        [self getRequestToken];
-    }
-
+    [self.loginHandler startAuthenticationProcess];
 }
 
-- (void)getRequestToken {
-    [LoginHandler.sharedLoginHandler getRequestTokenWithCompletionHandler:^(NSString * _Nullable token,
-                                                                            NSString * _Nullable secret,
-                                                                            NSError * _Nullable error) {
-        if (![token isEqualToString:@""] &&
-            ![secret isEqualToString:@""]) {
-            NSLog(@"[DEBUG] %s : authorizationURL built: %@", __func__, LoginHandler.sharedLoginHandler.authorizationURL);
-//            [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationURLReady"
-//                                                              object:self];
-            [self showLoginWebView];
-        }
-        // error handling
-        if (error) {
-            // disable the loading on button
-            [self.beginButton hideLoading];
-            NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
-        }
-    }];
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session {
+    return self.view.window;
 }
 
-- (void)getAccessToken {
-    [LoginHandler.sharedLoginHandler getAccessTokenWithCompletionHandler:^(NSString * _Nullable token,
-                                                                           NSString * _Nullable tokenSecret,
-                                                                           NSError * _Nullable error) {
-        if (![token isEqualToString:@""] &&
-            ![tokenSecret isEqualToString:@""]) {
-            NSLog(@"[DEBUG] %s : user token: %@", __func__, LoginHandler.sharedLoginHandler.userAccessToken);
-            NSLog(@"[DEBUG] %s : user tokenSecret: %@", __func__, LoginHandler.sharedLoginHandler.userTokenSecret);
-            dispatch_async(dispatch_get_main_queue(), ^{
+#pragma mark - LoginHandlerDelegate
+- (void)onFinishGettingRequestTokenWithErrorCode:(LoginHandlerErrorCode)errorCode {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (errorCode) {
+            case LoginHandlerErrorNotValidData:
+                // Toast not valid data
+                NSLog(@"[ERROR] %s: NOT VALID DATA", __func__);
                 [self.beginButton hideLoading];
-                /// Navigate to Home screen
-                [AppDelegate.shared.rootViewController switchToHomeScreen];
-                /*
-                // this is only for checking token's validity, the screen flow will be edited later
-                AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
-                [appDelegate switchToHomeView];
-                */
-            });
+                break;
+            case LoginHandlerErrorServerError:
+                // Toast server error
+                NSLog(@"[ERROR] %s: SERVER ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorNetworkError:
+                // Toast network error
+                NSLog(@"[ERROR] %s: NETWORK ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorInvalidURL:
+                // Toast invalid URL error
+                NSLog(@"[ERROR] %s: INVALID URL ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            default:
+                NSLog(@"[INFO] %s: GOT THE TOKEN", __func__);
+                break;
         }
-        
-        if (error) {
-            [self.beginButton hideLoading];
-            NSLog(@"[DEBUG] %s : error received: %@", __func__, error);
-            return;
-        }
-        
-        [self removeObservers];
-    }];
+    });
 }
 
-
-
-#pragma mark - Notification selectors
-
-- (void)showLoginWebView {
-    self.authSession = [LoginHandler.sharedLoginHandler authSessionWithCompletionHandler:^(NSString * _Nullable token,
-                                                                                           NSString * _Nullable verifier,
-                                                                                           NSError * _Nullable error) {
-        if (error) {
-            // error handling
-            NSLog(@"[DEBUG] %s: error: %@", __func__, error);
-            [self.beginButton hideLoading];
-        }
-        NSLog(@"[DEBUG] %s: verifier: %@", __func__, verifier);
-        NSLog(@"[DEBUG] %s: token: %@", __func__, token);
-        if (!token || !verifier) return;
-        [NSNotificationCenter.defaultCenter postNotificationName:@"AuthorizationSuccessful"
-                                                          object:nil];
-    }];;
+- (void)requestAuthorizationUsingAuthSession:(ASWebAuthenticationSession *)authSession {
+    self.authSession = authSession;
     self.authSession.presentationContextProvider = self;
     self.authSession.prefersEphemeralWebBrowserSession = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -168,13 +111,91 @@ static CGFloat frameWidth = 200;
     });
 }
 
-#pragma mark - ASWebAuthenticationPresentationContextProviding
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session {
-    return self.view.window;
+- (void)onFinishGettingAuthorizationWithErrorCode:(LoginHandlerErrorCode)errorCode {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (errorCode) {
+            case LoginHandlerErrorNotValidData:
+                // Toast not valid data
+                NSLog(@"[ERROR] %s: NOT VALID DATA", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorServerError:
+                // Toast server error
+                NSLog(@"[ERROR] %s: SERVER ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorNetworkError:
+                // Toast network error
+                NSLog(@"[ERROR] %s: NETWORK ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorInvalidURL:
+                // Toast invalid URL error
+                NSLog(@"[ERROR] %s: INVALID URL ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            default:
+                NSLog(@"[INFO] %s: GOT THE TOKEN", __func__);
+                break;
+        }
+    });
+}
+
+- (void)onFinishGettingAccessTokenWithErrorCode:(LoginHandlerErrorCode)errorCode {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (errorCode) {
+            case LoginHandlerErrorNotValidData:
+                // Toast not valid data
+                NSLog(@"[ERROR] %s: NOT VALID DATA", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorServerError:
+                // Toast server error
+                NSLog(@"[ERROR] %s: SERVER ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorNetworkError:
+                // Toast network error
+                NSLog(@"[ERROR] %s: NETWORK ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            case LoginHandlerErrorInvalidURL:
+                // Toast invalid URL error
+                NSLog(@"[ERROR] %s: INVALID URL ERROR", __func__);
+                [self.beginButton hideLoading];
+                break;
+            default:
+                NSLog(@"[INFO] %s: GOT THE TOKEN", __func__);
+                break;
+        }
+    });
+}
+
+- (void)onFinishSavingUserInfo:(LoginHandlerErrorCode)errorCode {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (errorCode) {
+            case LoginHandlerErrorNotValidData:
+                // Toast not valid data
+                NSLog(@"[ERROR] %s: NOT VALID DATA", __func__);
+                [self.beginButton hideLoading];
+                break;
+            default:
+                // Switch to home view
+                NSLog(@"[INFO] %s: SWITCH TO HOMEVIEW", __func__);
+                [AppDelegate.shared updateView];
+                break;
+        }
+    });
 }
 
 
 #pragma mark - Custom Accessors
+- (LoginHandler *)loginHandler {
+    if (_loginHandler) return _loginHandler;
+    
+    _loginHandler = [[LoginHandler alloc] init];
+    return _loginHandler;
+}
 
 - (UILabel *)titleLabel {
     if (_titleLabel) return _titleLabel;

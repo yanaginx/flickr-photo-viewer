@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSUserDefaults (Additions)
 
-- (void)saveUserObject:(id<NSCoding>)object
-                   key:(NSString *)key;
+- (NSError * _Nullable)saveUserObject:(id<NSCoding>)object
+                                  key:(NSString *)key;
 
 - (id<NSCoding>)loadUserObjectWithKey:(NSString *)key;
 

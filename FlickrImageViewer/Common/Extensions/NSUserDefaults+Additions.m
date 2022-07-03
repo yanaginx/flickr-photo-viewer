@@ -10,8 +10,8 @@
 
 @implementation NSUserDefaults (Additions)
 
-- (void)saveUserObject:(id<NSCoding>)object
-                   key:(NSString *)key {
+- (NSError *)saveUserObject:(id<NSCoding>)object
+                        key:(NSString *)key {
     NSError *localError = nil;
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:object
                                                   requiringSecureCoding:YES
@@ -20,10 +20,11 @@
         NSLog(@"[DEBUG] %s : error occured: %@",
               __func__,
               localError);
-        return;
+        return localError;
     }
     [self setObject:encodedObject forKey:key];
     [self synchronize];
+    return nil;
 }
 
 - (id<NSCoding>)loadUserObjectWithKey:(NSString *)key {

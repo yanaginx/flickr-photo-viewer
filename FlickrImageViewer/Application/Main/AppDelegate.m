@@ -6,6 +6,10 @@
 //
 
 #import "AppDelegate.h"
+#import "../../Common/Utilities/AccountManager/AccountManager.h"
+
+#import "../Login/LoginViewController.h"
+#import "../Home/HomeViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,16 +21,30 @@
     return (AppDelegate *)UIApplication.sharedApplication.delegate;
 }
 
-- (RootViewController *)rootViewController {
-    return (RootViewController *)self.window.rootViewController;
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] init];
-    RootViewController *rootVC = [[RootViewController alloc] init];
-    self.window.rootViewController = rootVC;
+    [self updateView];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)updateView {
+    if (AccountManager.isUserLoggedIn) {
+        [self switchToHomeView];
+    } else {
+        [self switchToLoginView];
+    }
+}
+
+#pragma mark - Operations
+- (void)switchToLoginView {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    self.window.rootViewController = loginViewController;
+}
+
+- (void)switchToHomeView {
+    HomeViewController *homeViewController = [[HomeViewController alloc] init];
+    self.window.rootViewController = homeViewController;
 }
 
 @end

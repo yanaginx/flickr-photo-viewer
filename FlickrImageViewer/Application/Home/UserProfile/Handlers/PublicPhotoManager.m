@@ -11,16 +11,17 @@
 #import "../../../Login/Handlers/LoginHandler.h"
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
+#import "../../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../../Common/Constants/Constants.h"
 
 @implementation PublicPhotoManager
 
 static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *endpoint = kEndpoint;
-static NSString *publicPhotosMethod = @"flickr.people.getPublicPhotos";
-static NSString *isNoJSONCallback = @"1";
-static NSString *format = @"json";
-static NSString *perPage = @"20";
+static NSString *endpoint = kAPIEndpoint;
+static NSString *publicPhotosMethod = kPublicPhotosMethod;
+static NSString *isNoJSONCallback = kIsNoJSONCallback;
+static NSString *format = kResponseFormat;
+static NSString *perPage = kResultsPerPage;
 
 + (instancetype)sharedPublicPhotoManager {
     static dispatch_once_t onceToken;
@@ -127,7 +128,7 @@ static NSString *perPage = @"20";
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:oauthConsumerKey forKey:@"api_key"];
     [params setObject:publicPhotosMethod forKey:@"method"];
-    [params setObject:kUserNSID forKey:@"user_id"];
+    [params setObject:AccountManager.userNSID forKey:@"user_id"];
     [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:format forKey:@"format"];
     [params setObject:perPage forKey:@"per_page"];

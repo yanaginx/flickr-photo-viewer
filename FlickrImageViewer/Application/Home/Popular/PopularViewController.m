@@ -47,7 +47,7 @@ static BOOL isLastPage = NO;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
     [self.view addSubview:self.collectionView];
-
+    if (currentPage != 1) currentPage = 1;
     [self setupCollectionView];
     [self getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];

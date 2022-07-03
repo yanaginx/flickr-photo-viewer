@@ -44,8 +44,6 @@
 		B2BF06DD28703AFF002F4B1B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06DC28703AFF002F4B1B /* User.m */; };
 		B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */; };
 		B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */; };
-		B2CED17C2862F57A00606615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED17B2862F57A00606615 /* RootViewController.m */; };
-		B2CED1812863069600606615 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED1802863069600606615 /* SplashViewController.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -148,10 +146,6 @@
 		B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoDataSource.m; sourceTree = "<group>"; };
 		B2BF06E32870980E002F4B1B /* PublicPhotoDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoDataSource.h; sourceTree = "<group>"; };
 		B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoDataSource.m; sourceTree = "<group>"; };
-		B2CED17A2862F57A00606615 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		B2CED17B2862F57A00606615 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		B2CED17F2863069600606615 /* SplashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
-		B2CED1802863069600606615 /* SplashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -507,7 +501,6 @@
 			children = (
 				B23A30CB28604BB400E976C8 /* Error */,
 				B23A30CD28604F0700E976C8 /* Home */,
-				B2CED17E2863036F00606615 /* Splash */,
 				B241088928602120005B08BC /* Login */,
 				B29CBB872859D36B0058B382 /* Main */,
 			);
@@ -520,8 +513,6 @@
 				B29CBB4E2859D2B20058B382 /* AppDelegate.h */,
 				B29CBB4F2859D2B20058B382 /* AppDelegate.m */,
 				B29CBB602859D2B60058B382 /* main.m */,
-				B2CED17A2862F57A00606615 /* RootViewController.h */,
-				B2CED17B2862F57A00606615 /* RootViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -576,15 +567,6 @@
 				B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */,
 			);
 			path = DataSource;
-			sourceTree = "<group>";
-		};
-		B2CED17E2863036F00606615 /* Splash */ = {
-			isa = PBXGroup;
-			children = (
-				B2CED17F2863069600606615 /* SplashViewController.h */,
-				B2CED1802863069600606615 /* SplashViewController.m */,
-			);
-			path = Splash;
 			sourceTree = "<group>";
 		};
 		B2CED18228635C5400606615 /* ViewComponents */ = {
@@ -808,12 +790,10 @@
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */,
-				B2CED1812863069600606615 /* SplashViewController.m in Sources */,
 				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,
 				B2BF06DD28703AFF002F4B1B /* User.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
 				B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */,
-				B2CED17C2862F57A00606615 /* RootViewController.m in Sources */,
 				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
 				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,

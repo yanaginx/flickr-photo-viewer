@@ -14,12 +14,12 @@
 @implementation PopularPhotoManager
 
 static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *endpoint = kEndpoint;
+static NSString *endpoint = kAPIEndpoint;
 static NSString *userID = kPopularUserID;
-static NSString *method = @"flickr.photos.getPopular";
-static NSString *isNoJSONCallback = @"1";
-static NSString *format = @"json";
-static NSString *perPage = @"20";
+static NSString *method = kPopularPhotosMethod;
+static NSString *isNoJSONCallback = kIsNoJSONCallback;
+static NSString *format = kResponseFormat;
+static NSString *perPage = kResultsPerPage;
 
 + (instancetype)sharedPopularPhotoManager {
     static dispatch_once_t onceToken;
