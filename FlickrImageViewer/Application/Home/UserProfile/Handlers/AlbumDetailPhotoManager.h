@@ -6,11 +6,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@class Photo;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AlbumDetailPhotoManager : NSObject
 
+- (void)getAlbumDetailPhotosForAlbumID:(NSString *)albumID
+                                  page:(NSInteger)pageNum
+                     completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
+                                                 NSError * _Nullable error))completion;
 @end
 
 NS_ASSUME_NONNULL_END

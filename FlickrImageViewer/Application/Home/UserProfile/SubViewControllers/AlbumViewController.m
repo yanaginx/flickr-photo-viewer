@@ -37,6 +37,7 @@
 
 static NSInteger currentPage = 1;
 static BOOL isLastPage = NO;
+static NSInteger numOfPhotosBeforeNewFetch = 2;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -164,6 +165,17 @@ static BOOL isLastPage = NO;
     });
 }
 
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
+        currentPage += 1;
+        NSLog(@"[DEBUG] %s : API called!", __func__);
+        [self getAlbumInfosForPage:currentPage];
+    }
+}
+
 #pragma mark - NetworkErrorViewDelegate
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
@@ -188,6 +200,8 @@ static BOOL isLastPage = NO;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     AlbumDetailViewController *albumDetailVC = [[AlbumDetailViewController alloc] init];
+    AlbumInfo *currentAlbumInfo = self.dataSource.albumInfos[indexPath.row];
+    albumDetailVC.albumInfo = currentAlbumInfo;
     [self.profileNavigationController pushViewController:albumDetailVC animated:YES];
 }
 

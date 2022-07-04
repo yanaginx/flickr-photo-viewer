@@ -22,10 +22,20 @@
                                          dequeueReusableCellWithReuseIdentifier:[AlbumInfoCollectionViewCell reuseIdentifier]
                                          forIndexPath:indexPath];
     AlbumInfo *albumInfo = self.albumInfos[indexPath.row];
-    [cell configureAlbumInfoWithImageURL:albumInfo.albumImageURL
-                                    name:albumInfo.albumName
-                             dateCreated:albumInfo.dateCreated
-                          numberOfPhotos:albumInfo.numberOfPhotos];
+    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(globalQueue, ^{
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:albumInfo.albumImageURL];
+        if (imageData) {
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            dispatch_queue_main_t mainQueue = dispatch_get_main_queue();
+            dispatch_async(mainQueue, ^{
+                [cell configureAlbumInfoCellWithImage:image];
+                [cell configureAlbumInfoCellWithName:albumInfo.albumName];
+                [cell configureAlbumInfoCellWithDateCreated:albumInfo.dateCreated];
+                [cell configureAlbumInfoCellWithNumberOfPhotos:albumInfo.numberOfPhotos];
+            });
+        }
+    });
     return cell;
 }
 

@@ -30,6 +30,9 @@
 #define kServerError 150901
 #define kNoDataError 150902
 
+#define kIsFixedHeight NO
+#define kMaxRowHeight 200
+#define kValidRatio 3.0
 
 #define kAPIEndpoint @"api.flickr.com/services/rest/"
 #define kPublicPhotosMethod @"flickr.people.getPublicPhotos"

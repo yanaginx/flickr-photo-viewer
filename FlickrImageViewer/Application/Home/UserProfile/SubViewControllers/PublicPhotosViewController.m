@@ -277,21 +277,21 @@ static NSInteger fixedLayoutIdx = 1;
 - (void)switchToDynamicLayout {
     [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
     [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
-    if (self.dataSource.photos.count > 0) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-        [self.collectionView scrollToItemAtIndexPath:indexPath
-                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-    }
+//    if (self.dataSource.photos.count > 0) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+//        [self.collectionView scrollToItemAtIndexPath:indexPath
+//                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+//    }
 }
 
 - (void)switchToFixedLayout {
     [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
     [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
-    if (self.dataSource.photos.count > 0) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-        [self.collectionView scrollToItemAtIndexPath:indexPath
-                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-    }
+//    if (self.dataSource.photos.count > 0) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+//        [self.collectionView scrollToItemAtIndexPath:indexPath
+//                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+//    }
 }
 
 #pragma mark - Custom Accessors
@@ -306,8 +306,8 @@ static NSInteger fixedLayoutIdx = 1;
 
     _dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
     _dynamicLayout.dataSource = self;
-    _dynamicLayout.fixedHeight = NO;
-    _dynamicLayout.rowMaximumHeight = kCellHeight;
+    _dynamicLayout.fixedHeight = kIsFixedHeight;
+    _dynamicLayout.rowMaximumHeight = kMaxRowHeight;
     return _dynamicLayout;
 }
 
@@ -315,7 +315,7 @@ static NSInteger fixedLayoutIdx = 1;
     if (_fixedFlowLayout) return _fixedFlowLayout;
     
     _fixedFlowLayout = [[FixedFlowLayout alloc] init];
-    _fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kCellHeight);
+    _fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kMaxRowHeight);
     return _fixedFlowLayout;
 }
 

@@ -10,6 +10,15 @@
 
 #import "../../../../Common/Extensions/NSDate+Additions.h"
 
+@interface AlbumInfoCollectionViewCell ()
+
+@property (nullable, nonatomic) UIImageView *albumImageView;
+@property (nullable, nonatomic) UILabel *albumNameLabel;
+@property (nullable, nonatomic) UILabel *dateCreatedLabel;
+@property (nullable, nonatomic) UILabel *numberOfPhotosLabel;
+
+@end
+
 @implementation AlbumInfoCollectionViewCell
 
 + (NSString *)reuseIdentifier {
@@ -32,25 +41,22 @@
 }
 
 #pragma mark - Operations
-- (void)configureAlbumInfoWithImageURL:(NSURL *)albumCoverURL
-                                  name:(NSString *)albumName
-                           dateCreated:(NSDate *)dateCreated
-                        numberOfPhotos:(NSInteger)numberOfPhotos {
-    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(globalQueue, ^{
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:albumCoverURL];
-        if (imageData) {
-            UIImage *image = [[UIImage alloc] initWithData:imageData];
-            dispatch_queue_main_t mainQueue = dispatch_get_main_queue();
-            dispatch_async(mainQueue, ^{
-                self.albumImageView.image = image;
-            });
-        }
-    });
+- (void)configureAlbumInfoCellWithImage:(UIImage *)image {
+    self.albumImageView.image = image;
+}
+
+- (void)configureAlbumInfoCellWithName:(NSString *)albumName {
     self.albumNameLabel.text = albumName;
+}
+
+- (void)configureAlbumInfoCellWithDateCreated:(NSDate *)dateCreated {
     self.dateCreatedLabel.text = [NSDate stringForDisplayFromDate:dateCreated];
+}
+
+- (void)configureAlbumInfoCellWithNumberOfPhotos:(NSInteger)numberOfPhotos {
     self.numberOfPhotosLabel.text = [NSString stringWithFormat:@"%ld photos", (long)numberOfPhotos];
 }
+
 
 #pragma mark - Custom Accessors
 

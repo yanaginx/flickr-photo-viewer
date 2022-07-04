@@ -232,8 +232,8 @@ static BOOL isLastPage = NO;
 
     _dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
     _dynamicLayout.dataSource = self;
-    _dynamicLayout.fixedHeight = NO;
-    _dynamicLayout.rowMaximumHeight = 200;
+    _dynamicLayout.fixedHeight = kIsFixedHeight;
+    _dynamicLayout.rowMaximumHeight = kMaxRowHeight;
     return _dynamicLayout;
 }
 

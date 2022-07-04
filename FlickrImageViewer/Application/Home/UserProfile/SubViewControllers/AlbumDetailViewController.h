@@ -7,11 +7,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class AlbumInfo;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AlbumDetailViewController : UIViewController
 
-@property (nonatomic, strong) NSURL *albumCoverURL;
+@property (nonatomic, strong) AlbumInfo *albumInfo;
 
 @end
 

@@ -22,8 +22,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section {
-//    return self.photos.count;
-    return 100;
+    return self.photos.count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -32,38 +31,38 @@
                                            dequeueReusableCellWithReuseIdentifier:[AlbumDetailCollectionViewCell reuseIdentifier]
                                            forIndexPath:indexPath];
     
-//    Photo *photo = self.photos[indexPath.row];
-//    NSUUID *identifier = photo.identifier;
-//    NSURL *url = photo.imageURL;
-//    cell.representedIdentifier = identifier;
-//
-//    UIImage *fetchedData = [self.asyncFetcher fetchedDataForIdentifier:identifier];
-//    // Check if the `asyncFetcher` has already fetched data for the specified identifier.
-//    if (fetchedData != nil) {
-//        // The data has already been fetched and cached; use it to configure the cell.
-//        [cell configureWithImage:fetchedData];
-//    } else {
-//        // There is no data available; clear the cell until we've fetched data.
-//        [cell configureWithImage:nil];
-//
-//        // Ask the `asyncFetcher` to fetch data for the specified identifier
-//        [self.asyncFetcher fetchAsyncForIdentifier:identifier
-//                                          imageURL:url
-//                                        completion:^(UIImage * _Nullable data) {
-//            dispatch_queue_t mainQueue = dispatch_get_main_queue();
-//            dispatch_async(mainQueue, ^{
-//                /*
-//                 The `asyncFetcher` has fetched data for the identifier. Before
-//                 updating the cell, check if it has been recycled by the
-//                 collection view to represent other data.
-//                 */
-//                if (cell.representedIdentifier != identifier) return;
-//
-//                // Configure the cell with the fetched image
-//                [cell configureWithImage:data];
-//            });
-//        }];
-//    }
+    Photo *photo = self.photos[indexPath.row];
+    NSUUID *identifier = photo.identifier;
+    NSURL *url = photo.imageURL;
+    cell.representedIdentifier = identifier;
+
+    UIImage *fetchedData = [self.asyncFetcher fetchedDataForIdentifier:identifier];
+    // Check if the `asyncFetcher` has already fetched data for the specified identifier.
+    if (fetchedData != nil) {
+        // The data has already been fetched and cached; use it to configure the cell.
+        [cell configureWithImage:fetchedData];
+    } else {
+        // There is no data available; clear the cell until we've fetched data.
+        [cell configureWithImage:nil];
+
+        // Ask the `asyncFetcher` to fetch data for the specified identifier
+        [self.asyncFetcher fetchAsyncForIdentifier:identifier
+                                          imageURL:url
+                                        completion:^(UIImage * _Nullable data) {
+            dispatch_queue_t mainQueue = dispatch_get_main_queue();
+            dispatch_async(mainQueue, ^{
+                /*
+                 The `asyncFetcher` has fetched data for the identifier. Before
+                 updating the cell, check if it has been recycled by the
+                 collection view to represent other data.
+                 */
+                if (cell.representedIdentifier != identifier) return;
+
+                // Configure the cell with the fetched image
+                [cell configureWithImage:data];
+            });
+        }];
+    }
     
     return cell;
 }
