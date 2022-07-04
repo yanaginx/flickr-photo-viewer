@@ -44,8 +44,30 @@
 #define kSettingButtonX (self.view.center.x + (self.view.frame.size.width / 2 - kSettingButtonMargin - kSettingButtonSize))
 #define kSettingButtonY (self.view.center.y - self.view.frame.size.height)
 
-#define kLayoutSegmentedControlHeight 35
-#define kLayoutSegmentedControlWidth 120
+#define kLayoutSegmentedControlHeight 40
+#define kLayoutSegmentedControlWidth (self.view.frame.size.width / 4)
 
+#define kAlbumInfoLabelHeight 40
+#define kAlbumInfoSpacing 6
+#define kAlbumInfoCellInset 6
+
+#define kAlbumInfoAlbumImageSize (self.bounds.size.height - kAlbumInfoCellInset * 2)
+#define kAlbumInfoAlbumImageX self.bounds.origin.x
+#define kAlbumInfoAlbumImageY self.bounds.origin.y
+
+#define kAlbumInfoAlbumNameWidth (self.bounds.size.width - kAlbumInfoAlbumImageSize - kAlbumInfoSpacing)
+#define kAlbumInfoAlbumNameHeight kAlbumInfoLabelHeight
+#define kAlbumInfoAlbumNameX (self.bounds.origin.x + kAlbumInfoAlbumImageSize + kAlbumInfoSpacing)
+#define kAlbumInfoAlbumNameY self.bounds.origin.y
+
+#define kAlbumInfoDateCreatedWidth kAlbumInfoAlbumNameWidth
+#define kAlbumInfoDateCreatedHeight kAlbumInfoLabelHeight
+#define kAlbumInfoDateCreatedX kAlbumInfoAlbumNameX
+#define kAlbumInfoDateCreatedY (self.bounds.origin.y + self.bounds.size.height - 2 * kAlbumInfoLabelHeight)
+
+#define kAlbumInfoNumberOfPhotosWidth kAlbumInfoAlbumNameWidth
+#define kAlbumInfoNumberOfPhotosHeight kAlbumInfoLabelHeight
+#define kAlbumInfoNumberOfPhotosX kAlbumInfoAlbumNameX
+#define kAlbumInfoNumberOfPhotosY (self.bounds.origin.y + self.bounds.size.height - kAlbumInfoLabelHeight)
 
 #endif /* UserProfileConstants_h */

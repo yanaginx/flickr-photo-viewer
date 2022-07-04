@@ -24,6 +24,7 @@
 
 #define kBigSizeSuffix @"b"
 #define kSmallSizeSuffix @"w"
+#define kMargin 6
 #define kCellHeight 200
 #define kNetworkError 150900
 #define kServerError 150901
@@ -34,6 +35,7 @@
 #define kPublicPhotosMethod @"flickr.people.getPublicPhotos"
 #define kUserProfileMethod @"flickr.people.getInfo"
 #define kPopularPhotosMethod @"flickr.photos.getPopular"
+#define kGetCollectionInfoMethod @"flickr.collections.getInfo"
 #define kCallbackURLScheme @"flickrz"
 
 #define kIsNoJSONCallback @"1";
