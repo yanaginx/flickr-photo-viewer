@@ -40,7 +40,7 @@ static NSString *perPage = kResultsPerPage;
 #pragma mark - Make request
 
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
-                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
+                 completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
                                           NSError * _Nullable))completion {
     
     NSURLRequest *request = [self publicPhotoURLRequestWithPageNum:pageNum];

@@ -12,15 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AlbumInfo : NSObject
 
+@property (nonatomic, strong) NSString *albumID;
 @property (nonatomic, strong) NSURL *albumImageURL;
 @property (nonatomic, strong) NSString *albumName;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic) NSInteger numberOfPhotos;
 
-- (instancetype)initWithAlbumImageURL:(NSURL *)url
-                            albumName:(NSString *)name
-                          dateCreated:(NSDate *)date
-                       numberOfPhotos:(NSInteger)number;
+- (instancetype)initWithAlbumID:(NSString *)albumID
+                       imageURL:(NSURL *)url
+                      albumName:(NSString *)name
+                    dateCreated:(NSDate *)date
+                 numberOfPhotos:(NSInteger)number;
 
 @end
 

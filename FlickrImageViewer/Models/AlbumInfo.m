@@ -9,6 +9,22 @@
 
 @implementation AlbumInfo
 
+- (instancetype)initWithAlbumID:(NSString *)albumID
+                       imageURL:(NSURL *)url
+                      albumName:(NSString *)name
+                    dateCreated:(NSDate *)date
+                 numberOfPhotos:(NSInteger)number {
+    self = [super init];
+    if (self) {
+        self.albumID = albumID;
+        self.albumImageURL = url;
+        self.albumName = name;
+        self.dateCreated = date;
+        self.numberOfPhotos = number;
+    }
+    return self;
+}
+
 - (instancetype)initWithAlbumImageURL:(NSURL *)url
                             albumName:(NSString *)name
                           dateCreated:(NSDate *)date

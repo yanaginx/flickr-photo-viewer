@@ -8,6 +8,8 @@
 #import "AlbumInfoCollectionViewCell.h"
 #import "../UserProfileConstants.h"
 
+#import "../../../../Common/Extensions/NSDate+Additions.h"
+
 @implementation AlbumInfoCollectionViewCell
 
 + (NSString *)reuseIdentifier {
@@ -18,9 +20,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    
     if (self) {
-        self.backgroundColor = UIColor.redColor;
+        self.backgroundColor = UIColor.whiteColor;
         self.layer.cornerRadius = 15;
         [self addSubview:self.albumImageView];
         [self addSubview:self.albumNameLabel];
@@ -28,6 +29,27 @@
         [self addSubview:self.numberOfPhotosLabel];
     }
     return self;
+}
+
+#pragma mark - Operations
+- (void)configureAlbumInfoWithImageURL:(NSURL *)albumCoverURL
+                                  name:(NSString *)albumName
+                           dateCreated:(NSDate *)dateCreated
+                        numberOfPhotos:(NSInteger)numberOfPhotos {
+    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(globalQueue, ^{
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:albumCoverURL];
+        if (imageData) {
+            UIImage *image = [[UIImage alloc] initWithData:imageData];
+            dispatch_queue_main_t mainQueue = dispatch_get_main_queue();
+            dispatch_async(mainQueue, ^{
+                self.albumImageView.image = image;
+            });
+        }
+    });
+    self.albumNameLabel.text = albumName;
+    self.dateCreatedLabel.text = [NSDate stringForDisplayFromDate:dateCreated];
+    self.numberOfPhotosLabel.text = [NSString stringWithFormat:@"%ld photos", (long)numberOfPhotos];
 }
 
 #pragma mark - Custom Accessors
@@ -53,6 +75,8 @@
                                                 kAlbumInfoAlbumNameWidth,
                                                 kAlbumInfoAlbumNameHeight);
         _albumNameLabel = [[UILabel alloc] initWithFrame:albumNameLabelFrame];
+        _albumNameLabel.font = [UIFont systemFontOfSize:18
+                                                 weight:UIFontWeightBold];
         _albumNameLabel.clipsToBounds = YES;
         _albumNameLabel.text = @"Album Name";
     }
@@ -68,6 +92,7 @@
         _dateCreatedLabel = [[UILabel alloc] initWithFrame:dateCreatedLabelFrame];
 //        _dateCreatedLabel.clipsToBounds = YES;
         _dateCreatedLabel.text = @"DAY MONTH YEAR";
+        _dateCreatedLabel.textColor = UIColor.darkGrayColor;
     }
     return _dateCreatedLabel;
 }
@@ -81,6 +106,7 @@
         _numberOfPhotosLabel = [[UILabel alloc] initWithFrame:numberOfPhotosLabelFrame];
         _numberOfPhotosLabel.clipsToBounds = YES;
         _numberOfPhotosLabel.text = @"# Photos";
+        _numberOfPhotosLabel.textColor = UIColor.darkGrayColor;
     }
     return _numberOfPhotosLabel;
 }

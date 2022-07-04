@@ -24,6 +24,7 @@
 @property (nonatomic, strong) PublicPhotosViewController *publicPhotoViewController;
 @property (nonatomic, strong) AlbumViewController *albumViewController;
 @property (nonatomic, strong) UINavigationController *publicPhotoNavi;
+@property (nonatomic, strong) UINavigationController *albumViewNavi;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @end
@@ -119,11 +120,13 @@
 
 - (void)updateView {
     if (self.segmentedControl.selectedSegmentIndex == 0) {
-        [self removeAsChildViewController:self.albumViewController];
+//        [self removeAsChildViewController:self.albumViewController];
+        [self removeAsChildViewController:self.albumViewNavi];
         [self addAsChildViewController:self.publicPhotoNavi];
     } else {
         [self removeAsChildViewController:self.publicPhotoNavi];
-        [self addAsChildViewController:self.albumViewController];
+//        [self addAsChildViewController:self.albumViewController];
+        [self addAsChildViewController:self.albumViewNavi];
     }
 }
 
@@ -194,6 +197,7 @@
     if (_albumViewController) return _albumViewController;
     
     _albumViewController = [[AlbumViewController alloc] init];
+    _albumViewController.profileNavigationController = self.navigationController;
     return _albumViewController;
 }
 
@@ -201,6 +205,12 @@
     if (_publicPhotoNavi) return _publicPhotoNavi;
     _publicPhotoNavi = [[UINavigationController alloc] initWithRootViewController:self.publicPhotoViewController];
     return _publicPhotoNavi;
+}
+
+- (UINavigationController *)albumViewNavi {
+    if (_albumViewNavi) return _albumViewNavi;
+    _albumViewNavi = [[UINavigationController alloc] initWithRootViewController:self.albumViewController];
+    return _albumViewNavi;
 }
 
 @end

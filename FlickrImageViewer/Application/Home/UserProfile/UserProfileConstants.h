@@ -52,12 +52,12 @@
 #define kAlbumInfoCellInset 6
 
 #define kAlbumInfoAlbumImageSize (self.bounds.size.height - kAlbumInfoCellInset * 2)
-#define kAlbumInfoAlbumImageX self.bounds.origin.x
-#define kAlbumInfoAlbumImageY self.bounds.origin.y
+#define kAlbumInfoAlbumImageX self.bounds.origin.x + kAlbumInfoCellInset
+#define kAlbumInfoAlbumImageY self.bounds.origin.y + kAlbumInfoCellInset
 
 #define kAlbumInfoAlbumNameWidth (self.bounds.size.width - kAlbumInfoAlbumImageSize - kAlbumInfoSpacing)
 #define kAlbumInfoAlbumNameHeight kAlbumInfoLabelHeight
-#define kAlbumInfoAlbumNameX (self.bounds.origin.x + kAlbumInfoAlbumImageSize + kAlbumInfoSpacing)
+#define kAlbumInfoAlbumNameX (self.bounds.origin.x + kAlbumInfoAlbumImageSize + 2 * kAlbumInfoSpacing)
 #define kAlbumInfoAlbumNameY self.bounds.origin.y
 
 #define kAlbumInfoDateCreatedWidth kAlbumInfoAlbumNameWidth

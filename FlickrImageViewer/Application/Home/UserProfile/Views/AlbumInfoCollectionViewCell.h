@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic) UILabel *dateCreatedLabel;
 @property (nullable, nonatomic) UILabel *numberOfPhotosLabel;
 
+- (void)configureAlbumInfoWithImageURL:(NSURL *)albumCoverURL
+                                  name:(NSString *)albumName
+                           dateCreated:(NSDate *)dateCreated
+                        numberOfPhotos:(NSInteger)numberOfPhotos;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -35,11 +35,12 @@
 #define kPublicPhotosMethod @"flickr.people.getPublicPhotos"
 #define kUserProfileMethod @"flickr.people.getInfo"
 #define kPopularPhotosMethod @"flickr.photos.getPopular"
-#define kGetCollectionInfoMethod @"flickr.collections.getInfo"
+#define kGetAlbumInfosMethod @"flickr.photosets.getList"
+#define kGetAlbumDetailPhotosMethod @"flickr.photosets.getPhotos"
 #define kCallbackURLScheme @"flickrz"
 
-#define kIsNoJSONCallback @"1";
-#define kResponseFormat @"json";
-#define kResultsPerPage @"20";
+#define kIsNoJSONCallback @"1"
+#define kResponseFormat @"json"
+#define kResultsPerPage @"20"
 
 #endif
