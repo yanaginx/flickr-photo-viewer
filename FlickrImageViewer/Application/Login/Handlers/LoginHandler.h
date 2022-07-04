@@ -38,9 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LoginHandler : NSObject
 
-
-@property (class, nonnull, readonly, strong) LoginHandler *sharedLoginHandler;
-
 @property (nonatomic, weak) id<LoginHandlerDelegate> delegate;
 
 - (void)startAuthenticationProcess;

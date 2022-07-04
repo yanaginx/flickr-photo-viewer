@@ -46,20 +46,6 @@ static NSString *secretToken = @"";
 
 static AuthenticationState currentState = GettingRequestToken;
 
-+ (instancetype)sharedLoginHandler {
-    static dispatch_once_t onceToken;
-    static LoginHandler *shared;
-    dispatch_once(&onceToken, ^{
-        shared = [[self alloc] initPrivate];
-    });
-    return shared;
-}
-
-- (instancetype)initPrivate {
-    self = [super init];
-    return self;
-}
-
 #pragma mark - Operations
 
 - (void)startAuthenticationProcess {
