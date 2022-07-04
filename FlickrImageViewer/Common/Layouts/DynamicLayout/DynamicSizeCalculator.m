@@ -49,103 +49,103 @@
 
 #pragma mark - Private methods
 
-- (void)computeSizesAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize photoSize = [self.dataSource dynamicSizeCalculator:self
-                                 originalImageSizeAtIndexPath:indexPath];
+//- (void)computeSizesAtIndexPath:(NSIndexPath *)indexPath {
+//    CGSize photoSize = [self.dataSource dynamicSizeCalculator:self
+//                                 originalImageSizeAtIndexPath:indexPath];
+//
+//    if (photoSize.width < 1 || photoSize.height < 1) {
+//        // Photo with no height or width
+//        photoSize.width  = self.rowMaximumHeight;
+//        photoSize.height = self.rowMaximumHeight;
+//    }
+//
+//    [self.leftOvers addObject:[NSValue valueWithCGSize:photoSize]];
+//
+//    BOOL enoughContentForTheRow = NO;
+//    CGFloat rowHeight = self.rowMaximumHeight;
+//    CGFloat widthMultiplier = 1.0;
+//
+//    // Calculations for variable height grid
+//    if (self.fixedHeight) {
+//        CGFloat totalWidth = 0;
+//        NSInteger index = 0;
+//        for (NSValue *leftOver in self.leftOvers) {
+//            CGSize leftOverSize = [leftOver CGSizeValue];
+//            CGFloat scaledWidth = ceil((rowHeight * leftOverSize.width) / leftOverSize.height);
+//            scaledWidth += self.interItemSpacing;
+//
+//            if ((totalWidth + scaledWidth * 0.66) > self.contentWidth) {
+//                // Adding this photo would mean less than 2/3 of it would be visible
+//                enoughContentForTheRow = YES;
+//                [self.leftOvers removeObjectAtIndex:index];
+//                break;
+//            }
+//
+//            totalWidth += scaledWidth;
+//            enoughContentForTheRow = (totalWidth > self.contentWidth);
+//            index++;
+//        }
+//
+//        if (enoughContentForTheRow) {
+//            widthMultiplier = totalWidth / self.contentWidth;
+//        }
+//
+//    } else {
+//        CGFloat totalAspectRatio = 0.0;
+//        CGFloat availableWidth = self.contentWidth - (self.leftOvers.count - 1) * self.interItemSpacing;
+//
+//        for (NSValue *leftOver in self.leftOvers) {
+//            CGSize leftOverSize = [leftOver CGSizeValue];
+//            totalAspectRatio += (leftOverSize.width / leftOverSize.height);
+//        }
+//
+//        rowHeight = availableWidth / totalAspectRatio;
+//        enoughContentForTheRow = rowHeight < self.rowMaximumHeight;
+//    }
+//
+//    if (enoughContentForTheRow) {
+//        // The line is full!
+//
+//        CGFloat availableSpace = self.contentWidth;
+//        NSInteger index = 0;
+//        for (NSValue *leftOver in self.leftOvers) {
+//
+//            CGSize leftOverSize = [leftOver CGSizeValue];
+//
+//            CGFloat newWidth = floor((rowHeight * leftOverSize.width) / leftOverSize.height);
+//
+//            if (self.fixedHeight) {
+//                if (index == self.leftOvers.count - 1) {
+//                    newWidth = availableSpace;
+//                } else {
+//                    newWidth = floor(newWidth * widthMultiplier);
+//                }
+//            } else {
+//                newWidth = MIN(availableSpace, newWidth);
+//            }
+//
+//            // Add the size in the cache
+//            [self.sizeCache setObject:[NSValue valueWithCGSize:CGSizeMake(newWidth, rowHeight)]
+//                               forKey:self.lastIndexPathAdded];
+//
+//            availableSpace -= newWidth;
+//            availableSpace -= self.interItemSpacing;
+//
+//            // We need to keep track of the last index path added
+//            self.lastIndexPathAdded = [NSIndexPath indexPathForItem:(self.lastIndexPathAdded.item + 1)
+//                                                          inSection:self.lastIndexPathAdded.section];
+//            index++;
+//        }
+//
+//        [self.leftOvers removeAllObjects];
+//    } else {
+//        // The line is not full, let's ask the next photo and try to fill up the line
+//        [self computeSizesAtIndexPath:[NSIndexPath indexPathForItem:(indexPath.item + 1)
+//                                                          inSection:indexPath.section]];
+//    }
+//}
 
-    if (photoSize.width < 1 || photoSize.height < 1) {
-        // Photo with no height or width
-        photoSize.width  = self.rowMaximumHeight;
-        photoSize.height = self.rowMaximumHeight;
-    }
-
-    [self.leftOvers addObject:[NSValue valueWithCGSize:photoSize]];
-
-    BOOL enoughContentForTheRow = NO;
-    CGFloat rowHeight = self.rowMaximumHeight;
-    CGFloat widthMultiplier = 1.0;
-
-    // Calculations for variable height grid
-    if (self.fixedHeight) {
-        CGFloat totalWidth = 0;
-        NSInteger index = 0;
-        for (NSValue *leftOver in self.leftOvers) {
-            CGSize leftOverSize = [leftOver CGSizeValue];
-            CGFloat scaledWidth = ceil((rowHeight * leftOverSize.width) / leftOverSize.height);
-            scaledWidth += self.interItemSpacing;
-
-            if ((totalWidth + scaledWidth * 0.66) > self.contentWidth) {
-                // Adding this photo would mean less than 2/3 of it would be visible
-                enoughContentForTheRow = YES;
-                [self.leftOvers removeObjectAtIndex:index];
-                break;
-            }
-
-            totalWidth += scaledWidth;
-            enoughContentForTheRow = (totalWidth > self.contentWidth);
-            index++;
-        }
-
-        if (enoughContentForTheRow) {
-            widthMultiplier = totalWidth / self.contentWidth;
-        }
-
-    } else {
-        CGFloat totalAspectRatio = 0.0;
-        CGFloat availableWidth = self.contentWidth - (self.leftOvers.count - 1) * self.interItemSpacing;
-
-        for (NSValue *leftOver in self.leftOvers) {
-            CGSize leftOverSize = [leftOver CGSizeValue];
-            totalAspectRatio += (leftOverSize.width / leftOverSize.height);
-        }
-
-        rowHeight = availableWidth / totalAspectRatio;
-        enoughContentForTheRow = rowHeight < self.rowMaximumHeight;
-    }
-
-    if (enoughContentForTheRow) {
-        // The line is full!
-
-        CGFloat availableSpace = self.contentWidth;
-        NSInteger index = 0;
-        for (NSValue *leftOver in self.leftOvers) {
-
-            CGSize leftOverSize = [leftOver CGSizeValue];
-
-            CGFloat newWidth = floor((rowHeight * leftOverSize.width) / leftOverSize.height);
-
-            if (self.fixedHeight) {
-                if (index == self.leftOvers.count - 1) {
-                    newWidth = availableSpace;
-                } else {
-                    newWidth = floor(newWidth * widthMultiplier);
-                }
-            } else {
-                newWidth = MIN(availableSpace, newWidth);
-            }
-
-            // Add the size in the cache
-            [self.sizeCache setObject:[NSValue valueWithCGSize:CGSizeMake(newWidth, rowHeight)]
-                               forKey:self.lastIndexPathAdded];
-
-            availableSpace -= newWidth;
-            availableSpace -= self.interItemSpacing;
-
-            // We need to keep track of the last index path added
-            self.lastIndexPathAdded = [NSIndexPath indexPathForItem:(self.lastIndexPathAdded.item + 1)
-                                                          inSection:self.lastIndexPathAdded.section];
-            index++;
-        }
-
-        [self.leftOvers removeAllObjects];
-    } else {
-        // The line is not full, let's ask the next photo and try to fill up the line
-        [self computeSizesAtIndexPath:[NSIndexPath indexPathForItem:(indexPath.item + 1)
-                                                          inSection:indexPath.section]];
-    }
-}
-
-/* Better ver
+// Better ver
 - (void)computeSizesAtIndexPath:(NSIndexPath *)indexPath {
     CGSize photoSize = [self.dataSource dynamicSizeCalculator:self originalImageSizeAtIndexPath:indexPath];
     [self.leftOvers addObject:[NSValue valueWithCGSize:photoSize]];
@@ -210,7 +210,6 @@
                                                           inSection:indexPath.section]];
     }
 }
-*/
 
 #pragma mark - Custom accessors
 
