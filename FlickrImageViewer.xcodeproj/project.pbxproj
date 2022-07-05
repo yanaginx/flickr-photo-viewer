@@ -57,6 +57,8 @@
 		B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD57E2873DBFC007AAE9B /* UIImageView+Additions.m */; };
 		B2CAD5832873E844007AAE9B /* UploadPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD5822873E844007AAE9B /* UploadPhotoManager.m */; };
 		B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58628742F4C007AAE9B /* XMLReader.m */; };
+		B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */; };
+		B2CAD59028744A04007AAE9B /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -185,6 +187,10 @@
 		B2CAD5822873E844007AAE9B /* UploadPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadPhotoManager.m; sourceTree = "<group>"; };
 		B2CAD58528742F4C007AAE9B /* XMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		B2CAD58628742F4C007AAE9B /* XMLReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
+		B2CAD58B28744867007AAE9B /* UISegmentedControl+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+Additions.h"; sourceTree = "<group>"; };
+		B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+Additions.m"; sourceTree = "<group>"; };
+		B2CAD58E28744A04007AAE9B /* UIImage+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
+		B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -400,6 +406,10 @@
 				B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */,
 				B2CAD57D2873DBFC007AAE9B /* UIImageView+Additions.h */,
 				B2CAD57E2873DBFC007AAE9B /* UIImageView+Additions.m */,
+				B2CAD58E28744A04007AAE9B /* UIImage+Additions.h */,
+				B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */,
+				B2CAD58B28744867007AAE9B /* UISegmentedControl+Additions.h */,
+				B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -891,6 +901,7 @@
 				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
+				B2CAD59028744A04007AAE9B /* UIImage+Additions.m in Sources */,
 				B2CAD5792873DADF007AAE9B /* ImageManager.m in Sources */,
 				B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */,
 				B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */,
@@ -911,6 +922,7 @@
 				B277DAD82872A35900EEEBCB /* AlbumInfoDataSource.m in Sources */,
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
+				B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,
 				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,

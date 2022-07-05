@@ -12,6 +12,7 @@
 #import "UserProfileConstants.h"
 
 #import "../../../Common/Extensions/UIView+Additions.h"
+#import "../../../Common/Extensions/UISegmentedControl+Additions.h"
 #import "../../Main/AppDelegate.h"
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
 
@@ -51,6 +52,7 @@
 }
 
 - (void)onSegmentedSelectionChanged:(UISegmentedControl *)segment {
+    [self.segmentedControl changeUnderlinePosition];
     [self updateView];
 }
 
@@ -94,8 +96,10 @@
     [[self.segmentedControl.topAnchor constraintEqualToAnchor:self.headerViewController.view.bottomAnchor] setActive:YES];
     [[self.segmentedControl.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor
                                                         constant:kSegmentedControlBottomConstant] setActive:YES];
-    
+    [self.segmentedControl layoutIfNeeded];
     self.segmentedControl.selectedSegmentIndex = 0;
+    [self.segmentedControl addUnderlineForSelectedSegment];
+
 }
 
 - (void)addAsChildViewController:(UIViewController *)viewController {
