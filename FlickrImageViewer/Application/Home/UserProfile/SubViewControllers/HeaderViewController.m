@@ -80,7 +80,10 @@
 #pragma mark - Helpers
 
 - (void)configureAvatarWithImageURL:(NSURL *)avatarImageURL {
-    [self.avatarImageView setImageUsingURL:avatarImageURL];
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        self.avatarImageView.image = UIImage imageNamed:@"ic_"
+        [self.avatarImageView setImageUsingURL:avatarImageURL];
+    });
 }
 
 - (void)configureNameWithString:(NSString *)nameString {

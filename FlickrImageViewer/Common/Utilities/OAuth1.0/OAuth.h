@@ -57,6 +57,34 @@ typedef NS_ENUM(NSInteger, OAuthContentType) {
                                   tokenSecret:(NSString *)tokenSecret;
 
 /**
+  We always POST with HTTPS. This is because at least half the time the user's
+  data is at least somewhat private, but also because apparently some carriers
+  mangle POST requests and break them. We saw this in France for example.
+  READ THE DOCUMENTATION FOR GET AS IT APPLIES HERE TOO!
+*/
++ (NSURLRequest *)URLRequestForPath:(NSString *)unencodedPath
+                     POSTParameters:(NSDictionary *)unencodedParameters
+                               host:(NSString *)host
+                        consumerKey:(NSString *)consumerKey
+                     consumerSecret:(NSString *)consumerSecret
+                        accessToken:(NSString *)accessToken
+                        tokenSecret:(NSString *)tokenSecret;
+
+/**
+ Posting with image data:
+ */
++ (NSURLRequest *)URLRequestForPath:(NSString *)unencodedPath
+                     POSTParameters:(NSDictionary *)unencodedParameters
+                               host:(NSString *)host
+                        consumerKey:(NSString *)consumerKey
+                     consumerSecret:(NSString *)consumerSecret
+                        accessToken:(NSString *)accessToken
+                        tokenSecret:(NSString *)tokenSecret
+                          imageData:(NSData *)imageData
+                          imageName:(NSString *)imageName
+                        description:(NSString *)imageDescription;
+
+/**
  This method allows the caller to specify particular values for many different parameters such
  as scheme, method, header values and alternate signature hash algorithms.
 

@@ -14,14 +14,13 @@ static char *taskKey;
 static char *urlKey;
 
 - (void)setImageUsingURL:(NSURL *)url {
+    self.image = [UIImage imageNamed:@"img_placeholder"];
+    
     NSURLSessionTask *oldTask = objc_getAssociatedObject(self, &taskKey);
     if (oldTask) {
         objc_setAssociatedObject(self, &taskKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [oldTask cancel];
     }
-    
-    self.image = [UIImage imageNamed:@"img_placeholder"];
-    
     objc_setAssociatedObject(self, &urlKey, url.absoluteString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSURLSessionTask *task = [[ImageManager sharedImageManager] fetchImageWithURL:url

@@ -112,6 +112,10 @@ static NSString *perPage = kResultsPerPage;
                 width_m = 500;
                 height_m = width_m * aspectRatio;
             }
+            if (width_m == 0 || height_m == 0) {
+                height_m = heightFetched.floatValue;
+                width_m = widthFetched.floatValue;
+            }
             CGSize imageSize = CGSizeMake(width_m, height_m);
             
             Photo *photo = [[Photo alloc] initWithImageURL:photoURL

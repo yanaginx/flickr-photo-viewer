@@ -19,7 +19,6 @@
 
 //#define kPopularUserID @"69522958@N04"
 #define kPopularUserID @"72489705@N00"
-#define kUserNSID LoginHandler.sharedLoginHandler.userNSID
 //#define kPopularUserID @"27420180@N08"
 
 #define kBigSizeSuffix @"b"
@@ -41,6 +40,9 @@
 #define kGetAlbumInfosMethod @"flickr.photosets.getList"
 #define kGetAlbumDetailPhotosMethod @"flickr.photosets.getPhotos"
 #define kCallbackURLScheme @"flickrz"
+
+#define kUploadEndpoint @"up.flickr.com/services/upload/"
+#define kUploadIsPublic @"1"
 
 #define kIsNoJSONCallback @"1"
 #define kResponseFormat @"json"
