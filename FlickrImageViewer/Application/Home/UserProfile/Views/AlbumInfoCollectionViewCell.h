@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AlbumInfoCollectionViewCell : UICollectionViewCell
 
 + (NSString *)reuseIdentifier;
-- (void)configureAlbumInfoCellWithImage:(UIImage *)image;
+- (void)configureAlbumInfoCellWithImageURL:(NSURL *)imageURL;
 - (void)configureAlbumInfoCellWithName:(NSString *)albumName;
 - (void)configureAlbumInfoCellWithDateCreated:(NSDate *)dateCreated;
 - (void)configureAlbumInfoCellWithNumberOfPhotos:(NSInteger)numberOfPhotos;

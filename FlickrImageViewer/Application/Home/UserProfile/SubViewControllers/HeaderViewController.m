@@ -8,6 +8,7 @@
 #import "HeaderViewController.h"
 #import "../UserProfileConstants.h"
 #import "../../../../Common/Constants/Constants.h"
+#import "../../../../Common/Extensions/UIImageView+Additions.h"
 #import "../Handlers/UserProfileManager.h"
 
 @interface HeaderViewController ()
@@ -40,8 +41,8 @@
     [self setNameLabelAnchor];
     [self.view addSubview:self.numberOfPhotosLabel];
     [self setNumberOfPhotosLabelAnchor];
-    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.height);
-    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.width);
+//    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.height);
+//    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.width);
 }
 
 #pragma mark - Operations
@@ -79,18 +80,7 @@
 #pragma mark - Helpers
 
 - (void)configureAvatarWithImageURL:(NSURL *)avatarImageURL {
-    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(globalQueue, ^{
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:avatarImageURL];
-        if (imageData) {
-            UIImage *image = [[UIImage alloc] initWithData:imageData];
-            // Get the main queue and execute the UI change in the main queue
-            dispatch_queue_main_t mainQueue = dispatch_get_main_queue();
-            dispatch_async(mainQueue, ^{
-                self.avatarImageView.image = image;
-            });
-        }
-    });
+    [self.avatarImageView setImageUsingURL:avatarImageURL];
 }
 
 - (void)configureNameWithString:(NSString *)nameString {

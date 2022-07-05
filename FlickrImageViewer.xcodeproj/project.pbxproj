@@ -53,6 +53,8 @@
 		B2BF06DD28703AFF002F4B1B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06DC28703AFF002F4B1B /* User.m */; };
 		B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */; };
 		B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */; };
+		B2CAD5792873DADF007AAE9B /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD5782873DADF007AAE9B /* ImageManager.m */; };
+		B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD57E2873DBFC007AAE9B /* UIImageView+Additions.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -173,6 +175,10 @@
 		B2BF06E028708DD6002F4B1B /* PopularPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoDataSource.m; sourceTree = "<group>"; };
 		B2BF06E32870980E002F4B1B /* PublicPhotoDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoDataSource.h; sourceTree = "<group>"; };
 		B2BF06E42870980E002F4B1B /* PublicPhotoDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoDataSource.m; sourceTree = "<group>"; };
+		B2CAD5772873DADF007AAE9B /* ImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		B2CAD5782873DADF007AAE9B /* ImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		B2CAD57D2873DBFC007AAE9B /* UIImageView+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Additions.h"; sourceTree = "<group>"; };
+		B2CAD57E2873DBFC007AAE9B /* UIImageView+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Additions.m"; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -360,6 +366,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2CAD5762873DACE007AAE9B /* ImageManager */,
 				B2BF06CE28702B8E002F4B1B /* AccountManager */,
 				B2F6987A286B247100CA596B /* AsyncFetcher */,
 				B2F69874286B219C00CA596B /* Scope */,
@@ -383,6 +390,8 @@
 				B2BF06D328702D4B002F4B1B /* NSUserDefaults+Additions.m */,
 				B277DAE82872C9C900EEEBCB /* NSDate+Additions.h */,
 				B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */,
+				B2CAD57D2873DBFC007AAE9B /* UIImageView+Additions.h */,
+				B2CAD57E2873DBFC007AAE9B /* UIImageView+Additions.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -610,6 +619,15 @@
 			path = DataSource;
 			sourceTree = "<group>";
 		};
+		B2CAD5762873DACE007AAE9B /* ImageManager */ = {
+			isa = PBXGroup;
+			children = (
+				B2CAD5772873DADF007AAE9B /* ImageManager.h */,
+				B2CAD5782873DADF007AAE9B /* ImageManager.m */,
+			);
+			path = ImageManager;
+			sourceTree = "<group>";
+		};
 		B2CED18228635C5400606615 /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -831,6 +849,7 @@
 			files = (
 				B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */,
 				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
+				B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */,
 				B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
@@ -846,6 +865,7 @@
 				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
+				B2CAD5792873DADF007AAE9B /* ImageManager.m in Sources */,
 				B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */,
 				B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,

@@ -9,6 +9,7 @@
 #import "../UserProfileConstants.h"
 
 #import "../../../../Common/Extensions/NSDate+Additions.h"
+#import "../../../../Common/Extensions/UIImageView+Additions.h"
 
 @interface AlbumInfoCollectionViewCell ()
 
@@ -41,8 +42,8 @@
 }
 
 #pragma mark - Operations
-- (void)configureAlbumInfoCellWithImage:(UIImage *)image {
-    self.albumImageView.image = image;
+- (void)configureAlbumInfoCellWithImageURL:(NSURL *)imageURL {
+    [self.albumImageView setImageUsingURL:imageURL];
 }
 
 - (void)configureAlbumInfoCellWithName:(NSString *)albumName {
