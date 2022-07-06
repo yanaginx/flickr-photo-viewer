@@ -47,7 +47,7 @@
     UIImage *imageExample = [UIImage imageNamed:named];
     
     [self.uploadPhotoManager  uploadUserImage:imageExample
-                                    imageName:imageName
+                                        title:imageName
                                   description:description
                             completionHandler:^(NSString * _Nullable photoName,
                                                 NSError * _Nullable error) {

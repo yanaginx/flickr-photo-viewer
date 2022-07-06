@@ -59,6 +59,7 @@
 		B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58628742F4C007AAE9B /* XMLReader.m */; };
 		B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */; };
 		B2CAD59028744A04007AAE9B /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */; };
+		B2CAD5932875589D007AAE9B /* PhotoForUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD5922875589D007AAE9B /* PhotoForUpload.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -191,6 +192,8 @@
 		B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+Additions.m"; sourceTree = "<group>"; };
 		B2CAD58E28744A04007AAE9B /* UIImage+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
 		B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
+		B2CAD5912875589D007AAE9B /* PhotoForUpload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoForUpload.h; sourceTree = "<group>"; };
+		B2CAD5922875589D007AAE9B /* PhotoForUpload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoForUpload.m; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -528,6 +531,8 @@
 				B2BF06DC28703AFF002F4B1B /* User.m */,
 				B277DAD32872929300EEEBCB /* AlbumInfo.h */,
 				B277DAD42872929300EEEBCB /* AlbumInfo.m */,
+				B2CAD5912875589D007AAE9B /* PhotoForUpload.h */,
+				B2CAD5922875589D007AAE9B /* PhotoForUpload.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -892,6 +897,7 @@
 				B277DAE42872B6B000EEEBCB /* AlbumDetailPhotoManager.m in Sources */,
 				B277DAD52872929300EEEBCB /* AlbumInfo.m in Sources */,
 				B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */,
+				B2CAD5932875589D007AAE9B /* PhotoForUpload.m in Sources */,
 				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,
 				B2BF06DD28703AFF002F4B1B /* User.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,

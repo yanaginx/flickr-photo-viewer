@@ -351,16 +351,14 @@ static NSString* timestamp() {
                     signatureMethod:OAuthSignatureMethodHmacSha1];
 }
 
-+ (NSURLRequest *)URLRequestForPath:(NSString *)unencodedPath
-                     POSTParameters:(NSDictionary *)unencodedParameters
-                               host:(NSString *)host
-                        consumerKey:(NSString *)consumerKey
-                     consumerSecret:(NSString *)consumerSecret
-                        accessToken:(NSString *)accessToken
-                        tokenSecret:(NSString *)tokenSecret
-                          imageData:(NSData *)imageData
-                          imageName:(NSString *)imageName
-                        description:(NSString *)imageDescription {
+
++ (NSURLRequest *)URLRequestUsingQueryAndMultipartFormDataForPath:(NSString *)unencodedPath
+                                                   POSTParameters:(NSDictionary *)unencodedParameters
+                                                             host:(NSString *)host
+                                                      consumerKey:(NSString *)consumerKey
+                                                   consumerSecret:(NSString *)consumerSecret
+                                                      accessToken:(NSString *)accessToken
+                                                      tokenSecret:(NSString *)tokenSecret {
     NSMutableURLRequest *requestWithSignature = [[OAuth URLRequestForPath:unencodedPath
                                                                parameters:unencodedParameters
                                                                      host:host
@@ -372,43 +370,11 @@ static NSString* timestamp() {
                                                             requestMethod:@"POST"
                                                              dataEncoding:OAuthContentTypeUrlEncodedQuery
                                                              headerValues:nil
-                                                         signatureMethod:OAuthSignatureMethodHmacSha1] mutableCopy];
-    
+                                                          signatureMethod:OAuthSignatureMethodHmacSha1] mutableCopy];
     NSString *boundary = kPostBoundary;
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
     [requestWithSignature addValue:contentType
                 forHTTPHeaderField: @"Content-Type"];
-    NSMutableData *postbody = [NSMutableData data];
-    
-    /*
-    // async upload
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"async\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[@"1" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    */
-    
-    [self appendToPOSTBody:postbody
-                      name:@"title"
-                     value:imageName];
-    
-    [self appendToPOSTBody:postbody
-                      name:@"description"
-                     value:imageDescription];
-
-    // Image data
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"photo\"; filename=\"%@.jpg\"\r\n", imageName] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [postbody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:imageData];
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [requestWithSignature setHTTPBody:postbody];
-    NSLog(@"%s : Request body %@",
-          __func__,
-          [[NSString alloc] initWithData:requestWithSignature.HTTPBody
-                                encoding:NSUTF8StringEncoding]);
     return requestWithSignature;
 }
 
@@ -442,7 +408,6 @@ static NSString* timestamp() {
 }
 
 
-#pragma mark - Private methods
 + (void)appendToPOSTBody:(NSMutableData *)postBodyData
                     name:(NSString *)name
                    value:(NSString *)value {
@@ -451,6 +416,27 @@ static NSString* timestamp() {
     [postBodyData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", name]
                               dataUsingEncoding:NSUTF8StringEncoding]];
     [postBodyData appendData:[[NSString stringWithFormat:@"%@\r\n", value] dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
++ (void)appendToPOSTBody:(NSMutableData *)postBodyData
+                    name:(NSString *)name
+                fileName:(NSString *)fileName
+                    data:(NSData *)data {
+    [postBodyData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", kPostBoundary]
+                              dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBodyData appendData:[[NSString stringWithFormat:
+                               @"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",
+                               name,
+                               fileName]
+                              dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBodyData appendData:[[NSString stringWithFormat:@"\r\n"]
+                              dataUsingEncoding:NSUTF8StringEncoding]];
+    [postBodyData appendData:data];
+}
+
++ (void)appendEndOfMultipartFormDataToPOSTBody:(NSMutableData *)postBodyData {
+    [postBodyData appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", kPostBoundary]
+                              dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 @end

@@ -71,18 +71,15 @@ typedef NS_ENUM(NSInteger, OAuthContentType) {
                         tokenSecret:(NSString *)tokenSecret;
 
 /**
- Posting with image data:
+ For sending POST request using query params
  */
-+ (NSURLRequest *)URLRequestForPath:(NSString *)unencodedPath
-                     POSTParameters:(NSDictionary *)unencodedParameters
-                               host:(NSString *)host
-                        consumerKey:(NSString *)consumerKey
-                     consumerSecret:(NSString *)consumerSecret
-                        accessToken:(NSString *)accessToken
-                        tokenSecret:(NSString *)tokenSecret
-                          imageData:(NSData *)imageData
-                          imageName:(NSString *)imageName
-                        description:(NSString *)imageDescription;
++ (NSURLRequest *)URLRequestUsingQueryAndMultipartFormDataForPath:(NSString *)unencodedPath
+                               POSTParameters:(NSDictionary *)unencodedParameters
+                                         host:(NSString *)host
+                                  consumerKey:(NSString *)consumerKey
+                               consumerSecret:(NSString *)consumerSecret
+                                  accessToken:(NSString *)accessToken
+                                  tokenSecret:(NSString *)tokenSecret;
 
 /**
  This method allows the caller to specify particular values for many different parameters such
@@ -130,5 +127,19 @@ typedef NS_ENUM(NSInteger, OAuthContentType) {
  */
 +(int)utcTimeOffset;
 +(void)setUtcTimeOffset:(int)offset;
+
+
+/**
+ Methods for adding data to multipart form data POST body
+ */
++ (void)appendToPOSTBody:(NSMutableData *)postBodyData
+                    name:(NSString *)name
+                   value:(NSString *)value;
++ (void)appendToPOSTBody:(NSMutableData *)postBodyData
+                    name:(NSString *)name
+                fileName:(NSString *)fileName
+                    data:(NSData *)data;
++ (void)appendEndOfMultipartFormDataToPOSTBody:(NSMutableData *)postBodyData;
+
 @end
 

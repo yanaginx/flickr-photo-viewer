@@ -48,4 +48,6 @@
 #define kResponseFormat @"json"
 #define kResultsPerPage @"20"
 
+#define kPostBoundary @"---------------------------14737809831466499882746641449"
+
 #endif

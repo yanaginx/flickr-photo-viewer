@@ -15,12 +15,12 @@
 @implementation UploadPhotoManager
 
 - (void)uploadUserImage:(UIImage *)image
-              imageName:(NSString *)imageName
+                  title:(NSString *)imageName
             description:(NSString *)imageDescription
       completionHandler:(void (^)(NSString *  _Nullable,
                                   NSError * _Nullable))completion {
     NSURLRequest *request = [self uploadPhotoURLRequestWithImage:image
-                                                       imageName:imageName
+                                                           title:imageName
                                                      description:imageDescription];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
@@ -62,38 +62,54 @@
         completion(imageName, nil);
         
     }] resume];
-   
 }
-
 
 #pragma mark - Network related
 - (NSURLRequest *)uploadPhotoURLRequestWithImage:(UIImage *)image
-                                       imageName:(NSString *)imageName
-                                     description:(NSString *)imageDescription {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+                                           title:(NSString *)title
+                                     description:(NSString *)description {
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:AccountManager.userNSID forKey:@"user_id"];
     [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:kResponseFormat forKey:@"format"];
-    [params setObject:imageName forKey:@"title"];
-    [params setObject:imageDescription forKey:@"description"];
+    [params setObject:title forKey:@"title"];
+    [params setObject:description forKey:@"description"];
     
-    NSURLRequest *postRequest = [OAuth URLRequestForPath:@"/"
-                                           POSTParameters:params
-                                                     host:kUploadEndpoint
-                                              consumerKey:kConsumerKey
-                                           consumerSecret:kConsumerSecret
-                                              accessToken:AccountManager.userAccessToken
-                                              tokenSecret:AccountManager.userSecretToken
-                                               imageData:imageData
-                                               imageName:imageName
-                                             description:imageDescription];
+    NSMutableURLRequest *requestWithSignature =
+    [[OAuth URLRequestUsingQueryAndMultipartFormDataForPath:@"/"
+                                             POSTParameters:params
+                                                       host:kUploadEndpoint
+                                                consumerKey:kConsumerKey
+                                             consumerSecret:kConsumerSecret
+                                                accessToken:AccountManager.userAccessToken
+                                                tokenSecret:AccountManager.userSecretToken]
+     mutableCopy];
     
-    NSLog(@"Request body %@", [[NSString alloc] initWithData:postRequest.HTTPBody
-                                                    encoding:NSASCIIStringEncoding]);
-   
-    return postRequest;
+    // Adding images body
+    NSMutableData *postBody = [NSMutableData data];
+    [OAuth appendToPOSTBody:postBody
+                       name:@"title"
+                      value:title];
+    [OAuth appendToPOSTBody:postBody
+                       name:@"description"
+                      value:description];
+    [OAuth appendToPOSTBody:postBody
+                       name:[NSString stringWithFormat:@"photo"]
+                   fileName:[NSString stringWithFormat:@"%@.jpg", title]
+                       data:imageData];
+    [OAuth appendEndOfMultipartFormDataToPOSTBody:postBody];
+    
+    // add set body to the request
+    requestWithSignature.HTTPBody = postBody;
+    NSLog(@"%s : Request body %@",
+          __func__,
+          [[NSString alloc] initWithData:requestWithSignature.HTTPBody
+                                encoding:NSASCIIStringEncoding]);
+    
+    return requestWithSignature;
 }
 
 #pragma mark - Operations
