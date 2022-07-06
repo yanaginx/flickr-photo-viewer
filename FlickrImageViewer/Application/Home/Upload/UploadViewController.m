@@ -6,12 +6,10 @@
 //
 
 #import "UploadViewController.h"
-#import "Handlers/UploadPhotoManager.h"
 #import "../../../Common/Constants/Constants.h"
+#import "UploadPostViewController.h"
 
 @interface UploadViewController ()
-
-@property (nonatomic, strong) UploadPhotoManager *uploadPhotoManager;
 
 @end
 
@@ -20,66 +18,53 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = UIColor.yellowColor;
-    
-    UIBarButtonItem *uploadButton = [[UIBarButtonItem alloc] initWithTitle:@"Upload"
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:self
-                                                                    action:@selector(uploadImageExample)];
-    [self.navigationItem setRightBarButtonItem:uploadButton];
+    self.view.backgroundColor = UIColor.whiteColor;
+    [self setupTitle];
+    [self setupNextButton];
+    [self setupDismissButton];
 }
 
-- (void)uploadImageExample {
-    [self uploadImageExampleWithImageName:@"Server Icon"
-                         imageDescription:@"A small icon for displaying info"
-                          imageAssetsName:@"ic_server_error"];
-    [self uploadImageExampleWithImageName:@"Dynamic Layout icon"
-                         imageDescription:@"A small icon for showing dynamic layout"
-                          imageAssetsName:@"ic_dynamic_layout"];
-    [self uploadImageExampleWithImageName:@"Fixed Layout Icon"
-                         imageDescription:@"A small icon for displaying fixed layout icon"
-                          imageAssetsName:@"ic_fixed_layout"];
+#pragma mark - Operations
+
+- (void)setupTitle {
+    self.navigationItem.title = @"Photo library";
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
 }
 
-- (void)uploadImageExampleWithImageName:(NSString *)imageName
-                       imageDescription:(NSString *)description
-                        imageAssetsName:(NSString *)named {
-    UIImage *imageExample = [UIImage imageNamed:named];
-    
-    [self.uploadPhotoManager  uploadUserImage:imageExample
-                                        title:imageName
-                                  description:description
-                            completionHandler:^(NSString * _Nullable photoName,
-                                                NSError * _Nullable error) {
-        NSLog(@"[DEBUG] %s : API called!", __func__);
-        if (error) {
-            switch (error.code) {
-                case kNetworkError:
-                    // Network error view
-                    NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    break;
-                case kNoDataError:
-                    // No data error view
-                    NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    break;
-                default:
-                    // Error occur view
-                    NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    break;
-            }
-            return;
-        }
-        
-        NSLog(@"[DEBUG] %s: Photo name uploaded: %@", __func__, photoName);
-    }];
+- (void)setupNextButton {
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(navigateToPostView)];
+    [self.navigationItem setRightBarButtonItem:nextButton];
 }
 
-#pragma mark - Custom accessors
-- (UploadPhotoManager *)uploadPhotoManager {
-    if (_uploadPhotoManager) return _uploadPhotoManager;
-    _uploadPhotoManager = [[UploadPhotoManager alloc] init];
-    return _uploadPhotoManager;
+- (void)setupDismissButton {
+//    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc]
+//                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+//                                      primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+//        [self dismiss];
+//    }]];
+    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_cancel"]
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(dismiss)];
+    [self.navigationItem setLeftBarButtonItem:dismissButton];
 }
 
+#pragma mark - Handlers
+
+- (void)navigateToPostView {
+    UploadPostViewController *uploadPostVC = [[UploadPostViewController alloc] init];
+    [self.navigationController pushViewController:uploadPostVC
+                                         animated:YES];
+}
+
+- (void)dismiss {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

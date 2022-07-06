@@ -15,7 +15,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.delegate = self;
     
     UIViewController *popularVC = [[PopularViewController alloc] init];
     UINavigationController *popularNavi = [[UINavigationController alloc] initWithRootViewController:popularVC];
@@ -26,8 +26,8 @@
                                                          image:popularIconOutlined
                                                  selectedImage:popularIcon];
     
-    UIViewController *uploadVC = [[UploadViewController alloc] init];
-    UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
+    UploadViewController *uploadVC = [[UploadViewController alloc] init];
+//    UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
     UIImage *uploadIcon = [[UIImage imageNamed:@"ic_publish"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *uploadIconOutlined = [[UIImage imageNamed:@"ic_publish_outlined"]
                                    imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -46,9 +46,20 @@
 
     self.viewControllers = [NSArray arrayWithObjects:
                             popularNavi,
-                            uploadNavi,
+                            uploadVC,
                             userNavi,
                             nil];
+}
+
+#pragma mark - UITabBarControllerDelegate
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    if ([viewController isKindOfClass:[UploadViewController class]]) {
+        UploadViewController *uploadVC = [[UploadViewController alloc] init];
+        UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
+        [self presentViewController:uploadNavi animated:YES completion:nil];
+        return NO;
+    }
+    return YES;
 }
 
 @end
