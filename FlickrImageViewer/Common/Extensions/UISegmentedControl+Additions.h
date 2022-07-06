@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addUnderlineForSelectedSegment;
 - (void)changeUnderlinePosition;
+- (void)removeBorder;
 
 @end
 

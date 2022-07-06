@@ -13,6 +13,7 @@
 
 #import "../../../../Common/Layouts/DynamicLayout/DynamicCollectionViewLayout.h"
 #import "../../../../Common/Layouts/FixedLayout/FixedFlowLayout.h"
+#import "../../../../Common/Extensions/UISegmentedControl+Additions.h"
 #import "../../../../Common/Constants/Constants.h"
 #import "../../../../Models/Photo.h"
 #import "../UserProfileConstants.h"
@@ -54,7 +55,6 @@ static NSInteger fixedLayoutIdx = 1;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.view.backgroundColor = UIColor.cyanColor;
     [self.view addSubview:self.collectionView];
     [self.view addSubview:self.layoutSegmentedControl];
     
@@ -72,11 +72,12 @@ static NSInteger fixedLayoutIdx = 1;
                                            self.view.bounds.origin.y + kLayoutSegmentedControlHeight,
                                            self.view.bounds.size.width,
                                            self.view.bounds.size.height - kLayoutSegmentedControlHeight);
-    self.layoutSegmentedControl.frame = CGRectMake(self.view.bounds.origin.x,
-                                                   self.view.bounds.origin.y,
-                                                   kLayoutSegmentedControlHeight * 2,
-                                                   kLayoutSegmentedControlHeight);
 }
+//    self.layoutSegmentedControl.frame = CGRectMake(self.view.bounds.origin.x,
+//                                                   self.view.bounds.origin.y,
+//                                                   kLayoutSegmentedControlHeight * 2,
+//                                                   kLayoutSegmentedControlHeight);
+//}
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleDarkContent;
@@ -236,10 +237,12 @@ static NSInteger fixedLayoutIdx = 1;
 
 - (void)setupLayoutSegmentedControl {
     [self.layoutSegmentedControl removeAllSegments];
-    UIImage *dynamicLayoutIcon = [[UIImage imageNamed:@"ic_dynamic_layout_outlined"]
-                                   imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *dynamicLayoutIcon = [[UIImage imageNamed:@"ic_dynamic_layout"]
+                                 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    UIImage *dynamicLayoutIcon = [UIImage imageNamed:@"ic_dynamic_layout_outlined"];
+//    UIImage *fixedLayoutIcon = [UIImage imageNamed:@"ic_fixed_layout_outlined"];
     UIImage *fixedLayoutIcon = [[UIImage imageNamed:@"ic_fixed_layout_outlined"]
-                                 imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                                 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
 
     [self.layoutSegmentedControl insertSegmentWithImage:dynamicLayoutIcon
@@ -249,10 +252,15 @@ static NSInteger fixedLayoutIdx = 1;
                                                 atIndex:fixedLayoutIdx
                                                animated:NO];
     [self.layoutSegmentedControl addTarget:self
-                              action:@selector(onSegmentedSelectionChanged:)
-                    forControlEvents:UIControlEventValueChanged];
+                                    action:@selector(onSegmentedSelectionChanged:)
+                          forControlEvents:UIControlEventValueChanged];
     self.layoutSegmentedControl.selectedSegmentIndex = dynamicLayoutIdx;
-    self.layoutSegmentedControl.selectedSegmentTintColor = UIColor.systemBlueColor;
+    self.layoutSegmentedControl.frame = CGRectMake(self.view.bounds.origin.x,
+                                                   self.view.bounds.origin.y,
+                                                   self.view.bounds.size.width / 3,
+                                                   kLayoutSegmentedControlHeight);
+    [self.layoutSegmentedControl layoutIfNeeded];
+    [self.layoutSegmentedControl removeBorder];
 }
 
 - (void)setupCollectionView {
@@ -263,7 +271,23 @@ static NSInteger fixedLayoutIdx = 1;
 }
 
 - (void)onSegmentedSelectionChanged:(UISegmentedControl *)segment {
+    [self updateIcon];
     [self updateLayout];
+}
+
+- (void)updateIcon {
+    if (self.layoutSegmentedControl.selectedSegmentIndex == dynamicLayoutIdx) {
+        [self.layoutSegmentedControl setImage:[UIImage imageNamed:@"ic_dynamic_layout"]
+                            forSegmentAtIndex:dynamicLayoutIdx];
+        [self.layoutSegmentedControl setImage:[UIImage imageNamed:@"ic_fixed_layout_outlined"]
+                            forSegmentAtIndex:fixedLayoutIdx];
+    }
+    if (self.layoutSegmentedControl.selectedSegmentIndex == fixedLayoutIdx) {
+        [self.layoutSegmentedControl setImage:[UIImage imageNamed:@"ic_fixed_layout"]
+                            forSegmentAtIndex:fixedLayoutIdx];
+        [self.layoutSegmentedControl setImage:[UIImage imageNamed:@"ic_dynamic_layout_outlined"]
+                            forSegmentAtIndex:dynamicLayoutIdx];
+    }
 }
 
 - (void)updateLayout {

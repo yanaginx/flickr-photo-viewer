@@ -44,6 +44,8 @@
                                                                                              alpha:1.0]
                                                                       forKey:NSForegroundColorAttributeName];
     [self setTitleTextAttributes:selectedTextAttribute forState:UIControlStateSelected];
+    
+    self.tintColor = [UIColor colorWithRed:67/255 green:129/255 blue:244/255 alpha:1.0];
 }
 
 - (void)addUnderlineForSelectedSegment {
