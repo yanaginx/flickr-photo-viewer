@@ -56,6 +56,7 @@
     if ([viewController isKindOfClass:[UploadViewController class]]) {
         UploadViewController *uploadVC = [[UploadViewController alloc] init];
         UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
+        uploadNavi.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:uploadNavi animated:YES completion:nil];
         return NO;
     }

@@ -10,6 +10,9 @@
 		B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB628698AD6002EB17F /* PopularPhotoManager.m */; };
 		B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */; };
 		B20A5C592875743400F692C7 /* UploadPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C582875743400F692C7 /* UploadPostViewController.m */; };
+		B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C5B2875918400F692C7 /* GalleryCollectionViewCell.m */; };
+		B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C5F287593C900F692C7 /* GalleryDataSource.m */; };
+		B20A5C632875970500F692C7 /* GalleryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C622875970500F692C7 /* GalleryManager.m */; };
 		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
 		B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C928604B9D00E976C8 /* PopularViewController.m */; };
 		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
@@ -96,6 +99,12 @@
 		B2001FB92869B247002EB17F /* PopularPhotoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		B20A5C572875743400F692C7 /* UploadPostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadPostViewController.h; sourceTree = "<group>"; };
 		B20A5C582875743400F692C7 /* UploadPostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadPostViewController.m; sourceTree = "<group>"; };
+		B20A5C5A2875918400F692C7 /* GalleryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCell.h; sourceTree = "<group>"; };
+		B20A5C5B2875918400F692C7 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
+		B20A5C5E287593C900F692C7 /* GalleryDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryDataSource.h; sourceTree = "<group>"; };
+		B20A5C5F287593C900F692C7 /* GalleryDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryDataSource.m; sourceTree = "<group>"; };
+		B20A5C612875970500F692C7 /* GalleryManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryManager.h; sourceTree = "<group>"; };
+		B20A5C622875970500F692C7 /* GalleryManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryManager.m; sourceTree = "<group>"; };
 		B23A30BF286047EF00E976C8 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		B23A30C0286047EF00E976C8 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		B23A30C828604B9D00E976C8 /* PopularViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularViewController.h; sourceTree = "<group>"; };
@@ -245,6 +254,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B20A5C5D2875939F00F692C7 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				B20A5C5E287593C900F692C7 /* GalleryDataSource.h */,
+				B20A5C5F287593C900F692C7 /* GalleryDataSource.m */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		B23A30C628604B7D00E976C8 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +321,7 @@
 		B23A30D128604F4000E976C8 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				B20A5C5D2875939F00F692C7 /* DataSource */,
 				B2CAD5802873E832007AAE9B /* Handlers */,
 				B23A30D62860506700E976C8 /* Views */,
 				B20A5C572875743400F692C7 /* UploadPostViewController.h */,
@@ -316,6 +335,8 @@
 		B23A30D62860506700E976C8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B20A5C5A2875918400F692C7 /* GalleryCollectionViewCell.h */,
+				B20A5C5B2875918400F692C7 /* GalleryCollectionViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -661,6 +682,8 @@
 			children = (
 				B2CAD5812873E844007AAE9B /* UploadPhotoManager.h */,
 				B2CAD5822873E844007AAE9B /* UploadPhotoManager.m */,
+				B20A5C612875970500F692C7 /* GalleryManager.h */,
+				B20A5C622875970500F692C7 /* GalleryManager.m */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -895,6 +918,7 @@
 			files = (
 				B2001FB728698AD6002EB17F /* PopularPhotoManager.m in Sources */,
 				B26447C92869510100D09C10 /* DynamicSizeCalculator.m in Sources */,
+				B20A5C632875970500F692C7 /* GalleryManager.m in Sources */,
 				B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */,
 				B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
@@ -928,6 +952,7 @@
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
+				B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B277DAE12872A5F200EEEBCB /* AlbumDetailCollectionViewCell.m in Sources */,
 				B277DAD82872A35900EEEBCB /* AlbumInfoDataSource.m in Sources */,
@@ -950,6 +975,7 @@
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
 				B2BF06CA286ED052002F4B1B /* PublicPhotoManager.m in Sources */,
 				B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */,
+				B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
