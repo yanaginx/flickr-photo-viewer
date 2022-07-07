@@ -26,6 +26,10 @@
     return self;
 }
 
+- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    return layoutAttributes;
+}
+
 #pragma mark - Operations
 
 - (void)configureWithImage:(UIImage *)image {

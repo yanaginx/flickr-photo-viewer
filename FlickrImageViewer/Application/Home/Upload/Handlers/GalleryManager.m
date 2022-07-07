@@ -12,13 +12,18 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        PHFetchOptions *option = [[PHFetchOptions alloc] init];
-        option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate"
-                                                                 ascending:NO]];
-        self.fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
-                                                     options:option];
+        [self fetchAssets];
     }
     return self;
+}
+
+#pragma mark - Operations
+- (void)fetchAssets {
+    PHFetchOptions *option = [[PHFetchOptions alloc] init];
+    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate"
+                                                             ascending:NO]];
+    self.fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
+                                                 options:option];
 }
 
 #pragma mark - Custom Accessors
@@ -27,6 +32,16 @@
     
     _imageCacheManager = [[PHCachingImageManager alloc] init];
     return _imageCacheManager;
+}
+
+- (PHFetchResult<PHAsset *> *)fetchResult {
+    if (_fetchResult) return _fetchResult;
+    PHFetchOptions *option = [[PHFetchOptions alloc] init];
+    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate"
+                                                             ascending:NO]];
+    _fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
+                                             options:option];
+    return _fetchResult;
 }
 
 @end

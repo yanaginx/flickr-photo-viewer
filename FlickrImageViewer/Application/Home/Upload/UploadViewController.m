@@ -27,13 +27,23 @@ static int rowCount = 3;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
+    [self setupViews];
+    [self registerLibraryObserver];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self removeLibraryObserver];
+}
+
+#pragma mark - Operations
+
+- (void)setupViews {
     [self setupTitle];
     [self setupNextButton];
     [self setupDismissButton];
     [self setupCollectionView];
 }
-
-#pragma mark - Operations
 
 - (void)setupTitle {
     self.navigationItem.title = @"Photo library";
@@ -79,6 +89,15 @@ static int rowCount = 3;
     [self.view addSubview:self.collectionView];
 }
 
+
+- (void)registerLibraryObserver {
+    [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self.dataSource];
+}
+
+- (void)removeLibraryObserver {
+    [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self.dataSource];
+}
+
 #pragma mark - Handlers
 
 - (void)navigateToPostView {
@@ -110,6 +129,7 @@ static int rowCount = 3;
 - (GalleryDataSource *)dataSource {
     if (_dataSource) return _dataSource;
     _dataSource = [[GalleryDataSource alloc] init];
+    _dataSource.collectionView = self.collectionView;
     return _dataSource;
 }
 

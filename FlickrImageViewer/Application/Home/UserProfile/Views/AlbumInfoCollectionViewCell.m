@@ -41,6 +41,10 @@
     return self;
 }
 
+- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    return layoutAttributes;
+}
+
 #pragma mark - Operations
 - (void)configureAlbumInfoCellWithImageURL:(NSURL *)imageURL {
     [self.albumImageView setImageUsingURL:imageURL];

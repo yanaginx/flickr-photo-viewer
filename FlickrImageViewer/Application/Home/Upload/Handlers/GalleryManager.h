@@ -12,8 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GalleryManager : NSObject
 
-@property (strong) PHFetchResult<PHAsset *> *fetchResult;
+@property (nonatomic, strong) PHFetchResult<PHAsset *> *fetchResult;
 @property (nonatomic, strong) PHCachingImageManager *imageCacheManager;
+
+- (void)fetchAssets;
 
 @end
 

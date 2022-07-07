@@ -7,13 +7,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GalleryDataSource : NSObject <UICollectionViewDataSource,
-                                         UICollectionViewDataSourcePrefetching>
+                                         UICollectionViewDataSourcePrefetching,
+                                         PHPhotoLibraryChangeObserver>
 
-
+@property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
 
