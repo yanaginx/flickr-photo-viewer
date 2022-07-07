@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GalleryCollectionViewCell : UICollectionViewCell
 
 @property (nullable, nonatomic) UIImageView *photoImageView;
-@property NSString *localIdentifier;
+@property NSString *photoAssetIdentifier;
 
 + (NSString *)reuseIdentifier;
 - (void)configureWithImage:(UIImage * _Nullable)image;

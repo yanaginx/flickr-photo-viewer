@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
+
+@class GalleryManager;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GalleryDataSource : NSObject <UICollectionViewDataSource,
@@ -16,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
                                          PHPhotoLibraryChangeObserver>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
+@property (nonatomic, strong) GalleryManager *galleryManager;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, PHAsset *> *selectedAssets;
 
 @end
 

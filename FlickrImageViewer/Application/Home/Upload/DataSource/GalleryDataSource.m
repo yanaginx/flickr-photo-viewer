@@ -13,7 +13,6 @@
 
 @interface GalleryDataSource ()
 
-@property (nonatomic, strong) GalleryManager *galleryManager;
 
 @end
 
@@ -35,14 +34,14 @@
     cell.layer.shouldRasterize = YES;
     cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
     PHAsset *photoAsset = [self.galleryManager.fetchResult objectAtIndex:indexPath.item];
-    cell.localIdentifier = photoAsset.localIdentifier;
+    cell.photoAssetIdentifier = photoAsset.localIdentifier;
     [self.galleryManager.imageCacheManager requestImageForAsset:photoAsset
                                                      targetSize:kTargetSize
                                                     contentMode:PHImageContentModeAspectFill
                                                         options:nil
                                                   resultHandler:^(UIImage * _Nullable result,
                                                                   NSDictionary * _Nullable info) {
-        if ([cell.localIdentifier isEqualToString:photoAsset.localIdentifier]) {
+        if ([cell.photoAssetIdentifier isEqualToString:photoAsset.localIdentifier]) {
             [cell configureWithImage:result];
         }
     }];
@@ -96,6 +95,16 @@
                     }];
                     [self.collectionView deleteItemsAtIndexPaths:indexPathsToRemove];
                 }
+                // Remove objects from selected assets
+                NSArray *removedObjects = changes.removedObjects;
+                for (PHAsset *removedAsset in removedObjects) {
+                    if ([self.selectedAssets objectForKey:removedAsset.localIdentifier] != nil) {
+                        [self.selectedAssets removeObjectForKey:removedAsset.localIdentifier];
+                        NSLog(@"[DEBUG] %s : current selected assets: %lu",
+                              __func__,
+                              (unsigned long)self.selectedAssets.count);
+                    }
+                }
                 NSIndexSet *inserted = changes.insertedIndexes;
                 if (inserted != nil && inserted.count != 0) {
                     NSMutableArray<NSIndexPath *> *indexPathsToAdd = [NSMutableArray array];
@@ -124,7 +133,20 @@
                                                                  inSection:0];
                     [indexPathsToChange addObject:indexPath];
                 }];
+//                NSArray *changedObjects = changes.changedObjects;
+//                for (PHAsset *changedObject in changedObjects) {
+//                    if ([self.selectedAssets objectForKey:changedObject.localIdentifier] != nil) {
+//                        NSLog(@"[DEBUG] %s : The local identifier didnt change",
+//                              __func__);
+//                    }
+//                }
                 [self.collectionView reloadItemsAtIndexPaths:indexPathsToChange];
+                // Reselect the edited cells
+                for (NSIndexPath* indexPath in indexPathsToChange) {
+                    [self.collectionView selectItemAtIndexPath:indexPath
+                                                      animated:NO
+                                                scrollPosition:UICollectionViewScrollPositionNone];
+                }
             }
         } else {
             [self.collectionView reloadData];
@@ -138,6 +160,13 @@
     
     _galleryManager = [[GalleryManager alloc] init];
     return _galleryManager;
+}
+
+- (NSMutableDictionary<NSString *, PHAsset *> *)selectedAssets {
+    if (_selectedAssets) return _selectedAssets;
+    
+    _selectedAssets = [NSMutableDictionary dictionary];
+    return _selectedAssets;
 }
 
 @end

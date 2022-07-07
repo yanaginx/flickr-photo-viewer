@@ -13,6 +13,7 @@
 #import "UploadPostViewController.h"
 
 #import "Views/GalleryCollectionViewCell.h"
+#import "Handlers/GalleryManager.h"
 #import "DataSource/GalleryDataSource.h"
 
 @interface UploadViewController () <UICollectionViewDelegate, PermissionErrorViewDelegate>
@@ -40,6 +41,32 @@ static int rowCount = 3;
 }
 
 #pragma mark - Operations
+
+- (void)checkPermission {
+    @weakify(self)
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @strongify(self)
+            [self showUIForAuthorizationStatus:status];
+        });
+    }];
+}
+
+- (void)showUIForAuthorizationStatus:(PHAuthorizationStatus)status {
+    switch (status) {
+        case PHAuthorizationStatusAuthorized:
+            [self setupAuthorizedView];
+            break;
+        case PHAuthorizationStatusLimited:
+            [self setupAuthorizedView];
+            break;
+        case PHAuthorizationStatusDenied:
+            [self displayPermissionErrorView];
+            break;
+        default:
+            break;
+    }
+}
 
 - (void)setupAuthorizedView {
     [self setupTitle];
@@ -88,10 +115,10 @@ static int rowCount = 3;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
+    self.collectionView.allowsMultipleSelection = YES;
     
     [self.view addSubview:self.collectionView];
 }
-
 
 - (void)registerLibraryObserver {
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self.dataSource];
@@ -101,31 +128,7 @@ static int rowCount = 3;
     [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self.dataSource];
 }
 
-- (void)checkPermission {
-    @weakify(self)
-    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            @strongify(self)
-            [self showUIForAuthorizationStatus:status];
-        });
-    }];
-}
 
-- (void)showUIForAuthorizationStatus:(PHAuthorizationStatus)status {
-    switch (status) {
-        case PHAuthorizationStatusAuthorized:
-            [self setupAuthorizedView];
-            break;
-        case PHAuthorizationStatusLimited:
-            [self setupAuthorizedView];
-            break;
-        case PHAuthorizationStatusDenied:
-            [self displayPermissionErrorView];
-            break;
-        default:
-            break;
-    }
-}
 
 - (void)displayPermissionErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -135,6 +138,21 @@ static int rowCount = 3;
         permissionErrorVC.delegate = self;
         [self.navigationController pushViewController:permissionErrorVC animated:NO];
     });
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PHAsset *photoAsset = [self.dataSource.galleryManager.fetchResult objectAtIndex:indexPath.item];
+    [self.dataSource.selectedAssets setObject:photoAsset
+                                       forKey:photoAsset.localIdentifier];
+    NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PHAsset *photoAsset = [self.dataSource.galleryManager.fetchResult objectAtIndex:indexPath.item];
+    [self.dataSource.selectedAssets removeObjectForKey:photoAsset.localIdentifier];
+    NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
+
 }
 
 #pragma mark - PermissionErrorViewDelegate
@@ -183,5 +201,6 @@ static int rowCount = 3;
     _dataSource.collectionView = self.collectionView;
     return _dataSource;
 }
+
 
 @end

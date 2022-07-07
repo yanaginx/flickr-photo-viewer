@@ -8,6 +8,11 @@
 #import "GalleryCollectionViewCell.h"
 #import "../../../../Common/Extensions/UIView+Additions.h"
 
+@interface GalleryCollectionViewCell ()
+
+
+@end
+
 @implementation GalleryCollectionViewCell
 
 + (NSString *)reuseIdentifier {
@@ -21,6 +26,9 @@
     
     if (self) {
         [self addSubview:self.photoImageView];
+        UIView *coloredView = [[UIView alloc] initWithFrame:self.bounds];
+        coloredView.backgroundColor = UIColor.redColor;
+        self.selectedBackgroundView = coloredView;
     }
     return self;
 }
@@ -49,6 +57,7 @@
         _photoImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         _photoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _photoImageView.clipsToBounds = YES;
+        _photoImageView.layer.cornerRadius = 30.0f;
         
         [self.contentView addSubview:_photoImageView];
 //        [_photoImageView setAnchorTop:self.topAnchor
