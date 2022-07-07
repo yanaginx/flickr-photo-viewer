@@ -53,7 +53,7 @@
 - (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
     for (NSIndexPath *indexPath in indexPaths) {
-        NSLog(@"Prefetching for %@", indexPath);
+//        NSLog(@"Prefetching for %@", indexPath);
         [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -67,7 +67,7 @@
 - (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
      NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
     for (NSIndexPath *indexPath in indexPaths) {
-        NSLog(@"Stop Prefetching for %@", indexPath);
+//        NSLog(@"Stop Prefetching for %@", indexPath);
         [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{

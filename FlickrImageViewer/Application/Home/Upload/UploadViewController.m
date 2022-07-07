@@ -7,12 +7,15 @@
 
 #import "UploadViewController.h"
 #import "../../../Common/Constants/Constants.h"
+#import "../../../Common/Utilities/Scope/Scope.h"
+
+#import "../../Error/PermissionErrorViewController.h"
 #import "UploadPostViewController.h"
 
 #import "Views/GalleryCollectionViewCell.h"
 #import "DataSource/GalleryDataSource.h"
 
-@interface UploadViewController () <UICollectionViewDelegate>
+@interface UploadViewController () <UICollectionViewDelegate, PermissionErrorViewDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) GalleryDataSource *dataSource;
@@ -27,8 +30,8 @@ static int rowCount = 3;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
-    [self setupViews];
     [self registerLibraryObserver];
+    [self checkPermission];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -38,7 +41,7 @@ static int rowCount = 3;
 
 #pragma mark - Operations
 
-- (void)setupViews {
+- (void)setupAuthorizedView {
     [self setupTitle];
     [self setupNextButton];
     [self setupDismissButton];
@@ -96,6 +99,54 @@ static int rowCount = 3;
 
 - (void)removeLibraryObserver {
     [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self.dataSource];
+}
+
+- (void)checkPermission {
+    @weakify(self)
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @strongify(self)
+            [self showUIForAuthorizationStatus:status];
+        });
+    }];
+}
+
+- (void)showUIForAuthorizationStatus:(PHAuthorizationStatus)status {
+    switch (status) {
+        case PHAuthorizationStatusAuthorized:
+            [self setupAuthorizedView];
+            break;
+        case PHAuthorizationStatusLimited:
+            [self setupAuthorizedView];
+            break;
+        case PHAuthorizationStatusDenied:
+            [self displayPermissionErrorView];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)displayPermissionErrorView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        PermissionErrorViewController *permissionErrorVC = [[PermissionErrorViewController alloc] init];
+        permissionErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        permissionErrorVC.view.frame = self.view.bounds;
+        permissionErrorVC.delegate = self;
+        [self.navigationController pushViewController:permissionErrorVC animated:NO];
+    });
+}
+
+#pragma mark - PermissionErrorViewDelegate
+- (void)onRetryForPermissionErrorClicked {
+    [self goToAppPrivacySettings];
+}
+
+- (void)goToAppPrivacySettings {
+    NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    if (settingsURL == nil ||
+        ![UIApplication.sharedApplication canOpenURL:settingsURL]) return;
+    [UIApplication.sharedApplication openURL:settingsURL options:@{} completionHandler:nil];
 }
 
 #pragma mark - Handlers

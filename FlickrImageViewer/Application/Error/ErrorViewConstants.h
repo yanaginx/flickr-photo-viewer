@@ -17,7 +17,7 @@
 #define kCenterY (self.view.frame.size.height / 2)
 
 #define kLabelMargin (self.view.frame.size.width / 5)
-#define kButtonMargin (self.view.frame.size.width / 3)
+#define kButtonMargin (self.view.frame.size.width / 4)
 
 #define kImageHeight (self.view.frame.size.height / 5)
 #define kImageWidth (self.view.frame.size.height / 5)
