@@ -50,4 +50,6 @@
 
 #define kPostBoundary @"---------------------------14737809831466499882746641449"
 
+#define kTargetSize CGSizeMake(200, 200)
+
 #endif

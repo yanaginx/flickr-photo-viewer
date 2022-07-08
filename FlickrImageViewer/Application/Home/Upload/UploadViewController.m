@@ -89,6 +89,7 @@ static int rowCount = 3;
                                                                   target:self
                                                                   action:@selector(navigateToPostView)];
     [self.navigationItem setRightBarButtonItem:nextButton];
+    [self toggleNextButton];
 }
 
 - (void)setupDismissButton {
@@ -146,13 +147,14 @@ static int rowCount = 3;
     [self.dataSource.selectedAssets setObject:photoAsset
                                        forKey:photoAsset.localIdentifier];
     NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
+    [self toggleNextButton];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     PHAsset *photoAsset = [self.dataSource.galleryManager.fetchResult objectAtIndex:indexPath.item];
     [self.dataSource.selectedAssets removeObjectForKey:photoAsset.localIdentifier];
     NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
-
+    [self toggleNextButton];
 }
 
 #pragma mark - PermissionErrorViewDelegate
@@ -169,8 +171,18 @@ static int rowCount = 3;
 
 #pragma mark - Handlers
 
+- (void)toggleNextButton {
+    if (self.dataSource.selectedAssets.count > 0) {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    } else {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
+}
+
 - (void)navigateToPostView {
     UploadPostViewController *uploadPostVC = [[UploadPostViewController alloc] init];
+    uploadPostVC.selectedAssets = self.dataSource.selectedAssets;
+    uploadPostVC.galleryManager = self.dataSource.galleryManager;
     [self.navigationController pushViewController:uploadPostVC
                                          animated:YES];
 }

@@ -8,24 +8,64 @@
 #import "UploadPostViewController.h"
 #import "Handlers/UploadPhotoManager.h"
 #import "../../../Common/Constants/Constants.h"
+#import "../../../Models/AlbumInfo.h"
 
-@interface UploadPostViewController ()
+#import "Views/GalleryCollectionViewCell.h"
+#import "Views/RemainingPhotosNumberCollectionViewCell.h"
+#import "Views/TitleTextField.h"
+#import "Views/DescriptionTextField.h"
+#import "Handlers/GalleryManager.h"
+
+#import "AlbumPickerViewController.h"
+
+#define kRowCount 4
+#define kLastIndex kRowCount - 1
+#define kNumberOfPhotosToDisplay 3
+#define kNumberOfCellsToDisplay kNumberOfPhotosToDisplay + 1
+#define kBorderWidth 2
+
+@interface UploadPostViewController () <UICollectionViewDataSource,
+                                        UICollectionViewDelegate,
+                                        AlbumPickerDelegate>
 
 @property (nonatomic, strong) UploadPhotoManager *uploadPhotoManager;
+@property (nonatomic, strong) NSArray <PHAsset *>* assets;
+@property (nonatomic, strong) AlbumInfo *selectedAlbumInfo;
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) TitleTextField *titleTextField;
+@property (nonatomic, strong) DescriptionTextField *descriptionTextField;
+@property (nonatomic, strong) UIButton *albumSelectorButton;
 
 @end
 
 @implementation UploadPostViewController
 
+static NSInteger remainingPhotos = 0;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = UIColor.whiteColor;
-    [self setupTitle];
-    [self setupPostButton];
+    [self setupViews];
+    for (NSString *localIdentifier in [self.selectedAssets allKeys]) {
+        NSLog(@"[DEBUG] %s: the asset selected: %@",
+              __func__,
+              [self.selectedAssets objectForKey:localIdentifier]);
+    }
 }
 
 #pragma mark - Operations
+- (void)setupViews {
+    self.view.backgroundColor = UIColor.whiteColor;
+    [self setupTitle];
+    [self setupPostButton];
+    [self setupCollectionView];
+    [self setupTitleTextField];
+    [self setupDescriptionTextField];
+    [self setupAlbumSelectorButton];
+}
+
+
 - (void)setupTitle {
     self.navigationItem.title = @"New Post";
 }
@@ -36,6 +76,109 @@
                                                                    target:self
                                                                    action:@selector(uploadImageExample)];
     [self.navigationItem setRightBarButtonItem:postButton];
+}
+
+- (void)setupCollectionView {
+    CGFloat cellWidth = (self.view.bounds.size.width - (2 * kMargin * ((CGFloat)kRowCount - 1))) / (CGFloat)kRowCount;
+    CGSize targetSize = CGSizeMake(cellWidth, cellWidth);
+    
+
+    CGRect collectionViewFrame = CGRectMake(self.view.bounds.origin.x,
+                                            self.view.bounds.origin.y +
+                                            self.navigationController.navigationBar.frame.size.height +
+                                            self.statusBarHeight,
+                                            self.view.bounds.size.width,
+                                            cellWidth + 2 * kMargin);
+    self.collectionView.frame = collectionViewFrame;
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    layout.itemSize = targetSize;
+    layout.minimumLineSpacing = kMargin;
+    layout.minimumInteritemSpacing = kMargin;
+    layout.sectionInset = UIEdgeInsetsMake(kMargin,
+                                           kMargin,
+                                           kMargin,
+                                           kMargin);
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.collectionView.allowsMultipleSelection = YES;
+    
+    [self.view addSubview:self.collectionView];
+}
+
+- (void)setupTitleTextField {
+    CGRect titleTextViewFrame = CGRectMake(self.collectionView.frame.origin.x + kMargin * 2,
+                                           self.collectionView.frame.origin.y +
+                                           self.collectionView.frame.size.height + kMargin,
+                                           self.view.bounds.size.width - kMargin * 4,
+                                           self.view.bounds.size.height / 14);
+    self.titleTextField.frame = titleTextViewFrame;
+    CALayer *bottomLine = [CALayer layer];
+    bottomLine.frame = CGRectMake(0.0f, self.titleTextField.frame.size.height - 1, self.titleTextField.frame.size.width, kBorderWidth);
+    bottomLine.backgroundColor = UIColor.grayColor.CGColor;
+    [self.titleTextField setBorderStyle:UITextBorderStyleNone];
+    [self.titleTextField.layer addSublayer:bottomLine];
+    [self.view addSubview:self.titleTextField];
+}
+
+- (void)setupDescriptionTextField {
+    CGRect descriptionTextFieldFrame = CGRectMake(self.titleTextField.frame.origin.x,
+                                                  self.titleTextField.frame.origin.y +
+                                                  self.titleTextField.frame.size.height + kMargin,
+                                                  self.view.bounds.size.width - kMargin * 4,
+                                                  self.view.bounds.size.height / 14);
+    self.descriptionTextField.frame = descriptionTextFieldFrame;
+    CALayer *bottomLine = [CALayer layer];
+    bottomLine.frame = CGRectMake(0.0f, self.descriptionTextField.frame.size.height - 1, self.descriptionTextField.frame.size.width, kBorderWidth);
+    bottomLine.backgroundColor = UIColor.grayColor.CGColor;
+    [self.descriptionTextField setBorderStyle:UITextBorderStyleNone];
+    [self.descriptionTextField.layer addSublayer:bottomLine];
+    [self.view addSubview:self.descriptionTextField];
+}
+
+- (void)setupAlbumSelectorButton {
+    CGRect albumSelectorButtonFrame = CGRectMake(self.descriptionTextField.frame.origin.x,
+                                                 self.descriptionTextField.frame.origin.y +
+                                                 self.descriptionTextField.frame.size.height + kMargin,
+                                                 self.view.bounds.size.width - kMargin * 4,
+                                                 self.view.bounds.size.height / 14);
+    self.albumSelectorButton.frame = albumSelectorButtonFrame;
+    CALayer *bottomLine = [CALayer layer];
+    bottomLine.frame = CGRectMake(0.0f, self.descriptionTextField.frame.size.height - 1, self.albumSelectorButton.frame.size.width, kBorderWidth);
+    bottomLine.backgroundColor = UIColor.grayColor.CGColor;
+    [self.albumSelectorButton.layer addSublayer:bottomLine];
+    [self.albumSelectorButton addTarget:self
+                                 action:@selector(onAlbumSelectorClicked)
+                       forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.albumSelectorButton];
+    [self toggleAlbumSelectorTitle];
+}
+
+- (void)onAlbumSelectorClicked {
+    AlbumPickerViewController *albumPickerVC = [[AlbumPickerViewController alloc] init];
+    [self.navigationController pushViewController:albumPickerVC animated:YES];
+}
+
+- (void)toggleAlbumSelectorTitle {
+    if (self.selectedAlbumInfo) {
+        [self.albumSelectorButton setTitle:self.selectedAlbumInfo.albumName
+                                  forState:UIControlStateNormal];
+    } else {
+        [self.albumSelectorButton setTitle:@"Browse Albums"
+                                  forState:UIControlStateNormal];
+    }
+}
+
+- (CGFloat)statusBarHeight {
+    UIWindowScene * scene = nil;
+    for (UIWindowScene* wScene in [UIApplication sharedApplication].connectedScenes){
+        if (wScene.activationState == UISceneActivationStateForegroundActive){
+            scene = wScene;
+            break;
+        }
+    }
+    CGFloat statusBarHeight = scene.statusBarManager.statusBarFrame.size.height;
+    return statusBarHeight;
 }
 
 #pragma mark - Handlers
@@ -85,12 +228,102 @@
     }];
 }
 
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.assets.count > 3? kNumberOfCellsToDisplay : self.assets.count;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                           cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.item == kLastIndex) {
+        RemainingPhotosNumberCollectionViewCell *cell = [collectionView
+                                                         dequeueReusableCellWithReuseIdentifier:RemainingPhotosNumberCollectionViewCell.reuseIdentifier
+                                                         forIndexPath:indexPath];
+        remainingPhotos = self.assets.count - kNumberOfPhotosToDisplay;
+        [cell configureWithNumberOfPhotos:remainingPhotos];
+        return cell;
+    } else {
+        GalleryCollectionViewCell *cell = [collectionView
+                                           dequeueReusableCellWithReuseIdentifier:GalleryCollectionViewCell.reuseIdentifier
+                                           forIndexPath:indexPath];
+        cell.layer.shouldRasterize = YES;
+        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        PHAsset *photoAsset = [self.assets objectAtIndex:indexPath.item];
+        cell.photoAssetIdentifier = photoAsset.localIdentifier;
+        [self.galleryManager.imageCacheManager requestImageForAsset:photoAsset
+                                                         targetSize:kTargetSize
+                                                        contentMode:PHImageContentModeAspectFill
+                                                            options:nil
+                                                      resultHandler:^(UIImage * _Nullable result,
+                                                                      NSDictionary * _Nullable info) {
+            if ([cell.photoAssetIdentifier isEqualToString:photoAsset.localIdentifier]) {
+                [cell configureWithImage:result];
+            }
+        }];
+        cell.photoImageView.layer.cornerRadius = 0.0f;
+        return cell;
+    }
+}
+
+#pragma mark - AlbumPickerDelegate
+
+- (void)onFinishSelectAlbumInfo:(AlbumInfo *)selectedAlbumInfo {
+    if (selectedAlbumInfo) {
+        self.selectedAlbumInfo = selectedAlbumInfo;
+        [self toggleAlbumSelectorTitle];
+    }
+}
 
 #pragma mark - Custom accessors
 - (UploadPhotoManager *)uploadPhotoManager {
     if (_uploadPhotoManager) return _uploadPhotoManager;
     _uploadPhotoManager = [[UploadPhotoManager alloc] init];
     return _uploadPhotoManager;
+}
+
+- (UICollectionView *)collectionView {
+    if (_collectionView) return _collectionView;
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+   
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                         collectionViewLayout:layout];
+
+    [_collectionView registerClass:[GalleryCollectionViewCell class]
+        forCellWithReuseIdentifier:GalleryCollectionViewCell.reuseIdentifier];
+    [_collectionView registerClass:[RemainingPhotosNumberCollectionViewCell class]
+        forCellWithReuseIdentifier:RemainingPhotosNumberCollectionViewCell.reuseIdentifier];
+   
+    return _collectionView;
+}
+
+- (TitleTextField *)titleTextField {
+    if (_titleTextField) return _titleTextField;
+    
+    _titleTextField = [[TitleTextField alloc] init];
+    return _titleTextField;
+}
+
+- (DescriptionTextField *)descriptionTextField {
+    if (_descriptionTextField) return _descriptionTextField;
+    
+    _descriptionTextField = [[DescriptionTextField alloc] init];
+    return _descriptionTextField;
+}
+
+- (UIButton *)albumSelectorButton {
+    if (_albumSelectorButton) return _albumSelectorButton;
+    
+    _albumSelectorButton = [[UIButton alloc] init];
+    return _albumSelectorButton;
+}
+
+- (NSArray<PHAsset *> *)assets {
+    if (_assets) return _assets;
+    _assets = [NSArray array];
+    _assets = [self.selectedAssets allValues];
+    return _assets;
 }
 
 @end
