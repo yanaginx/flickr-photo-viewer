@@ -32,12 +32,19 @@
                                           UICollectionViewDelegateFlowLayout,
                                           NetworkErrorViewDelegate,
                                           ServerErrorViewDelegate,
-                                          NoDataErrorViewDelegate>
+                                          NoDataErrorViewDelegate> {
+    NSInteger currentPage;
+    NSInteger numOfPhotosBeforeNewFetch;
+    BOOL isLastPage;
+    NSInteger dynamicLayoutIdx;
+    NSInteger fixedLayoutIdx;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) DynamicCollectionViewLayout *dynamicLayout;
 @property (nonatomic, strong) FixedFlowLayout *fixedFlowLayout;
 @property (nonatomic, strong) PublicPhotoDataSource *dataSource;
+@property (nonatomic, strong) PublicPhotoManager *publicPhotoManager;
 
 @property (nonatomic, strong) UISegmentedControl *layoutSegmentedControl;
 
@@ -46,11 +53,18 @@
 
 @implementation PublicPhotosViewController
 
-static NSInteger currentPage = 1;
-static NSInteger numOfPhotosBeforeNewFetch = 5;
-static BOOL isLastPage = NO;
-static NSInteger dynamicLayoutIdx = 0;
-static NSInteger fixedLayoutIdx = 1;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        currentPage = 1;
+        numOfPhotosBeforeNewFetch = 5;
+        isLastPage = NO;
+        dynamicLayoutIdx = 0;
+        fixedLayoutIdx = 1;
+    }
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -90,8 +104,8 @@ static NSInteger fixedLayoutIdx = 1;
 
 #pragma mark - Private methods
 - (void)getPhotoURLsForPage:(NSInteger)pageNum {
-    [PublicPhotoManager.sharedPublicPhotoManager getPublicPhotoURLsWithPage:pageNum
-                                                             completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
+    [self.publicPhotoManager getPublicPhotoURLsWithPage:pageNum
+                                      completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                                                  NSError * _Nullable error) {
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
@@ -116,7 +130,7 @@ static NSInteger fixedLayoutIdx = 1;
         }
         
         if (photosFetched.count == 0) {
-            isLastPage = YES;
+            self->isLastPage = YES;
         }
         [self.dataSource.photos addObjectsFromArray:photosFetched];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -362,5 +376,11 @@ static NSInteger fixedLayoutIdx = 1;
     return _layoutSegmentedControl;
 }
 
+- (PublicPhotoManager *)publicPhotoManager {
+    if (_publicPhotoManager) return _publicPhotoManager;
+    
+    _publicPhotoManager = [[PublicPhotoManager alloc] init];
+    return _publicPhotoManager;
+}
 
 @end

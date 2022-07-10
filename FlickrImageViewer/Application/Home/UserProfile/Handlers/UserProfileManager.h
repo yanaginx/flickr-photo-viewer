@@ -13,9 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserProfileManager : NSObject
 
-@property (class, nonnull, readonly, strong) UserProfileManager *sharedUserProfileManager;
-
-
 - (void)getUserProfileWithCompletionHandler:(void (^)(NSURL * _Nullable avatarURL,
                                                       NSString * _Nullable name,
                                                       NSString * _Nullable numberOfPhotos,

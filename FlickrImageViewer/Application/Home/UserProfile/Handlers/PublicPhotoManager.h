@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PublicPhotoManager : NSObject
 
-@property (class, nonnull, readonly, strong) PublicPhotoManager *sharedPublicPhotoManager;
-
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
                                              NSError * _Nullable error))completion;

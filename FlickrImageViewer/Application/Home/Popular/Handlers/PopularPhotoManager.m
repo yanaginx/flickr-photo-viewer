@@ -13,28 +13,6 @@
 
 @implementation PopularPhotoManager
 
-static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *endpoint = kAPIEndpoint;
-static NSString *userID = kPopularUserID;
-static NSString *method = kPopularPhotosMethod;
-static NSString *isNoJSONCallback = kIsNoJSONCallback;
-static NSString *format = kResponseFormat;
-static NSString *perPage = kResultsPerPage;
-
-+ (instancetype)sharedPopularPhotoManager {
-    static dispatch_once_t onceToken;
-    static PopularPhotoManager *shared;
-    dispatch_once(&onceToken, ^{
-        shared = [[self alloc] initPrivate];
-    });
-    return shared;
-}
-
-- (instancetype)initPrivate {
-    self = [super init];
-    return self;
-}
-
 #pragma mark - Make request
 
 - (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
@@ -124,12 +102,13 @@ static NSString *perPage = kResultsPerPage;
 #pragma mark - Network related
 - (NSURLRequest *)popularPhotoURLRequestWithPageNum:(NSInteger)pageNum {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthConsumerKey forKey:@"api_key"];
-    [params setObject:method forKey:@"method"];
-    [params setObject:userID forKey:@"user_id"];
-    [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
-    [params setObject:format forKey:@"format"];
-    [params setObject:perPage forKey:@"per_page"];
+
+    [params setObject:kConsumerKey forKey:@"api_key"];
+    [params setObject:kPopularPhotosMethod forKey:@"method"];
+    [params setObject:kPopularUserID forKey:@"user_id"];
+    [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
+    [params setObject:kResponseFormat forKey:@"format"];
+    [params setObject:kResultsPerPage forKey:@"per_page"];
     [params setObject:@"url_t" forKey:@"extras"];
     
     NSString *page = [NSString stringWithFormat:@"%ld", pageNum];
@@ -139,8 +118,8 @@ static NSString *perPage = kResultsPerPage;
     NSURLRequest *request = [OAuth URLRequestForPath:@"/"
                                        GETParameters:params
                                               scheme:@"https"
-                                                host:endpoint
-                                         consumerKey:oauthConsumerKey
+                                                host:kAPIEndpoint
+                                         consumerKey:kConsumerKey
                                       consumerSecret:nil
                                          accessToken:nil
                                          tokenSecret:nil];

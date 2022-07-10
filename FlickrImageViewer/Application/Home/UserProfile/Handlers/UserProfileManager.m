@@ -16,27 +16,6 @@
 
 @implementation UserProfileManager
 
-static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *endpoint = kAPIEndpoint;
-static NSString *userProfileMethod = kUserProfileMethod;
-static NSString *isNoJSONCallback = kIsNoJSONCallback;
-static NSString *format = kResponseFormat;
-static NSString *perPage = kResultsPerPage;
-
-+ (instancetype)sharedUserProfileManager {
-    static dispatch_once_t onceToken;
-    static UserProfileManager *shared;
-    dispatch_once(&onceToken, ^{
-        shared = [[self alloc] initPrivate];
-    });
-    return shared;
-}
-
-- (instancetype)initPrivate {
-    self = [super init];
-    return self;
-}
-
 #pragma mark - Make request
 - (void)getUserProfileWithCompletionHandler:(void (^)(NSURL * _Nullable,
                                                       NSString * _Nullable,
@@ -104,18 +83,18 @@ static NSString *perPage = kResultsPerPage;
 #pragma mark - Network related
 - (NSURLRequest *)userProfileURLRequest {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthConsumerKey forKey:@"api_key"];
-    [params setObject:userProfileMethod forKey:@"method"];
+    [params setObject:kConsumerKey forKey:@"api_key"];
+    [params setObject:kUserProfileMethod forKey:@"method"];
     [params setObject:AccountManager.userNSID forKey:@"user_id"];
-    [params setObject:isNoJSONCallback forKey:@"nojsoncallback"];
-    [params setObject:format forKey:@"format"];
-    [params setObject:perPage forKey:@"per_page"];
+    [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
+    [params setObject:kResponseFormat forKey:@"format"];
+    [params setObject:kResultsPerPage forKey:@"per_page"];
     
     NSURLRequest *request = [OAuth URLRequestForPath:@"/"
                                        GETParameters:params
                                               scheme:@"https"
-                                                host:endpoint
-                                         consumerKey:oauthConsumerKey
+                                                host:kAPIEndpoint
+                                         consumerKey:kConsumerKey
                                       consumerSecret:nil
                                          accessToken:nil
                                          tokenSecret:nil];

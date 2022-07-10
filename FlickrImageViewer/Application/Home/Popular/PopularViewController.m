@@ -28,19 +28,30 @@
                                      UICollectionViewDelegateFlowLayout,
                                      NetworkErrorViewDelegate,
                                      ServerErrorViewDelegate,
-                                     NoDataErrorViewDelegate>
+                                     NoDataErrorViewDelegate> {
+    NSInteger currentPage;
+    BOOL isLastPage;
+    NSInteger numOfPhotosBeforeNewFetch;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) DynamicCollectionViewLayout *dynamicLayout;
 @property (nonatomic, strong) PopularPhotoDataSource *dataSource;
+@property (nonatomic, strong) PopularPhotoManager *popularPhotoManager;
 
 @end
 
 @implementation PopularViewController
 
-static NSInteger currentPage = 1;
-static NSInteger numOfPhotosBeforeNewFetch = 5;
-static BOOL isLastPage = NO;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        currentPage = 1;
+        numOfPhotosBeforeNewFetch = 5;
+        isLastPage = NO;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -70,8 +81,8 @@ static BOOL isLastPage = NO;
 #pragma mark - Private methods
 
 - (void)getPhotoURLsForPage:(NSInteger)pageNum {
-    [PopularPhotoManager.sharedPopularPhotoManager getPopularPhotoURLsWithPage:pageNum
-                                                             completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
+    [self.popularPhotoManager getPopularPhotoURLsWithPage:pageNum
+                                        completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                                                  NSError * _Nullable error) {
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
@@ -96,7 +107,7 @@ static BOOL isLastPage = NO;
         }
         
         if (photosFetched.count == 0) {
-            isLastPage = YES;
+            self->isLastPage = YES;
         }
 //        [self.photos addObjectsFromArray:photosFetched];
         [self.dataSource.photos addObjectsFromArray:photosFetched];
@@ -256,5 +267,10 @@ static BOOL isLastPage = NO;
     return _dataSource;
 }
 
+- (PopularPhotoManager *)popularPhotoManager {
+    if (_popularPhotoManager) return _popularPhotoManager;
+    _popularPhotoManager = [[PopularPhotoManager alloc] init];
+    return _popularPhotoManager;
+}
 
 @end

@@ -15,7 +15,17 @@
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
 
 
-@interface LoginHandler ()
+@interface LoginHandler () {
+    NSString *kRequestTokenPath;
+    NSString *kAccessTokenPath;
+    NSString *oauthToken;
+    NSString *oauthTokenSecret;
+    NSString *oauthVerifier;
+    NSString *oauthAuthorizationURL;
+    NSString *userNSID;
+    NSString *accessToken;
+    NSString *secretToken;
+}
 
 - (NSURLRequest *)requestTokenURLRequest;
 - (NSURLRequest *)accessTokenURLRequestFromOAuthToken:(NSString *)request_token
@@ -27,22 +37,23 @@
 
 @implementation LoginHandler
 
-static NSString *authorizationEndpoint = kAuthorizationEndpoint;
-static NSString *oauthConsumerKey = kConsumerKey;
-static NSString *oauthConsumerSecret = kConsumerSecret;
-static NSString *oauthCallbackURL = kCallbackURL;
-static NSString *oauthHost = kOAuthHost;
-
-static NSString *requestTokenPath = @"/request_token";
-static NSString *accessTokenPath = @"/access_token";
-
-static NSString *oauthToken = @"";
-static NSString *oauthTokenSecret = @"";
-static NSString *oauthVerifier = @"";
-static NSString *oauthAuthorizationURL = @"";
-static NSString *userNSID = @"";
-static NSString *accessToken = @"";
-static NSString *secretToken = @"";
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // Initialize ivar
+        kRequestTokenPath = @"/request_token";
+        kAccessTokenPath = @"/access_token";
+        
+        oauthToken = @"";
+        oauthTokenSecret = @"";
+        oauthVerifier = @"";
+        oauthAuthorizationURL = @"";
+        userNSID = @"";
+        accessToken = @"";
+        secretToken = @"";
+    }
+    return self;
+}
 
 static AuthenticationState currentState = GettingRequestToken;
 
@@ -115,8 +126,8 @@ static AuthenticationState currentState = GettingRequestToken;
         
         NSLog(@"[DEBUG] %s : token parsed: %@, token secret parsed: %@",
               __func__,
-              oauthToken,
-              oauthTokenSecret);
+              self->oauthToken,
+              self->oauthTokenSecret);
         // Confirm there is no error
         [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerNoError];
         // Changing state
@@ -190,8 +201,8 @@ static AuthenticationState currentState = GettingRequestToken;
         
         NSLog(@"[DEBUG] %s : token parsed: %@, token secret parsed: %@",
               __func__,
-              accessToken,
-              secretToken);
+              self->accessToken,
+              self->secretToken);
         // Confirm there is no error
         [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerNoError];
         // Changing state
@@ -227,14 +238,14 @@ static AuthenticationState currentState = GettingRequestToken;
 
 - (NSURLRequest *)requestTokenURLRequest {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthCallbackURL forKey:@"oauth_callback"];
+    [params setObject:kCallbackURL forKey:@"oauth_callback"];
         
-    NSURLRequest *request = [OAuth URLRequestForPath:requestTokenPath
+    NSURLRequest *request = [OAuth URLRequestForPath:kRequestTokenPath
                                        GETParameters:params
                                               scheme:@"https"
-                                                host:oauthHost
-                                         consumerKey:oauthConsumerKey
-                                      consumerSecret:oauthConsumerSecret
+                                                host:kOAuthHost
+                                         consumerKey:kConsumerKey
+                                      consumerSecret:kConsumerSecret
                                          accessToken:nil
                                          tokenSecret:nil];
     return request;
@@ -242,7 +253,7 @@ static AuthenticationState currentState = GettingRequestToken;
 
 - (NSURL *)authorizationURLFromOAuthToken:(NSString *)oauthToken {
     NSString *authorizationURLString = [NSString stringWithFormat:@"%@?oauth_token=%@&perms=read&perms=write",
-                                                                    authorizationEndpoint,
+                                                                    kAuthorizationEndpoint,
                                                                     oauthToken];
     
     return [NSURL URLWithString:authorizationURLString];
@@ -252,16 +263,16 @@ static AuthenticationState currentState = GettingRequestToken;
                                      OAuthTokenSecret:(NSString *)requestTokenSecret
                                         OAuthVerifier:(NSString *)verifier {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthCallbackURL forKey:@"oauth_callback"];
+    [params setObject:kCallbackURL forKey:@"oauth_callback"];
     [params setObject:verifier forKey:@"oauth_verifier"];
     
 
-    NSURLRequest *request = [OAuth URLRequestForPath:accessTokenPath
+    NSURLRequest *request = [OAuth URLRequestForPath:kAccessTokenPath
                                        GETParameters:params
                                               scheme:@"https"
-                                                host:oauthHost
-                                         consumerKey:oauthConsumerKey
-                                      consumerSecret:oauthConsumerSecret
+                                                host:kOAuthHost
+                                         consumerKey:kConsumerKey
+                                      consumerSecret:kConsumerSecret
                                          accessToken:requestToken
                                          tokenSecret:requestTokenSecret];
     return request;
@@ -274,16 +285,16 @@ static AuthenticationState currentState = GettingRequestToken;
     NSString *requestVerifier = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_verifier"];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:oauthCallbackURL forKey:@"oauth_callback"];
+    [params setObject:kCallbackURL forKey:@"oauth_callback"];
     [params setObject:requestVerifier forKey:@"oauth_verifier"];
     
 
-    NSURLRequest *request = [OAuth URLRequestForPath:accessTokenPath
+    NSURLRequest *request = [OAuth URLRequestForPath:kAccessTokenPath
                                        GETParameters:params
                                               scheme:@"https"
-                                                host:oauthHost
-                                         consumerKey:oauthConsumerKey
-                                      consumerSecret:oauthConsumerSecret
+                                                host:kOAuthHost
+                                         consumerKey:kConsumerKey
+                                      consumerSecret:kConsumerSecret
                                          accessToken:requestAccessToken
                                          tokenSecret:requestTokenSecret];
     return request;
@@ -307,7 +318,7 @@ static AuthenticationState currentState = GettingRequestToken;
     if (!requestOAuthToken || !requestOAuthTokenSecret) return nil;
     
     NSString *authorizationURLString = [NSString stringWithFormat:@"%@?oauth_token=%@&perms=read&perms=write",
-                                                                    authorizationEndpoint,
+                                                                    kAuthorizationEndpoint,
                                                                     requestOAuthToken];
     
     return [NSURL URLWithString:authorizationURLString];
@@ -360,8 +371,8 @@ static AuthenticationState currentState = GettingRequestToken;
         }
         NSLog(@"[DEBUG] %s : token parsed: %@, verifier parsed: %@",
               __func__,
-              oauthToken,
-              oauthVerifier);
+              self->oauthToken,
+              self->oauthVerifier);
         // Confirm there is no error
         [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerNoError];
         // Changing state

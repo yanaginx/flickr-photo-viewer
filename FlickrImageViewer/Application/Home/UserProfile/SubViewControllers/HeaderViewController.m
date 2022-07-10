@@ -13,6 +13,8 @@
 
 @interface HeaderViewController ()
 
+@property (nonatomic, strong) UserProfileManager *userProfileManager;
+
 @end
 
 @implementation HeaderViewController
@@ -39,11 +41,11 @@
 
 #pragma mark - Operations
 - (void)getUserProfile {
-    [UserProfileManager.sharedUserProfileManager getUserProfileWithCompletionHandler:^(NSURL * _Nullable avatarURL,
-                                                                                       NSString * _Nullable name,
-                                                                                       NSString * _Nullable numberOfPhotos,
-                                                                                       NSError * _Nullable error) {
-
+    [self.userProfileManager getUserProfileWithCompletionHandler:^(NSURL * _Nullable avatarURL,
+                                                                   NSString * _Nullable name,
+                                                                   NSString * _Nullable numberOfPhotos,
+                                                                   NSError * _Nullable error) {
+        
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
             switch (error.code) {
@@ -156,6 +158,13 @@
     _numberOfPhotosLabel.text = @"#Number Photos";
     return _numberOfPhotosLabel;
 
+}
+
+- (UserProfileManager *)userProfileManager {
+    if (_userProfileManager) return _userProfileManager;
+    
+    _userProfileManager = [[UserProfileManager alloc] init];
+    return _userProfileManager;
 }
 
 @end

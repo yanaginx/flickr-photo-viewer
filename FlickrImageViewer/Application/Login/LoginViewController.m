@@ -12,6 +12,7 @@
 #import "Handlers/LoginHandler.h"
 #import "../../Common/Extensions/UIView+Additions.h"
 #import "../../Common/Extensions/NSString+Additions.h"
+#import "../../Common/Constants/Constants.h"
 
 #import "../../Common/ViewComponents/Buttons/LoadingButton.h"
 
@@ -28,10 +29,6 @@
 @end
 
 @implementation LoginViewController
-
-static CGFloat buttonMargin = 50;
-static CGFloat frameHeight = 60;
-static CGFloat frameWidth = 200;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -205,10 +202,10 @@ static CGFloat frameWidth = 200;
     _titleLabel.text = @"FLICKRz";
     _titleLabel.textColor = UIColor.whiteColor;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.frame = CGRectMake(self.view.center.x - frameWidth/2 ,
+    _titleLabel.frame = CGRectMake(self.view.center.x - kFrameWidth/2 ,
                                    self.view.center.y - (self.view.frame.size.height/4),
-                                   frameWidth,
-                                   frameHeight);
+                                   kFrameWidth,
+                                   kFrameHeight);
     return _titleLabel;
 }
 
@@ -219,10 +216,10 @@ static CGFloat frameWidth = 200;
     _captionLabel.text = @"From photos to moments";
     _captionLabel.textColor = UIColor.whiteColor;
     _captionLabel.textAlignment = NSTextAlignmentCenter;
-    _captionLabel.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - buttonMargin * 2) / 2,
+    _captionLabel.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - kButtonMargin * 2) / 2,
                                     self.view.center.y + (self.view.frame.size.height / 10),
-                                    self.view.frame.size.width - buttonMargin * 2,
-                                    frameHeight);
+                                    self.view.frame.size.width - kButtonMargin * 2,
+                                    kFrameHeight);
     return _captionLabel;
 }
 
@@ -231,10 +228,10 @@ static CGFloat frameWidth = 200;
     
     _beginButton = [[LoadingButton alloc] init];
         
-    _beginButton.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - buttonMargin * 2) / 2,
+    _beginButton.frame = CGRectMake(self.view.center.x - (self.view.frame.size.width - kButtonMargin * 2) / 2,
                                     self.view.center.y + (self.view.frame.size.height / 4),
-                                    self.view.frame.size.width - buttonMargin * 2,
-                                    frameHeight);
+                                    self.view.frame.size.width - kButtonMargin * 2,
+                                    kFrameHeight);
     return _beginButton;
 }
 

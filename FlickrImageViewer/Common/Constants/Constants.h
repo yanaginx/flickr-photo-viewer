@@ -11,6 +11,10 @@
 // Password
 // ZU?Gu?6GX?$+x)e
 
+#define kButtonMargin 50
+#define kFrameHeight 60
+#define kFrameWidth 200
+
 #define kConsumerKey @"68fb93124728e9d210ca6dd75e1ba96d"
 #define kConsumerSecret @"b55ec59d57a6e559"
 #define kCallbackURL @"flickrz://"

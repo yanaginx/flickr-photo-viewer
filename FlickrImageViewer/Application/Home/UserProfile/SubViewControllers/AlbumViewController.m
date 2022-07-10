@@ -24,7 +24,11 @@
                                    UICollectionViewDelegateFlowLayout,
                                    NetworkErrorViewDelegate,
                                    ServerErrorViewDelegate,
-                                   NoDataErrorViewDelegate>
+                                   NoDataErrorViewDelegate> {
+    NSInteger currentPage;
+    BOOL isLastPage;
+    NSInteger numOfPhotosBeforeNewFetch;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) FixedFlowLayout *fixedFlowLayout;
@@ -35,10 +39,15 @@
 
 @implementation AlbumViewController
 
-static NSInteger currentPage = 1;
-static BOOL isLastPage = NO;
-static NSInteger numOfPhotosBeforeNewFetch = 2;
-
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        currentPage = 1;
+        isLastPage = NO;
+        numOfPhotosBeforeNewFetch = 2;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.collectionView];
@@ -54,7 +63,7 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
                                            self.view.bounds.origin.y,
                                            self.view.bounds.size.width,
                                            self.view.bounds.size.height);
-    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, self.collectionView.bounds.size.height / 3 - _fixedFlowLayout.minimumLineSpacing * 2);
+    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kCellHeight);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -97,7 +106,7 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
             return;
         }
        if (albumInfos.count == 0) {
-           isLastPage = YES;
+           self->isLastPage = YES;
        }
        [self.dataSource.albumInfos addObjectsFromArray:albumInfos];
        dispatch_async(dispatch_get_main_queue(), ^{

@@ -19,8 +19,6 @@ typedef NS_ENUM(NSUInteger, PopularPhotoManagerError) {
 
 @interface PopularPhotoManager : NSObject
 
-@property (class, nonnull, readonly, strong) PopularPhotoManager *sharedPopularPhotoManager;
-
 - (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
                   completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
                                           NSError * _Nullable error))completion;

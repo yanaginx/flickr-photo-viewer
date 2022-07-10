@@ -24,7 +24,11 @@
                                          UICollectionViewDelegateFlowLayout,
                                          NetworkErrorViewDelegate,
                                          ServerErrorViewDelegate,
-                                         NoDataErrorViewDelegate>
+                                         NoDataErrorViewDelegate> {
+    NSInteger currentPage;
+    BOOL isLastPage;
+    NSInteger numOfPhotosBeforeNewFetch;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) FixedFlowLayout *fixedFlowLayout;
@@ -35,9 +39,15 @@
 
 @implementation AlbumDetailViewController
 
-static NSInteger currentPage = 1;
-static BOOL isLastPage = NO;
-static NSInteger numOfPhotosBeforeNewFetch = 2;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        currentPage = 1;
+        isLastPage = NO;
+        numOfPhotosBeforeNewFetch = 2;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -117,7 +127,7 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
             return;
         }
        if (photos.count == 0) {
-           isLastPage = YES;
+           self->isLastPage = YES;
        }
        [self.dataSource.photos addObjectsFromArray:photos];
        dispatch_async(dispatch_get_main_queue(), ^{
