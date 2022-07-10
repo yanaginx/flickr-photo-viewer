@@ -147,15 +147,21 @@ static NSInteger remainingPhotos = 0;
     bottomLine.frame = CGRectMake(0.0f, self.descriptionTextField.frame.size.height - 1, self.albumSelectorButton.frame.size.width, kBorderWidth);
     bottomLine.backgroundColor = UIColor.grayColor.CGColor;
     [self.albumSelectorButton.layer addSublayer:bottomLine];
+    self.albumSelectorButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.albumSelectorButton.configuration.contentInsets = NSDirectionalEdgeInsetsMake(0, 10, 0, 0);
+    [self.albumSelectorButton setTitleColor:UIColor.grayColor
+                                   forState:UIControlStateNormal];
     [self.albumSelectorButton addTarget:self
                                  action:@selector(onAlbumSelectorClicked)
                        forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.albumSelectorButton];
+    
     [self toggleAlbumSelectorTitle];
 }
 
 - (void)onAlbumSelectorClicked {
     AlbumPickerViewController *albumPickerVC = [[AlbumPickerViewController alloc] init];
+    albumPickerVC.delegate = self;
     [self.navigationController pushViewController:albumPickerVC animated:YES];
 }
 
@@ -231,7 +237,7 @@ static NSInteger remainingPhotos = 0;
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.assets.count > 3? kNumberOfCellsToDisplay : self.assets.count;
+    return self.assets.count > kNumberOfPhotosToDisplay? kNumberOfCellsToDisplay : self.assets.count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView

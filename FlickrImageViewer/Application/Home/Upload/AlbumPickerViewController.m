@@ -22,7 +22,11 @@
                                          UICollectionViewDelegateFlowLayout,
                                          NetworkErrorViewDelegate,
                                          ServerErrorViewDelegate,
-                                         NoDataErrorViewDelegate>
+                                         NoDataErrorViewDelegate> {
+    NSInteger currentPage;
+    BOOL isLastPage;
+    NSInteger numOfPhotosBeforeNewFetch;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) FixedFlowLayout *fixedFlowLayout;
@@ -30,13 +34,23 @@
 @property (nonatomic, strong) AlbumInfoManager *albumInfoManager;
 @property (nonatomic, strong) AlbumInfo *selectedAlbumInfo;
 
+@property (nonatomic, strong) NetworkErrorViewController *networkErrorViewController;
+@property (nonatomic, strong) NoDataErrorViewController *noDataErrorViewController;
+@property (nonatomic, strong) ServerErrorViewController *serverErrorViewController;
+
 @end
 
 @implementation AlbumPickerViewController
 
-static NSInteger currentPage = 1;
-static BOOL isLastPage = NO;
-static NSInteger numOfPhotosBeforeNewFetch = 2;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        currentPage = 1;
+        isLastPage = NO;
+        numOfPhotosBeforeNewFetch = 1;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,7 +76,6 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
     [self setupCollectionView];
     [self setupSaveButton];
 }
-
 
 - (void)setupCollectionView {
     self.collectionView.backgroundColor = UIColor.lightGrayColor;
@@ -122,7 +135,7 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
             return;
         }
        if (albumInfos.count == 0) {
-           isLastPage = YES;
+           self->isLastPage = YES;
        }
        [self.dataSource.albumInfos addObjectsFromArray:albumInfos];
        dispatch_async(dispatch_get_main_queue(), ^{
@@ -144,11 +157,17 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
 - (void)displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
-        networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        networkErrorVC.view.frame = self.view.bounds;
-        networkErrorVC.delegate = self;
-        [self.navigationController pushViewController:networkErrorVC animated:NO];
-    });
+        self.networkErrorViewController = networkErrorVC;
+//        self.networkErrorViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.networkErrorViewController.view.frame = CGRectMake(0,
+                                                                self.statusBarHeight +
+                                                                self.navigationController.navigationBar.frame.size.height,
+                                                                self.view.frame.size.width,
+                                                                self.view.safeAreaLayoutGuide.layoutFrame.size.height);
+        self.networkErrorViewController.delegate = self;
+        [self addChildViewController:self.networkErrorViewController];
+        [self.view addSubview: self.networkErrorViewController.view];
+        [self.networkErrorViewController didMoveToParentViewController:self];    });
 }
 
 - (void)displayNetworkErrorToast {
@@ -172,21 +191,58 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
 - (void)viewNoDataError {
     dispatch_async(dispatch_get_main_queue(), ^{
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
-        noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        noDataErrorVC.view.frame = self.navigationController.view.bounds;
-        noDataErrorVC.delegate = self;
-        [self.navigationController pushViewController:noDataErrorVC animated:NO];
+        self.noDataErrorViewController = noDataErrorVC;
+        self.noDataErrorViewController.view.frame = CGRectMake(0,
+                                                               self.statusBarHeight +
+                                                               self.navigationController.navigationBar.frame.size.height,
+                                                               self.view.frame.size.width,
+                                                               self.view.safeAreaLayoutGuide.layoutFrame.size.height);
+        self.noDataErrorViewController.delegate = self;
+        [self addChildViewController:self.noDataErrorViewController];
+        [self.view addSubview: self.noDataErrorViewController.view];
+        [self.noDataErrorViewController didMoveToParentViewController:self];
     });
 }
 
 - (void)viewServerError {
     dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
-        serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        serverErrorVC.view.frame = self.view.bounds;
-        serverErrorVC.delegate = self;
-        [self.navigationController pushViewController:serverErrorVC animated:NO];
+        self.serverErrorViewController = serverErrorVC;
+        self.serverErrorViewController.view.frame = CGRectMake(0,
+                                                               self.statusBarHeight +
+                                                               self.navigationController.navigationBar.frame.size.height,
+                                                               self.view.frame.size.width,
+                                                               self.view.safeAreaLayoutGuide.layoutFrame.size.height);
+        self.serverErrorViewController.delegate = self;
+        [self addChildViewController:self.serverErrorViewController];
+        [self.view addSubview: self.serverErrorViewController.view];
+        [self.serverErrorViewController didMoveToParentViewController:self];
     });
+}
+
+- (void)selectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
+    AlbumInfo *albumInfo = self.dataSource.albumInfos[indexPath.row];
+    [self selectAlbumInfo:albumInfo];
+    // Change the color of the cell
+    AlbumInfoCollectionViewCell *cell = (AlbumInfoCollectionViewCell *)[self.collectionView
+                                                                        cellForItemAtIndexPath:indexPath];
+    UIView *coloredView = [[UIView alloc] initWithFrame:cell.bounds];
+    coloredView.backgroundColor = kAppleBlueAlpha;
+    cell.selectedBackgroundView = coloredView;
+}
+
+- (void)selectAlbumInfo:(AlbumInfo *)albumInfo {
+    NSLog(@"[DEBUG] %s : albumID: %@, albumName: %@", __func__, albumInfo.albumID, albumInfo.albumName);
+    self.selectedAlbumInfo = albumInfo;
+    [self toggleSaveButton];
+}
+
+- (void)deselectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
+    AlbumInfo *albumInfo = self.dataSource.albumInfos[indexPath.row];
+    if (albumInfo == self.selectedAlbumInfo) {
+        self.selectedAlbumInfo = nil;
+        [self toggleSaveButton];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -202,31 +258,41 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
 
 #pragma mark - NetworkErrorViewDelegate
 - (void)onRetryForNetworkErrorClicked {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.networkErrorViewController willMoveToParentViewController:nil];
+    [self.networkErrorViewController.view removeFromSuperview];
+    [self.networkErrorViewController removeFromParentViewController];
+    self.networkErrorViewController = nil;
     currentPage = 1;
     [self getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
-    [self.navigationController popViewControllerAnimated:NO];
-     currentPage = 1;
+    [self.serverErrorViewController willMoveToParentViewController:nil];
+    [self.serverErrorViewController.view removeFromSuperview];
+    [self.serverErrorViewController removeFromParentViewController];
+    self.serverErrorViewController = nil;
+    currentPage = 1;
     [self getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.noDataErrorViewController willMoveToParentViewController:nil];
+    [self.noDataErrorViewController.view removeFromSuperview];
+    [self.noDataErrorViewController removeFromParentViewController];
+    self.noDataErrorViewController = nil;
     currentPage = 1;
     [self getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    AlbumInfo *albumInfo = self.dataSource.albumInfos[indexPath.row];
-    NSLog(@"[DEBUG] %s : albumID: %@, albumName: %@", __func__, albumInfo.albumID, albumInfo.albumName);
-    self.selectedAlbumInfo = albumInfo;
-    [self toggleSaveButton];
+    [self selectAlbumInfoAtIndexPath:indexPath];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self deselectAlbumInfoAtIndexPath:indexPath];
 }
 
 #pragma mark - Custom Accessors
@@ -265,5 +331,17 @@ static NSInteger numOfPhotosBeforeNewFetch = 2;
     
     _albumInfoManager = [[AlbumInfoManager alloc] init];
     return _albumInfoManager;
+}
+
+- (CGFloat)statusBarHeight {
+    UIWindowScene * scene = nil;
+    for (UIWindowScene* wScene in [UIApplication sharedApplication].connectedScenes){
+        if (wScene.activationState == UISceneActivationStateForegroundActive){
+            scene = wScene;
+            break;
+        }
+    }
+    CGFloat statusBarHeight = scene.statusBarManager.statusBarFrame.size.height;
+    return statusBarHeight;
 }
 @end

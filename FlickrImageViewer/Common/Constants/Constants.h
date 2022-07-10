@@ -52,4 +52,6 @@
 
 #define kTargetSize CGSizeMake(200, 200)
 
+#define kAppleBlueAlpha [UIColor colorWithRed:14.0/255 green:122.0/255 blue:254.0/255 alpha:0.5]
+
 #endif
