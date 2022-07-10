@@ -20,30 +20,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.frame = self.view.bounds;
-    blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:blurEffectView atIndex:0];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_person_outlined"]];
+    self.view.backgroundColor = kAppleBlueAlpha;
+    [self.view addSubview:self.avatarImageView];
+    [self.view addSubview:self.nameLabel];
+    [self.view addSubview:self.numberOfPhotosLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([self.nameLabel.text isEqualToString:@"Display name"]) {
-        [self getUserProfile];
-    }
+//    if ([self.nameLabel.text isEqualToString:@"Display name"]) {
+    [self getUserProfile];
+//    }
 }
 
-- (void)viewWillLayoutSubviews {
-    [self.view addSubview:self.avatarImageView];
-    [self setAvatarImageViewAnchor];
-    [self.view addSubview:self.nameLabel];
-    [self setNameLabelAnchor];
-    [self.view addSubview:self.numberOfPhotosLabel];
-    [self setNumberOfPhotosLabelAnchor];
+//- (void)viewWillLayoutSubviews {
 //    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.height);
 //    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.width);
-}
+//}
 
 #pragma mark - Operations
 - (void)getUserProfile {

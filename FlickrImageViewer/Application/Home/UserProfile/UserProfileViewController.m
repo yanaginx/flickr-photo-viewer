@@ -21,7 +21,7 @@
 @property (nonatomic, strong) UIAlertController *logoutModal;
 @property (nonatomic, strong) UIBarButtonItem *settingButton;
 
-@property (nonatomic, strong) HeaderViewController *headerViewController;
+//@property (nonatomic, strong) HeaderViewController *headerViewController;
 @property (nonatomic, strong) PublicPhotosViewController *publicPhotoViewController;
 @property (nonatomic, strong) AlbumViewController *albumViewController;
 @property (nonatomic, strong) UINavigationController *publicPhotoNavi;
@@ -37,11 +37,11 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
     [self.navigationItem setRightBarButtonItem:self.settingButton animated:NO];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                         forBarMetrics:UIBarMetricsDefault]; //UIImageNamed:@"transparent.png"
-    self.navigationController.navigationBar.shadowImage = [UIImage new];////UIImageNamed:@"transparent.png"
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+//                         forBarMetrics:UIBarMetricsDefault]; //UIImageNamed:@"transparent.png"
+//    self.navigationController.navigationBar.shadowImage = [UIImage new];////UIImageNamed:@"transparent.png"
+//    self.navigationController.navigationBar.translucent = YES;
+//    self.navigationController.view.backgroundColor = [UIColor clearColor];
     
     [self setupView];
 }
@@ -58,7 +58,7 @@
 
 #pragma mark - Private methods
 - (void)setupView {
-    [self setupHeader];
+//    [self setupHeader];
     [self setupSegmentedControls];
     [self updateView];
 }
@@ -93,9 +93,13 @@
     
     [[self.segmentedControl.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor] setActive:YES];
     [[self.segmentedControl.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor] setActive:YES];
-    [[self.segmentedControl.topAnchor constraintEqualToAnchor:self.headerViewController.view.bottomAnchor] setActive:YES];
-    [[self.segmentedControl.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor
-                                                        constant:kSegmentedControlBottomConstant] setActive:YES];
+//    [[self.segmentedControl.topAnchor constraintEqualToAnchor:self.headerViewController.view.bottomAnchor] setActive:YES];
+//    [[self.segmentedControl.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor
+//                                                     constant:self.navigationController.navigationBar.frame.size.height] setActive:YES];
+    [[self.segmentedControl.topAnchor constraintEqualToAnchor:self.view.topAnchor
+                                                     constant:0] setActive:YES];
+//    [[self.segmentedControl.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor
+//                                                        constant:kSegmentedControlBottomConstant] setActive:YES];
     [self.segmentedControl layoutIfNeeded];
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addUnderlineForSelectedSegment];

@@ -15,7 +15,8 @@
 #define kHeaderHeight 200
 #define kSegmentedControlHeight 40
 #define kHeaderBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - kHeaderHeight - kStatusBarHeight)
-#define kSegmentedControlBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height- kHeaderHeight - kSegmentedControlHeight - kStatusBarHeight)
+//#define kSegmentedControlBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - kHeaderHeight - kSegmentedControlHeight - kStatusBarHeight)
+#define kSegmentedControlBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - kHeaderHeight + kHeaderHeight - kSegmentedControlHeight - kStatusBarHeight)
 
 #define kAvatarSize 80
 #define kAvatarX (self.view.center.x - kAvatarSize / 2)

@@ -6,10 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SubViewControllers/HeaderViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UserProfileViewController : UIViewController
+
+@property (nonatomic, strong) HeaderViewController *headerViewController;
 
 @end
 

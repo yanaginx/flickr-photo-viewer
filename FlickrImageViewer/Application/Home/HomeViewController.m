@@ -35,7 +35,15 @@
                                                         image:uploadIconOutlined
                                                 selectedImage:uploadIcon];
     
-    UIViewController *userVC = [[UserProfileViewController alloc] init];
+//    UIViewController *userVC = [[UserProfileViewController alloc] init];
+//    UINavigationController *userNavi = [[UINavigationController alloc] initWithRootViewController:userVC];
+//    UIImage *profileIcon = [[UIImage imageNamed:@"ic_person"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    UIImage *profileIconOutlined = [[UIImage imageNamed:@"ic_person_outlined"]
+//                                    imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    userVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Profile"
+//                                                      image:profileIconOutlined
+//                                              selectedImage:profileIcon];
+    UIViewController *userVC = [[ParallaxViewController alloc] init];
     UINavigationController *userNavi = [[UINavigationController alloc] initWithRootViewController:userVC];
     UIImage *profileIcon = [[UIImage imageNamed:@"ic_person"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *profileIconOutlined = [[UIImage imageNamed:@"ic_person_outlined"]
