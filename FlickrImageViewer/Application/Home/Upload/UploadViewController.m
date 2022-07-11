@@ -14,18 +14,36 @@
 
 #import "Views/GalleryCollectionViewCell.h"
 #import "Handlers/GalleryManager.h"
+#import "Handlers/UploadPhotoManager.h"
 #import "DataSource/GalleryDataSource.h"
 
-@interface UploadViewController () <UICollectionViewDelegate, PermissionErrorViewDelegate>
+@interface UploadViewController () <UICollectionViewDelegate, PermissionErrorViewDelegate> {
+    int rowCount;
+}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) GalleryDataSource *dataSource;
+@property (strong) UploadPhotoManager *uploadPhotoManager;
 
 @end
 
 @implementation UploadViewController
 
-static int rowCount = 3;
+- (instancetype)initWithUploadPhotoManager:(UploadPhotoManager *)uploadManager {
+    self = [self init];
+    if (self) {
+        self.uploadPhotoManager = uploadManager;
+    }
+    return self;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        rowCount = 3;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -180,9 +198,10 @@ static int rowCount = 3;
 }
 
 - (void)navigateToPostView {
-    UploadPostViewController *uploadPostVC = [[UploadPostViewController alloc] init];
+    UploadPostViewController *uploadPostVC = [[UploadPostViewController alloc]
+                                              initWithUploadPhotoManager:self.uploadPhotoManager
+                                              galleryManager:self.dataSource.galleryManager];
     uploadPostVC.selectedAssets = self.dataSource.selectedAssets;
-    uploadPostVC.galleryManager = self.dataSource.galleryManager;
     [self.navigationController pushViewController:uploadPostVC
                                          animated:YES];
 }

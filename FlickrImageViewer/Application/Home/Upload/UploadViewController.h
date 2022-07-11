@@ -8,9 +8,12 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
+@class UploadPhotoManager;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UploadViewController : UIViewController
+
+- (instancetype)initWithUploadPhotoManager:(UploadPhotoManager *)uploadManager;
 
 @end
 

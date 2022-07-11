@@ -6,125 +6,106 @@
 //
 
 #import "UploadPhotoManager.h"
+#import "GalleryManager.h"
+#import "../Networking/UploadNetworking.h"
 
-#import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
-#import "../../../../Common/Utilities/AccountManager/AccountManager.h"
-#import "../../../../Common/Utilities/XMLReader/XMLReader.h"
 #import "../../../../Common/Constants/Constants.h"
+
+#define kDefaultTitle @"Default title"
+#define kDefaultDescription @"Default description"
+
+@interface UploadPhotoManager ()
+
+@property (nonatomic, strong) NSArray<PHAsset *> *imageAssetsForUpload;
+@property (nonatomic, strong) PHCachingImageManager *imageCacheManager;
+@property (nonatomic, strong) UploadNetworking *uploadNetworking;
+
+@end
 
 @implementation UploadPhotoManager
 
-- (void)uploadUserImage:(UIImage *)image
-                  title:(NSString *)imageName
-            description:(NSString *)imageDescription
-      completionHandler:(void (^)(NSString *  _Nullable,
-                                  NSError * _Nullable))completion {
-    NSURLRequest *request = [self uploadPhotoURLRequestWithImage:image
-                                                           title:imageName
-                                                     description:imageDescription];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:request
-                                     completionHandler:^(NSData *data,
-                                                         NSURLResponse *response,
-                                                         NSError *error) {
+#pragma mark - Public methods
+
+- (void)uploadSelectedImages:(NSArray<PHAsset *> *)imageAssets
+                   withTitle:(NSString *)title
+                 description:(NSString *)description
+                     albumID:(NSString *)albumID {
+    dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        for (PHAsset *imageAsset in imageAssets) {
+            // fetch full size image to gallery into image
+            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+            options.synchronous = YES;
+            [self.imageCacheManager requestImageForAsset:imageAsset
+                                              targetSize:PHImageManagerMaximumSize
+                                             contentMode:PHImageContentModeAspectFill
+                                                 options:options
+                                           resultHandler:^(UIImage * _Nullable result,
+                                                           NSDictionary * _Nullable info) {
+                NSLog(@"[DEBUG] %s: image info: %@",
+                      __func__,
+                      result);
+                if (result) {
+                    [self _uploadUserImage:result
+                                 withTitle:title
+                               description:description
+                                   albumID:albumID];
+                }
+            }];
+        }
+        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
+              __func__,
+              title,
+              description,
+              albumID);
+    });
+}
+
+- (void)_uploadUserImage:(UIImage *)image
+               withTitle:(NSString *)title
+             description:(NSString *)description
+                 albumID:(NSString *)albumID {
+    [self.uploadNetworking uploadUserImage:image
+                                     title:title
+                               description:description
+                         completionHandler:^(NSString * _Nullable uploadedPhotoID,
+                                             NSError * _Nullable error) {
         if (error) {
-            if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."] ||
-                [error.localizedDescription isEqualToString:@"The request timed out."]) {
-                error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                            code:kNetworkError
-                                        userInfo:nil];
-            }
-            completion(nil, error);
+            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
             return;
         }
-        
-        if (!data) {
-            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:kNetworkError
-                                             userInfo:nil];
-            completion(nil, error);
-            return;
-        }
-        
-        NSString *responseDataString = [[NSString alloc] initWithData:data
-                                                             encoding:NSASCIIStringEncoding];
-        
-        NSLog(@"[DEBUG] %s : response string result: %@", __func__, responseDataString);
-        BOOL isUploadSuccessful = [self isUploadSuccessfulFromResponseData:data];
-        
-        if (!isUploadSuccessful) {
-            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                                 code:kServerError
-                                             userInfo:nil];
-            completion(nil, error);
-            return;
-        }
-        
-        completion(imageName, nil);
-        
-    }] resume];
+        [self.delegate onFinishUploadingImageWithErrorCode:0];
+        // add the image to album if the albumID is
+        // TODO
+    }];
 }
 
-#pragma mark - Network related
-- (NSURLRequest *)uploadPhotoURLRequestWithImage:(UIImage *)image
-                                           title:(NSString *)title
-                                     description:(NSString *)description {
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:kConsumerKey forKey:@"api_key"];
-    [params setObject:AccountManager.userNSID forKey:@"user_id"];
-    [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
-    [params setObject:kResponseFormat forKey:@"format"];
-    [params setObject:title forKey:@"title"];
-    [params setObject:description forKey:@"description"];
-    
-    NSMutableURLRequest *requestWithSignature =
-    [[OAuth URLRequestUsingQueryAndMultipartFormDataForPath:@"/"
-                                             POSTParameters:params
-                                                       host:kUploadEndpoint
-                                                consumerKey:kConsumerKey
-                                             consumerSecret:kConsumerSecret
-                                                accessToken:AccountManager.userAccessToken
-                                                tokenSecret:AccountManager.userSecretToken]
-     mutableCopy];
-    
-    // Adding images body
-    NSMutableData *postBody = [NSMutableData data];
-    [OAuth appendToPOSTBody:postBody
-                       name:@"title"
-                      value:title];
-    [OAuth appendToPOSTBody:postBody
-                       name:@"description"
-                      value:description];
-    [OAuth appendToPOSTBody:postBody
-                       name:[NSString stringWithFormat:@"photo"]
-                   fileName:[NSString stringWithFormat:@"%@.jpg", title]
-                       data:imageData];
-    [OAuth appendEndOfMultipartFormDataToPOSTBody:postBody];
-    
-    // add set body to the request
-    requestWithSignature.HTTPBody = postBody;
-    NSLog(@"%s : Request body %@",
-          __func__,
-          [[NSString alloc] initWithData:requestWithSignature.HTTPBody
-                                encoding:NSASCIIStringEncoding]);
-    
-    return requestWithSignature;
+
+
+- (void)_addImageWithID:(NSString *)photoID
+              toAlbumID:(NSString *)albumID {
+   // TODO:
 }
 
-#pragma mark - Operations
-- (BOOL)isUploadSuccessfulFromResponseData:(NSData *)responseData {
-    BOOL isSuccessful = NO;
-    NSError *localError = nil;
-    NSDictionary *parsedResponse = [XMLReader dictionaryForXMLData:responseData error:&localError];
-    if (localError) {
-        isSuccessful = NO;
-    }
-    NSString *result = [[parsedResponse objectForKey:@"rsp"] objectForKey:@"stat"];
-    if ([result isEqualToString:@"ok"]) {
-        isSuccessful = YES;
-    }
-    return isSuccessful;
+
+- (NSURLRequest *)_addPhotoToAlbumURLRequestWithPhotoID:(NSString *)photoID
+                                                albumID:(NSString *)albumID {
+    // TODO:
+    return nil;
+}
+
+#pragma mark - Custom Accessors
+- (PHCachingImageManager *)imageCacheManager {
+    if (_imageCacheManager) return _imageCacheManager;
+    
+    _imageCacheManager = [[PHCachingImageManager alloc] init];
+    return _imageCacheManager;
+}
+
+- (UploadNetworking *)uploadNetworking {
+    if (_uploadNetworking) return _uploadNetworking;
+    
+    _uploadNetworking = [[UploadNetworking alloc] init];
+    return _uploadNetworking;
 }
 
 @end

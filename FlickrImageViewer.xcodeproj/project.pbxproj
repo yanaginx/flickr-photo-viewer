@@ -16,6 +16,7 @@
 		B20A5C662876C68200F692C7 /* PermissionErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C652876C68200F692C7 /* PermissionErrorViewController.m */; };
 		B20A5C692877D4B100F692C7 /* TitleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C682877D4B100F692C7 /* TitleTextField.m */; };
 		B20A5C6C2877DBD200F692C7 /* RemainingPhotosNumberCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B20A5C6B2877DBD200F692C7 /* RemainingPhotosNumberCollectionViewCell.m */; };
+		B2215570287C0E8B00F2A074 /* UploadNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B221556F287C0E8B00F2A074 /* UploadNetworking.m */; };
 		B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C0286047EF00E976C8 /* LoginViewController.m */; };
 		B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30C928604B9D00E976C8 /* PopularViewController.m */; };
 		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
@@ -121,6 +122,8 @@
 		B20A5C682877D4B100F692C7 /* TitleTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TitleTextField.m; sourceTree = "<group>"; };
 		B20A5C6A2877DBD200F692C7 /* RemainingPhotosNumberCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemainingPhotosNumberCollectionViewCell.h; sourceTree = "<group>"; };
 		B20A5C6B2877DBD200F692C7 /* RemainingPhotosNumberCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemainingPhotosNumberCollectionViewCell.m; sourceTree = "<group>"; };
+		B221556E287C0E8B00F2A074 /* UploadNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadNetworking.h; sourceTree = "<group>"; };
+		B221556F287C0E8B00F2A074 /* UploadNetworking.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadNetworking.m; sourceTree = "<group>"; };
 		B23A30BF286047EF00E976C8 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		B23A30C0286047EF00E976C8 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		B23A30C828604B9D00E976C8 /* PopularViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularViewController.h; sourceTree = "<group>"; };
@@ -293,6 +296,22 @@
 			path = DataSource;
 			sourceTree = "<group>";
 		};
+		B221556B287BFDF300F2A074 /* AsyncUploader */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsyncUploader;
+			sourceTree = "<group>";
+		};
+		B221556C287C0E3700F2A074 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B221556E287C0E8B00F2A074 /* UploadNetworking.h */,
+				B221556F287C0E8B00F2A074 /* UploadNetworking.m */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		B23A30C628604B7D00E976C8 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +373,7 @@
 		B23A30D128604F4000E976C8 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				B221556C287C0E3700F2A074 /* Networking */,
 				B20A5C5D2875939F00F692C7 /* DataSource */,
 				B2CAD5802873E832007AAE9B /* Handlers */,
 				B23A30D62860506700E976C8 /* Views */,
@@ -449,6 +469,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B221556B287BFDF300F2A074 /* AsyncUploader */,
 				B2E6CD0E287AA748005F3F2D /* MXParallaxHeader */,
 				B2CAD58428742F3A007AAE9B /* XMLReader */,
 				B2CAD5762873DACE007AAE9B /* ImageManager */,
@@ -1050,6 +1071,7 @@
 				B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */,
 				B2E6CD1A287AB928005F3F2D /* ParallaxViewController.m in Sources */,
 				B2E6CD0A287821C1005F3F2D /* DescriptionTextField.m in Sources */,
+				B2215570287C0E8B00F2A074 /* UploadNetworking.m in Sources */,
 				B2E6CD11287AA770005F3F2D /* MXParallaxHeader.m in Sources */,
 				B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */,
 			);

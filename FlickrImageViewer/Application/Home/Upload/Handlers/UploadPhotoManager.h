@@ -7,17 +7,31 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol UploadPhotoManagerDelegate <NSObject>
+
+- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode;
+
+@end
+
 @interface UploadPhotoManager : NSObject
 
-- (void)uploadUserImage:(UIImage *)image
-                  title:(NSString *)imageName
-            description:(NSString *)imageDescription
-      completionHandler:(void (^)(NSString *  _Nullable,
-                                  NSError * _Nullable))completion;
+@property (nonatomic, weak) id<UploadPhotoManagerDelegate> delegate;
 
+- (void)uploadSelectedImages:(NSArray<PHAsset *> *)imageAssets
+                   withTitle:(NSString * _Nullable)title
+                 description:(NSString * _Nullable)description
+                     albumID:(NSString * _Nullable)albumID;
+//
+//- (void)uploadUserImage:(UIImage *)image
+//                  title:(NSString *)imageName
+//            description:(NSString *)imageDescription
+//      completionHandler:(void (^)(NSString *  _Nullable,
+//                                  NSError * _Nullable))completion;
+//
 @end
 
 NS_ASSUME_NONNULL_END

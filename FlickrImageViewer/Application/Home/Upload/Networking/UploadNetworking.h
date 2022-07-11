@@ -6,11 +6,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UploadNetworking : NSObject
 
+- (void)uploadUserImage:(UIImage *)image
+                  title:(NSString *)imageName
+            description:(NSString *)imageDescription
+      completionHandler:(void (^)(NSString *  _Nullable uploadedPhotoID,
+                                  NSError * _Nullable error))completion;
 @end
 
 NS_ASSUME_NONNULL_END

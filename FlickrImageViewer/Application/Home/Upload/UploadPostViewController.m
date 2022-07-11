@@ -26,9 +26,13 @@
 
 @interface UploadPostViewController () <UICollectionViewDataSource,
                                         UICollectionViewDelegate,
-                                        AlbumPickerDelegate>
+                                        AlbumPickerDelegate> {
+    NSInteger remainingPhotos;
+}
 
 @property (nonatomic, strong) UploadPhotoManager *uploadPhotoManager;
+@property (nonatomic, strong) GalleryManager *galleryManager;
+
 @property (nonatomic, strong) NSArray <PHAsset *>* assets;
 @property (nonatomic, strong) AlbumInfo *selectedAlbumInfo;
 
@@ -41,7 +45,23 @@
 
 @implementation UploadPostViewController
 
-static NSInteger remainingPhotos = 0;
+- (instancetype)initWithUploadPhotoManager:(UploadPhotoManager *)uploadManager
+                            galleryManager:(GalleryManager *)galleryManager {
+    self = [self init];
+    if (self) {
+        self.galleryManager = galleryManager;
+        self.uploadPhotoManager = uploadManager;
+    }
+    return self;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        remainingPhotos = 0;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,7 +94,7 @@ static NSInteger remainingPhotos = 0;
      UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
-                                                                   action:@selector(uploadImageExample)];
+                                                                   action:@selector(onPostButtonClicked)];
     [self.navigationItem setRightBarButtonItem:postButton];
 }
 
@@ -167,9 +187,13 @@ static NSInteger remainingPhotos = 0;
 
 - (void)toggleAlbumSelectorTitle {
     if (self.selectedAlbumInfo) {
+        [self.albumSelectorButton setTitleColor:UIColor.blackColor
+                                       forState:UIControlStateNormal];
         [self.albumSelectorButton setTitle:self.selectedAlbumInfo.albumName
                                   forState:UIControlStateNormal];
     } else {
+        [self.albumSelectorButton setTitleColor:UIColor.grayColor
+                                       forState:UIControlStateNormal];
         [self.albumSelectorButton setTitle:@"Browse Albums"
                                   forState:UIControlStateNormal];
     }
@@ -189,6 +213,15 @@ static NSInteger remainingPhotos = 0;
 
 #pragma mark - Handlers
 
+- (void)onPostButtonClicked {
+    [self.uploadPhotoManager uploadSelectedImages:self.assets
+                                        withTitle:self.titleTextField.text
+                                      description:self.descriptionTextField.text
+                                          albumID:self.selectedAlbumInfo.albumID];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+/*
 - (void)uploadImageExample {
     [self uploadImageExampleWithImageName:@"Server Icon"
                          imageDescription:@"A small icon for displaying info"
@@ -206,10 +239,10 @@ static NSInteger remainingPhotos = 0;
                         imageAssetsName:(NSString *)named {
     UIImage *imageExample = [UIImage imageNamed:named];
     
-    [self.uploadPhotoManager  uploadUserImage:imageExample
-                                        title:imageName
-                                  description:description
-                            completionHandler:^(NSString * _Nullable photoName,
+    [self.uploadPhotoManager uploadUserImage:imageExample
+                                       title:imageName
+                                 description:description
+                           completionHandler:^(NSString * _Nullable photoName,
                                                 NSError * _Nullable error) {
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
@@ -233,6 +266,7 @@ static NSInteger remainingPhotos = 0;
         NSLog(@"[DEBUG] %s: Photo name uploaded: %@", __func__, photoName);
     }];
 }
+*/
 
 #pragma mark - UICollectionViewDataSource
 
@@ -282,11 +316,11 @@ static NSInteger remainingPhotos = 0;
 }
 
 #pragma mark - Custom accessors
-- (UploadPhotoManager *)uploadPhotoManager {
-    if (_uploadPhotoManager) return _uploadPhotoManager;
-    _uploadPhotoManager = [[UploadPhotoManager alloc] init];
-    return _uploadPhotoManager;
-}
+//- (UploadPhotoManager *)uploadPhotoManager {
+//    if (_uploadPhotoManager) return _uploadPhotoManager;
+//    _uploadPhotoManager = [[UploadPhotoManager alloc] init];
+//    return _uploadPhotoManager;
+//}
 
 - (UICollectionView *)collectionView {
     if (_collectionView) return _collectionView;

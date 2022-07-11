@@ -6,12 +6,24 @@
 //
 
 #import "HomeViewController.h"
+#import "Upload/Handlers/UploadPhotoManager.h"
+#import "../../Common/Constants/Constants.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <UploadPhotoManagerDelegate>
+
+@property (nonatomic, strong) UploadPhotoManager *uploadManager;
 
 @end
 
 @implementation HomeViewController
+
+//- (instancetype)init {
+//    self = [super init];
+//    if (self) {
+//        self.uploadManager = [[UploadPhotoManager alloc] init];
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,7 +38,7 @@
                                                          image:popularIconOutlined
                                                  selectedImage:popularIcon];
     
-    UploadViewController *uploadVC = [[UploadViewController alloc] init];
+    UploadViewController *uploadVC = [[UploadViewController alloc] initWithUploadPhotoManager:self.uploadManager];
 //    UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
     UIImage *uploadIcon = [[UIImage imageNamed:@"ic_publish"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *uploadIconOutlined = [[UIImage imageNamed:@"ic_publish_outlined"]
@@ -62,13 +74,39 @@
 #pragma mark - UITabBarControllerDelegate
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     if ([viewController isKindOfClass:[UploadViewController class]]) {
-        UploadViewController *uploadVC = [[UploadViewController alloc] init];
+        UploadViewController *uploadVC = [[UploadViewController alloc] initWithUploadPhotoManager:self.uploadManager];
         UINavigationController *uploadNavi = [[UINavigationController alloc] initWithRootViewController:uploadVC];
         uploadNavi.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:uploadNavi animated:YES completion:nil];
         return NO;
     }
     return YES;
+}
+
+#pragma mark - UploadPhotoManagerDelegate
+
+- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode {
+    switch (errorCode) {
+        case kNetworkError:
+            NSLog(@"[DEBUG] %s: Network error!", __func__);
+            break;
+        case kServerError:
+            NSLog(@"[DEBUG] %s: Server error!", __func__);
+            break;
+        case kNoDataError:
+            NSLog(@"[DEBUG] %s: No data error!", __func__);
+        default:
+            NSLog(@"[DEBUG] %s: Upload finished! Continuing...", __func__);
+            break;
+    }
+}
+
+- (UploadPhotoManager *)uploadManager {
+    if (_uploadManager) return _uploadManager;
+    
+    _uploadManager = [[UploadPhotoManager alloc] init];
+    _uploadManager.delegate = self;
+    return _uploadManager;
 }
 
 @end
