@@ -43,6 +43,7 @@
 #define kPopularPhotosMethod @"flickr.photos.getPopular"
 #define kGetAlbumInfosMethod @"flickr.photosets.getList"
 #define kGetAlbumDetailPhotosMethod @"flickr.photosets.getPhotos"
+#define kAddPhotoToPhotosetMethod @"flickr.photosets.addPhoto"
 #define kCallbackURLScheme @"flickrz"
 
 #define kUploadEndpoint @"up.flickr.com/services/upload/"

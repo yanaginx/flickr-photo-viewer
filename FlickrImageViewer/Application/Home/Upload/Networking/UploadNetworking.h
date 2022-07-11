@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
             description:(NSString *)imageDescription
       completionHandler:(void (^)(NSString *  _Nullable uploadedPhotoID,
                                   NSError * _Nullable error))completion;
+
+- (void)addPhotoID:(NSString *)photoID
+         toAlbumID:(NSString *)albumID
+ completionHandler:(void (^)(NSString *  _Nullable status,
+                             NSError * _Nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

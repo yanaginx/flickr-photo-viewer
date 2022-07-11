@@ -10,6 +10,7 @@
 #import "../Networking/UploadNetworking.h"
 
 #import "../../../../Common/Constants/Constants.h"
+#import "../../../../Common/Utilities/Scope/Scope.h"
 
 #define kDefaultTitle @"Default title"
 #define kDefaultDescription @"Default description"
@@ -52,11 +53,11 @@
                 }
             }];
         }
-        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
-              __func__,
-              title,
-              description,
-              albumID);
+//        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
+//              __func__,
+//              title,
+//              description,
+//              albumID);
     });
 }
 
@@ -64,18 +65,25 @@
                withTitle:(NSString *)title
              description:(NSString *)description
                  albumID:(NSString *)albumID {
+    @weakify(self)
     [self.uploadNetworking uploadUserImage:image
                                      title:title
                                description:description
                          completionHandler:^(NSString * _Nullable uploadedPhotoID,
                                              NSError * _Nullable error) {
+        @strongify(self);
         if (error) {
             [self.delegate onFinishUploadingImageWithErrorCode:error.code];
             return;
         }
-        [self.delegate onFinishUploadingImageWithErrorCode:0];
         // add the image to album if the albumID is
-        // TODO
+        // TODO:
+        if (albumID != nil) {
+            [self _addImageWithID:uploadedPhotoID
+                        toAlbumID:albumID];
+        } else {
+            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
+        }
     }];
 }
 
@@ -83,14 +91,19 @@
 
 - (void)_addImageWithID:(NSString *)photoID
               toAlbumID:(NSString *)albumID {
-   // TODO:
-}
-
-
-- (NSURLRequest *)_addPhotoToAlbumURLRequestWithPhotoID:(NSString *)photoID
-                                                albumID:(NSString *)albumID {
-    // TODO:
-    return nil;
+    // TODO: Implement the func
+    @weakify(self)
+    [self.uploadNetworking addPhotoID:photoID
+                            toAlbumID:albumID
+                    completionHandler:^(NSString * _Nullable status,
+                                        NSError * _Nullable error) {
+        @strongify(self)
+        if (error) {
+            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
+            return;
+        }
+        [self.delegate onFinishUploadingImageWithErrorCode:0];
+    }];
 }
 
 #pragma mark - Custom Accessors

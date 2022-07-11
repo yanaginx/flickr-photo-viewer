@@ -16,7 +16,7 @@
 - (void)uploadUserImage:(UIImage *)image
                   title:(NSString *)imageName
             description:(NSString *)imageDescription
-      completionHandler:(void (^)(NSString *  _Nullable uploadedPhotoID,
+      completionHandler:(void (^)(NSString *  _Nullable,
                                   NSError * _Nullable))completion {
     NSURLRequest *request = [self _uploadPhotoURLRequestWithImage:image
                                                             title:imageName
@@ -48,11 +48,9 @@
                                                              encoding:NSASCIIStringEncoding];
         
         NSLog(@"[DEBUG] %s : response string result: %@", __func__, responseDataString);
-        NSString *uploadedPhotoID = nil;
-        BOOL isUploadSuccessful = [self _isUploadSuccessfulFromResponseData:data
-                                                        withUploadedPhotoID:uploadedPhotoID];
+        NSString *successfulPhotoID = [self _uploadedPhotoIDWithResponseData:data];
         
-        if (!isUploadSuccessful) {
+        if (successfulPhotoID == nil) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kServerError
                                              userInfo:nil];
@@ -60,9 +58,62 @@
             return;
         }
         
-        completion(uploadedPhotoID, nil);
+        completion(successfulPhotoID, nil);
         
     }] resume];
+}
+
+- (void)addPhotoID:(NSString *)photoID
+         toAlbumID:(NSString *)albumID
+ completionHandler:(void (^)(NSString *  _Nullable status,
+                             NSError * _Nullable error))completion {
+    NSURLRequest *request = [self _addPhotoToAlbumURLRequestWithPhotoID:photoID
+                                                                albumID:albumID];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request
+                                     completionHandler:^(NSData *data,
+                                                         NSURLResponse *response,
+                                                         NSError *error) {
+        if (error) {
+            if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."] ||
+                [error.localizedDescription isEqualToString:@"The request timed out."]) {
+                error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                            code:kNetworkError
+                                        userInfo:nil];
+            }
+            completion(nil, error);
+            return;
+        }
+        
+        if (!data) {
+            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                                 code:kNetworkError
+                                             userInfo:nil];
+            completion(nil, error);
+            return;
+        }
+        
+        NSString *responseDataString = [[NSString alloc] initWithData:data
+                                                             encoding:NSASCIIStringEncoding];
+        NSLog(@"[DEBUG] %s : response string result: %@", __func__, responseDataString);
+        // TODO: check the return response:
+        NSError *localError = nil;
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                     options:0
+                                                                       error:&localError];
+        if (localError) {
+            completion(nil, localError);
+            return;
+        }
+        if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"]) {
+            NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                                 code:kServerError
+                                             userInfo:nil];
+            completion(nil, error);
+            return;
+        }
+        completion(@"OK", nil);
+    }] resume];
+
 }
 
 #pragma mark - URLRequest
@@ -113,26 +164,42 @@
     return requestWithSignature;
 }
 
+- (NSURLRequest *)_addPhotoToAlbumURLRequestWithPhotoID:(NSString *)photoID
+                                                albumID:(NSString *)albumID {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:photoID forKey:@"photo_id"];
+    [params setObject:albumID forKey:@"photoset_id"];
+    [params setObject:kAddPhotoToPhotosetMethod forKey:@"method"];
+    [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
+    [params setObject:kResponseFormat forKey:@"format"];
+
+    NSURLRequest *request = [OAuth URLRequestForPath:@"/"
+                                       GETParameters:params
+                                              scheme:@"https"
+                                                host:kAPIEndpoint
+                                         consumerKey:kConsumerKey
+                                      consumerSecret:kConsumerSecret
+                                         accessToken:AccountManager.userAccessToken
+                                         tokenSecret:AccountManager.userSecretToken];
+    return request;
+}
+
 #pragma mark - Helpers
-- (BOOL)_isUploadSuccessfulFromResponseData:(NSData *)responseData
-                        withUploadedPhotoID:(NSString * _Nullable)photoID {
-    BOOL isSuccessful = NO;
-    photoID = nil;
+- (NSString *)_uploadedPhotoIDWithResponseData:(NSData *)responseData {
     NSError *localError = nil;
     NSDictionary *parsedResponse = [XMLReader dictionaryForXMLData:responseData error:&localError];
     if (localError) {
-        isSuccessful = NO;
+        return nil;
     }
     NSString *result = [[parsedResponse objectForKey:@"rsp"] objectForKey:@"stat"];
     NSString *uploadedPhotoID = [[[parsedResponse objectForKey:@"rsp"]
                                   objectForKey:@"photoid"]
                                  objectForKey:@"text"];
-
-    if ([result isEqualToString:@"ok"]) {
-        isSuccessful = YES;
-        photoID = uploadedPhotoID;
+    if (![result isEqualToString:@"ok"] ||
+        uploadedPhotoID == nil) {
+        return nil;
     }
-    return isSuccessful;
+    return uploadedPhotoID;
 }
 
 @end
