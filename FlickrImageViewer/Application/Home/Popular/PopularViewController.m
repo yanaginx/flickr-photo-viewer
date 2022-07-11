@@ -18,17 +18,18 @@
 #import "../../Error/ServerErrorViewController.h"
 #import "../../Error/NoDataErrorViewController.h"
 
+#import "ViewModels/PopularPhotoViewModel.h"
 #import "DataSource/PopularPhotoDataSource.h"
 
 #import "Views/PopularPhotoCollectionViewCell.h"
 
 
-@interface PopularViewController () <DynamicCollectionViewLayoutDataSource,
-                                     UICollectionViewDelegate,
+@interface PopularViewController () <UICollectionViewDelegate,
                                      UICollectionViewDelegateFlowLayout,
                                      NetworkErrorViewDelegate,
                                      ServerErrorViewDelegate,
-                                     NoDataErrorViewDelegate> {
+                                     NoDataErrorViewDelegate,
+                                     PopularPhotoViewModelDelegate> {
     NSInteger currentPage;
     BOOL isLastPage;
     NSInteger numOfPhotosBeforeNewFetch;
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) DynamicCollectionViewLayout *dynamicLayout;
 @property (nonatomic, strong) PopularPhotoDataSource *dataSource;
 @property (nonatomic, strong) PopularPhotoManager *popularPhotoManager;
+@property (nonatomic, strong) PopularPhotoViewModel *popularPhotoViewModel;
 
 @end
 
@@ -49,18 +51,23 @@
         currentPage = 1;
         numOfPhotosBeforeNewFetch = 5;
         isLastPage = NO;
+        
+        self.dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
+        self.popularPhotoManager = [[PopularPhotoManager alloc] init];
+        self.popularPhotoViewModel = [[PopularPhotoViewModel alloc] initWithDynamicLayout:self.dynamicLayout
+                                                                             photoManager:self.popularPhotoManager];
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                 collectionViewLayout:self.dynamicLayout];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.cyanColor;
-    [self.view addSubview:self.collectionView];
     if (currentPage != 1) currentPage = 1;
-    [self setupCollectionView];
-    [self getPhotoURLsForPage:currentPage];
+    [self initialSetup];
+    [self.popularPhotoViewModel getPhotosForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -78,43 +85,16 @@
 
 
 
-#pragma mark - Private methods
+#pragma mark - Operations
 
-- (void)getPhotoURLsForPage:(NSInteger)pageNum {
-    [self.popularPhotoManager getPopularPhotoURLsWithPage:pageNum
-                                        completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
-                                                                                 NSError * _Nullable error) {
-        NSLog(@"[DEBUG] %s : API called!", __func__);
-        if (error) {
-            switch (error.code) {
-                case kNetworkError:
-                    // Network error view
-                    NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [self viewNetworkError];
-                    break;
-                case kNoDataError:
-                    // No data error view
-                    NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [self viewNoDataError];
-                    break;
-                default:
-                    // Error occur view
-                    NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [self viewServerError];
-                    break;
-            }
-            return;
-        }
-        
-        if (photosFetched.count == 0) {
-            self->isLastPage = YES;
-        }
-//        [self.photos addObjectsFromArray:photosFetched];
-        [self.dataSource.photos addObjectsFromArray:photosFetched];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.collectionView reloadData];
-        });
-    }];
+- (void)initialSetup {
+    [self setupCollectionView];
+    [self setupDynamicLayout];
+    [self setupViewModel];
+}
+
+- (void)setupViewModel {
+    self.popularPhotoViewModel.photoFetcherdelegate = self;
 }
 
 - (void)setupCollectionView {
@@ -122,18 +102,15 @@
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
+    [self.collectionView registerClass:[PopularPhotoCollectionViewCell class]
+            forCellWithReuseIdentifier:PopularPhotoCollectionViewCell.reuseIdentifier];
+    [self.view addSubview:self.collectionView];
 }
 
-#pragma mark - DynamicCollectionViewLayoutDataSource
-- (CGSize)dynamicCollectionViewLayout:(DynamicCollectionViewLayout *)layout
-         originalImageSizeAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.row < self.photos.count) {
-//        Photo *photo = self.photos[indexPath.row];
-    if (indexPath.row < self.dataSource.photos.count) {
-        Photo *photo = self.dataSource.photos[indexPath.row];
-        return photo.imageSize;
-    }
-    return CGSizeMake(0.1, 0.1);
+- (void)setupDynamicLayout {
+    self.dynamicLayout.dataSource = self.popularPhotoViewModel;
+    self.dynamicLayout.fixedHeight = kIsFixedHeight;
+    self.dynamicLayout.rowMaximumHeight = kMaxRowHeight;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -141,45 +118,81 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize size = CGSizeZero;
-    size = [self.dynamicLayout sizeForPhotoAtIndexPath:indexPath];
+    size = [self.popularPhotoViewModel itemSizeAtIndexPath:indexPath];
     return size;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
-    if (indexPath.row == self.dataSource.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
+    if (indexPath.row == self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
+        !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self getPhotoURLsForPage:currentPage];
+        [self.popularPhotoViewModel getPhotosForPage:currentPage];
     }
 }
+
+#pragma mark - PopularPhotoViewModelDelegate
+- (void)onFinishGettingPhotosWithErrorCode:(NSNumber *)errorCodeNumber
+                            lastPageStatus:(NSNumber *)isLastPageNumber {
+    NSInteger errorCode = [errorCodeNumber integerValue];
+    BOOL isLastPage = [isLastPageNumber boolValue];
+   
+    if (errorCode != 0) {
+        switch (errorCode) {
+            case kNetworkError:
+                // Network error view
+                NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                [self viewNetworkError];
+                break;
+            case kNoDataError:
+                // No data error view
+                NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                [self viewNoDataError];
+                break;
+            default:
+                // Error occur view
+                NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                [self viewServerError];
+                break;
+        }
+        return;
+    }
+    self->isLastPage = isLastPage;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
+}
+
 
 #pragma mark - NetworkErrorViewDelegate
 
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self.popularPhotoViewModel getPhotosForPage:currentPage];
+
 }
 
 #pragma mark - Private methods
 - (void)viewNetworkError {
     // Check if there is any image appear:
-//    if (self.photos.count > 0) {
-    if (self.dataSource.photos.count > 0) {
+    if (self.popularPhotoViewModel.numberOfItems > 0) {
         // Display toast only
         [self displayNetworkErrorToast];
     } else {
@@ -238,39 +251,10 @@
 
 
 #pragma mark - Custom Accessors
-- (DynamicCollectionViewLayout *)dynamicLayout {
-    if (_dynamicLayout) return _dynamicLayout;
-
-    _dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
-    _dynamicLayout.dataSource = self;
-    _dynamicLayout.fixedHeight = kIsFixedHeight;
-    _dynamicLayout.rowMaximumHeight = kMaxRowHeight;
-    return _dynamicLayout;
-}
-
-- (UICollectionView *)collectionView {
-    if (_collectionView) return _collectionView;
-    
-   
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                         collectionViewLayout:self.dynamicLayout];
-
-    [_collectionView registerClass:[PopularPhotoCollectionViewCell class]
-        forCellWithReuseIdentifier:PopularPhotoCollectionViewCell.reuseIdentifier];
-    
-    return _collectionView;
-}
-
 - (PopularPhotoDataSource *)dataSource {
     if (_dataSource) return _dataSource;
-    _dataSource = [[PopularPhotoDataSource alloc] init];
+    _dataSource = [[PopularPhotoDataSource alloc] initWithViewModel:self.popularPhotoViewModel];
     return _dataSource;
-}
-
-- (PopularPhotoManager *)popularPhotoManager {
-    if (_popularPhotoManager) return _popularPhotoManager;
-    _popularPhotoManager = [[PopularPhotoManager alloc] init];
-    return _popularPhotoManager;
 }
 
 @end

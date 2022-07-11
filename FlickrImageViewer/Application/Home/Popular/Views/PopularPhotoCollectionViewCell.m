@@ -7,6 +7,11 @@
 
 #import "PopularPhotoCollectionViewCell.h"
 #import "../../../../Common/Extensions/UIView+Additions.h"
+#import "../ViewModels/PopularPhotoViewModel.h"
+
+@interface PopularPhotoCollectionViewCell ()
+
+@end
 
 @implementation PopularPhotoCollectionViewCell
 
@@ -20,7 +25,6 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        self.backgroundColor = UIColor.redColor;
         [self addSubview:self.photoImageView];
     }
     return self;
@@ -43,7 +47,6 @@
     self.photoImageView = nil;
 }
 
-
 #pragma mark - Custom Accessors
 
 - (UIImageView *)photoImageView {
@@ -51,7 +54,6 @@
         _photoImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         _photoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _photoImageView.clipsToBounds = YES;
-        _photoImageView.layer.cornerRadius = 15;
         
         [self.contentView addSubview:_photoImageView];
         [_photoImageView setAnchorTop:self.topAnchor

@@ -76,6 +76,7 @@
 		B2E6CD14287AB1A5005F3F2D /* MXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD13287AB1A5005F3F2D /* MXScrollView.m */; };
 		B2E6CD17287AB1D8005F3F2D /* MXScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD16287AB1D8005F3F2D /* MXScrollViewController.m */; };
 		B2E6CD1A287AB928005F3F2D /* ParallaxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD19287AB928005F3F2D /* ParallaxViewController.m */; };
+		B2E6CD1E287B0494005F3F2D /* PopularPhotoViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD1D287B0493005F3F2D /* PopularPhotoViewModel.m */; };
 		B2F69877286B224400CA596B /* Scope.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69876286B224400CA596B /* Scope.m */; };
 		B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */; };
 		B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */; };
@@ -239,6 +240,8 @@
 		B2E6CD16287AB1D8005F3F2D /* MXScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MXScrollViewController.m; sourceTree = "<group>"; };
 		B2E6CD18287AB928005F3F2D /* ParallaxViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParallaxViewController.h; sourceTree = "<group>"; };
 		B2E6CD19287AB928005F3F2D /* ParallaxViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParallaxViewController.m; sourceTree = "<group>"; };
+		B2E6CD1C287B0493005F3F2D /* PopularPhotoViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopularPhotoViewModel.h; sourceTree = "<group>"; };
+		B2E6CD1D287B0493005F3F2D /* PopularPhotoViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopularPhotoViewModel.m; sourceTree = "<group>"; };
 		B2F69875286B224400CA596B /* Scope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scope.h; sourceTree = "<group>"; };
 		B2F69876286B224400CA596B /* Scope.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scope.m; sourceTree = "<group>"; };
 		B2F69878286B225500CA596B /* metamacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
@@ -293,6 +296,7 @@
 		B23A30C628604B7D00E976C8 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
+				B2E6CD1B287B0266005F3F2D /* ViewModels */,
 				B2BF06DE28708D7E002F4B1B /* DataSource */,
 				B26447DC286977B500D09C10 /* Handlers */,
 				B23A30C728604B8A00E976C8 /* Views */,
@@ -802,6 +806,15 @@
 			path = MXParallaxHeader;
 			sourceTree = "<group>";
 		};
+		B2E6CD1B287B0266005F3F2D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B2E6CD1C287B0493005F3F2D /* PopularPhotoViewModel.h */,
+				B2E6CD1D287B0493005F3F2D /* PopularPhotoViewModel.m */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		B2F69873286B219600CA596B /* Defer */ = {
 			isa = PBXGroup;
 			children = (
@@ -980,6 +993,7 @@
 				B277DAD52872929300EEEBCB /* AlbumInfo.m in Sources */,
 				B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */,
 				B20A5C6C2877DBD200F692C7 /* RemainingPhotosNumberCollectionViewCell.m in Sources */,
+				B2E6CD1E287B0494005F3F2D /* PopularPhotoViewModel.m in Sources */,
 				B2CAD5932875589D007AAE9B /* PhotoForUpload.m in Sources */,
 				B2E6CD0D2878245D005F3F2D /* AlbumPickerViewController.m in Sources */,
 				B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */,

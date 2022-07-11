@@ -74,10 +74,9 @@ static void * const kMXScrollViewControllerKVOContext = (void*)&kMXScrollViewCon
     [super viewDidAppear:animated];
 
     if (@available(iOS 11.0, *)) return;
-
-    if (self.automaticallyAdjustsScrollViewInsets) {
-        self.headerMinimumHeight = self.topLayoutGuide.length;
-    }
+//    if (self.automaticallyAdjustsScrollViewInsets) {
+//        self.headerMinimumHeight = self.topLayoutGuide.length;
+//    }
 }
 
 - (void)viewSafeAreaInsetsDidChange {

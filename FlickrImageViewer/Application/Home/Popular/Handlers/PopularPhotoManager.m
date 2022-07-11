@@ -17,7 +17,7 @@
 
 - (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
                   completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
-                                          NSError * _Nullable))completion {
+                                              NSError * _Nullable))completion {
     
     NSURLRequest *request = [self popularPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
