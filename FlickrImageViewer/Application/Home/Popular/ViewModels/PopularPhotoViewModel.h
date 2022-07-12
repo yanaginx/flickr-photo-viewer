@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)numberOfItems;
 - (NSUInteger)numberOfSections;
 - (NSURL *)itemAtIndexPath:(NSIndexPath *)indexPath;
-- (NSUUID *)identifierAtIndexPath:(NSIndexPath *)indexPath;
+- (NSString *)identifierAtIndexPath:(NSIndexPath *)indexPath;
 - (CGSize) itemSizeAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)getPhotosForPage:(NSInteger)page;

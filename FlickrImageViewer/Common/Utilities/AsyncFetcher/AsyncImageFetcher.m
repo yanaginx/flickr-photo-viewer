@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) NSOperationQueue *serialAccessQueue;
 @property (nonatomic, strong) NSOperationQueue *fetchQueue;
-@property (nonatomic, strong) NSMutableDictionary<NSUUID *, NSMutableArray<handlerBlock> *> *completionHandlers;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<handlerBlock> *> *completionHandlers;
 
 @end
 
@@ -40,7 +40,7 @@
      - completion: An optional called when the data has been fetched.
 */
 
-- (void)fetchAsyncForIdentifier:(NSUUID *)identifier
+- (void)fetchAsyncForIdentifier:(NSString *)identifier
                        imageURL:(nonnull NSURL *)imageURL
                      completion:(nullable void (^)(UIImage * _Nullable))completion {
     [self.serialAccessQueue addOperationWithBlock:^{
@@ -64,7 +64,7 @@
  - Parameter identifier: The `UUID` of the object to return.
  - Returns: The 'UIImage ' that has previously been fetched or nil.
  */
-- (UIImage *)fetchedDataForIdentifier:(NSUUID *)identifier {
+- (UIImage *)fetchedDataForIdentifier:(NSString *)identifier {
     return [self.cache objectForKey:identifier];
 }
 
@@ -74,7 +74,7 @@
  
  - Parameter identifier: The `UUID` to cancel fetches for.
  */
-- (void)cancelFetchForIdentifier:(NSUUID *)identifier {
+- (void)cancelFetchForIdentifier:(NSString *)identifier {
     [self.serialAccessQueue addOperationWithBlock:^{
         [self.fetchQueue setSuspended:YES];
         pspdf_defer {
@@ -93,7 +93,7 @@
  
  - Parameter identifier: The `UUID` to fetch data for.
  */
-- (void)fetchDataForIdentifier:(NSUUID *)identifier
+- (void)fetchDataForIdentifier:(NSString *)identifier
                       imageURL:(NSURL *)imageURL {
     // If a request has already been made for the object, do nothing more.
     if ([self operationForIdentifier:identifier] != nil) return;
@@ -132,7 +132,7 @@
  - Parameter identifier: The `UUID` of the operation to return.
  - Returns: The enqueued `ObjectFetcherOperation` or nil.
  */
-- (AsyncImageFetcherOperation *)operationForIdentifier:(NSUUID *)identifier {
+- (AsyncImageFetcherOperation *)operationForIdentifier:(NSString *)identifier {
     for (AsyncImageFetcherOperation *operation in self.fetchQueue.operations) {
         if (!operation.isCancelled && operation.identifier == identifier) {
             return operation;
@@ -149,7 +149,7 @@
  - identifier: The `UUID` of the completion handlers to call.
  - object: The fetched object to pass when calling a completion handler.
  */
-- (void)invokeCompletionHandlersForIdentifier:(NSUUID *)identifier
+- (void)invokeCompletionHandlersForIdentifier:(NSString *)identifier
                               withFetchedData:(UIImage *)fetchedData {
     NSMutableArray *completionHandlers = [self.completionHandlers objectForKey:identifier];
     if (completionHandlers == nil) {
@@ -175,13 +175,13 @@
     return _fetchQueue;
 }
 
-- (NSMutableDictionary<NSUUID *, NSMutableArray<void (^)(UIImage *)> *> *)completionHandlers {
+- (NSMutableDictionary<NSString *, NSMutableArray<void (^)(UIImage *)> *> *)completionHandlers {
     if (_completionHandlers) return _completionHandlers;
     _completionHandlers = [NSMutableDictionary dictionary];
     return _completionHandlers;
 }
 
-- (NSCache<NSUUID *, UIImage *> *)cache {
+- (NSCache<NSString *, UIImage *> *)cache {
     if (_cache) return _cache;
     _cache = [[NSCache alloc] init];
     [_cache setTotalCostLimit:500 * 1024 * 1024];

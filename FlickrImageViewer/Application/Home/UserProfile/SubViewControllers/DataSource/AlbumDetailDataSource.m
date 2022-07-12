@@ -32,7 +32,7 @@
                                            forIndexPath:indexPath];
     
     Photo *photo = self.photos[indexPath.row];
-    NSUUID *identifier = photo.identifier;
+    NSString *identifier = photo.identifier;
     NSURL *url = photo.imageURL;
     cell.representedIdentifier = identifier;
 

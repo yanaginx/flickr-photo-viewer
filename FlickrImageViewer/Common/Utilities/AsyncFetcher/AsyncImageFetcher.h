@@ -15,15 +15,15 @@ typedef void (^handlerBlock)(UIImage * _Nullable);
 
 @interface AsyncImageFetcher : NSObject
 
-@property (nonatomic, strong) NSCache<NSUUID *, UIImage *> *cache;
+@property (nonatomic, strong) NSCache<NSString *, UIImage *> *cache;
 
-- (void)fetchAsyncForIdentifier:(NSUUID *)identifier
+- (void)fetchAsyncForIdentifier:(NSString *)identifier
                        imageURL:(NSURL *)imageURL
                      completion:(nullable handlerBlock)completion;
 
-- (UIImage *)fetchedDataForIdentifier:(NSUUID *)identifier;
+- (UIImage *)fetchedDataForIdentifier:(NSString *)identifier;
 
-- (void)cancelFetchForIdentifier:(NSUUID *)identifier;
+- (void)cancelFetchForIdentifier:(NSString *)identifier;
 
 @end
 

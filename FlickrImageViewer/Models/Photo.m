@@ -13,7 +13,8 @@
                        imageSize:(CGSize)size {
     self = [super init];
     if (self) {
-        self.identifier = [[NSUUID alloc] init];
+//        self.identifier = [[NSUUID alloc] init];
+        self.identifier = imageURL.absoluteString;
         self.imageURL = imageURL;
         self.imageSize = size;
     }

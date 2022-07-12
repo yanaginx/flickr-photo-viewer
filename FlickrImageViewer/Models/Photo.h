@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Photo : NSObject
 
-@property (nonatomic, strong) NSUUID *identifier;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic) CGSize imageSize;
 

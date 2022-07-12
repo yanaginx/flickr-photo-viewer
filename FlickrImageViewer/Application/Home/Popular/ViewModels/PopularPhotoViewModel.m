@@ -85,7 +85,7 @@
     return self.photos[indexPath.row].imageURL;
 }
 
-- (NSUUID *)identifierAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)identifierAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row >= self.photos.count) {
         return nil;
     }

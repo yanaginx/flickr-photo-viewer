@@ -14,7 +14,7 @@
 @implementation AsyncImageFetcherOperation
 
 #pragma mark - Initialization
-- (instancetype)initWithIdentifier:(NSUUID *)identifier
+- (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL {
     self = [super init];
     if (self) {

@@ -12,12 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AsyncImageFetcherOperation : NSOperation
 
-@property NSUUID *identifier;
+//@property NSUUID *identifier;
+@property NSString *identifier;
 @property NSURL *imageURL;
 @property UIImage *fetchedData;
 @property NSError *error;
 
-- (instancetype)initWithIdentifier:(NSUUID *)identifier
+- (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL;
 
 @end

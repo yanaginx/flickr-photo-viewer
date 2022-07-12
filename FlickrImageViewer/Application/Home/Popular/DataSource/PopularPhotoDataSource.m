@@ -42,7 +42,7 @@
     PopularPhotoCollectionViewCell *cell = [collectionView
                                             dequeueReusableCellWithReuseIdentifier:[PopularPhotoCollectionViewCell reuseIdentifier]
                                             forIndexPath:indexPath];
-    NSUUID *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
+    NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
     NSURL *url = [self.popularPhotoViewModel itemAtIndexPath:indexPath];;
     if (identifier == nil || url == nil) return cell;
     
@@ -69,7 +69,7 @@
 /// Tag: Prefetching
 - (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     for (NSIndexPath *indexPath in indexPaths) {
-        NSUUID *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
+        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
         NSURL *url = [self.popularPhotoViewModel itemAtIndexPath:indexPath];
         [self.asyncFetcher fetchAsyncForIdentifier:identifier
                                           imageURL:url
@@ -80,7 +80,7 @@
 /// Tag: Cancel Prefetching
 - (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     for (NSIndexPath *indexPath in indexPaths) {
-        NSUUID *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
+        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
         [self.asyncFetcher cancelFetchForIdentifier:identifier];
     }
 }
