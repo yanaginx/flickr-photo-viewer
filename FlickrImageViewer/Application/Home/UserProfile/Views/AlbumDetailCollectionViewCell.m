@@ -51,7 +51,7 @@
         _photoImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         _photoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _photoImageView.clipsToBounds = YES;
-        _photoImageView.layer.cornerRadius = 15;
+//        _photoImageView.layer.cornerRadius = 15;
         
         [self.contentView addSubview:_photoImageView];
         [_photoImageView setAnchorTop:self.topAnchor

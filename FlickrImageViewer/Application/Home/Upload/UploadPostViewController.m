@@ -301,7 +301,6 @@
                 [cell configureWithImage:result];
             }
         }];
-        cell.photoImageView.layer.cornerRadius = 0.0f;
         return cell;
     }
 }

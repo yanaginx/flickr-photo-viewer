@@ -32,7 +32,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = UIColor.whiteColor;
-        self.layer.cornerRadius = 15;
+//        self.layer.cornerRadius = 15;
         [self addSubview:self.albumImageView];
         [self addSubview:self.albumNameLabel];
         [self addSubview:self.dateCreatedLabel];
