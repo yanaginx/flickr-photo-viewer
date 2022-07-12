@@ -51,13 +51,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view addSubview:self.collectionView];
-    [self setupCollectionView];
-    [self setupTitleView];
+    [self _setupViews];
     
     if (currentPage != 1) currentPage = 1;
-    [self getAlbumDetailForAlbumID:self.albumInfo.albumID
-                           pageNum:1];
+    [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                            pageNum:1];
     // Do any additional setup after loading the view.
 }
 
@@ -70,16 +68,21 @@
                                                self.collectionView.bounds.size.width / 2 - _fixedFlowLayout.minimumLineSpacing);
 }
 
-
 #pragma mark - Operations
-- (void)setupCollectionView {
+- (void)_setupViews {
+    [self _setupCollectionView];
+    [self _setupTitleView];
+}
+
+- (void)_setupCollectionView {
+    [self.view addSubview:self.collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
 }
 
-- (void)setupTitleView {
+- (void)_setupTitleView {
     UIImageView *albumCoverImageView = [[UIImageView alloc] init];
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(globalQueue, ^{
@@ -94,12 +97,13 @@
     });
 //    self.navigationItem.titleView = albumCoverImageView;
     self.navigationItem.title = self.albumInfo.albumName;
-    self.navigationController.navigationBar.prefersLargeTitles = YES;
+//    self.navigationController.navigationBar.prefersLargeTitles = YES;
+    self.navigationController.navigationBar.tintColor = UIColor.blackColor;
 }
 
 #pragma mark - Private methods
-- (void)getAlbumDetailForAlbumID:(NSString *)albumID
-                         pageNum:(NSInteger)pageNum {
+- (void)_getAlbumDetailForAlbumID:(NSString *)albumID
+                          pageNum:(NSInteger)pageNum {
     [self.albumDetailPhotoManager getAlbumDetailPhotosForAlbumID:albumID
                                                            page:pageNum
                                               completionHandler:^(NSMutableArray<Photo *> * _Nullable photos,
@@ -111,17 +115,17 @@
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [self viewNetworkError];
+                    [self _viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [self viewNoDataError];
+                    [self _viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [self viewServerError];
+                    [self _viewServerError];
                     break;
             }
             return;
@@ -136,17 +140,17 @@
     }];
 }
 
-- (void)viewNetworkError {
+- (void)_viewNetworkError {
     // Check if there is any image appear:
     if (self.dataSource.photos.count > 0) {
         // Display toast only
-        [self displayNetworkErrorToast];
+        [self _displayNetworkErrorToast];
     } else {
-        [self displayNetworkErrorView];
+        [self _displayNetworkErrorView];
     }
 }
 
-- (void)displayNetworkErrorView {
+- (void)_displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -156,7 +160,7 @@
     });
 }
 
-- (void)displayNetworkErrorToast {
+- (void)_displayNetworkErrorToast {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *message = @"Network connection unavailable";
         
@@ -174,7 +178,7 @@
     });
 }
 
-- (void)viewNoDataError {
+- (void)_viewNoDataError {
     dispatch_async(dispatch_get_main_queue(), ^{
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
         noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -184,7 +188,7 @@
     });
 }
 
-- (void)viewServerError {
+- (void)_viewServerError {
     dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
         serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -201,8 +205,8 @@
     if (indexPath.row == self.dataSource.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self getAlbumDetailForAlbumID:self.albumInfo.albumID
-                               pageNum:currentPage];
+        [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                                pageNum:currentPage];
     }
 }
 
@@ -210,24 +214,24 @@
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
-    [self getAlbumDetailForAlbumID:self.albumInfo.albumID
-                           pageNum:currentPage];
+    [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                            pageNum:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
-    [self getAlbumDetailForAlbumID:self.albumInfo.albumID
-                           pageNum:currentPage];
+    [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                            pageNum:currentPage];
 }
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
-    [self getAlbumDetailForAlbumID:self.albumInfo.albumID
-                           pageNum:currentPage];
+    [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                            pageNum:currentPage];
 }
 
 

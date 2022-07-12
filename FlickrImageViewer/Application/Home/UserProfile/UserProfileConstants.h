@@ -11,6 +11,7 @@
 //#define kStatusBarHeight UIApplication.sharedApplication.statusBarFrame.size.height
 #define kStatusBarHeight 0
 #define kTabBarHeight self.tabBarController.tabBar.frame.size.height
+#define kNavigationBarHeight self.navigationController.navigationBar.frame.size.height
 #define kSpacing 20
 #define kHeaderHeight 200
 #define kSegmentedControlHeight 40
@@ -18,9 +19,11 @@
 //#define kSegmentedControlBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - kHeaderHeight - kSegmentedControlHeight - kStatusBarHeight)
 #define kSegmentedControlBottomConstant -(self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - kHeaderHeight + kHeaderHeight - kSegmentedControlHeight - kStatusBarHeight)
 
-#define kAvatarSize 80
+#define kHeaderViewMargin 20
+#define kHeaderViewSpacing 10
+#define kAvatarSize 60
 #define kAvatarX (self.view.center.x - kAvatarSize / 2)
-#define kAvatarY (self.view.center.y - kTabBarHeight - kStatusBarHeight * 3 / 2)
+#define kAvatarY (kHeaderViewSpacing + kNavigationBarHeight)
 
 #define kAvatarLead (self.view.frame.size.width / 2 - kAvatarSize / 2)
 #define kAvatarTrail -(kAvatarLead)
@@ -31,14 +34,14 @@
 #define kNumberOfPhotoBottom -(self.view.frame.size.height / 6)
 
 #define kNameLabelWidth self.view.frame.size.width
-#define kNameLabelHeight 40
-#define kNameLabelX 0
-#define kNameLabelY (self.view.center.y - kTabBarHeight * 3 / 4)
+#define kNameLabelHeight 20
+#define kNameLabelX (self.view.center.x - kNameLabelWidth / 2)
+#define kNameLabelY (kNavigationBarHeight + kAvatarSize + 2 * kHeaderViewSpacing)
 
 #define kNumberOfPhotoLabelWidth self.view.frame.size.width
-#define kNumberOfPhotoLabelHeight 40
-#define kNumberOfPhotoLabelX 0
-#define kNumberOfPhotoLabelY (self.view.center.y - kAvatarSize / 2)
+#define kNumberOfPhotoLabelHeight 20
+#define kNumberOfPhotoLabelX (self.view.center.x - kNumberOfPhotoLabelWidth / 2)
+#define kNumberOfPhotoLabelY (kNavigationBarHeight + kAvatarSize + kHeaderViewSpacing + kNameLabelHeight + 2 * kHeaderViewSpacing)
 
 #define kSettingButtonMargin 10
 #define kSettingButtonSize 30

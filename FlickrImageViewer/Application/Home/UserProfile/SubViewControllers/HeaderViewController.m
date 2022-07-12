@@ -22,15 +22,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = kAppleBlueAlpha;
-    [self.view addSubview:self.avatarImageView];
-    [self.view addSubview:self.nameLabel];
-    [self.view addSubview:self.numberOfPhotosLabel];
+    [self _setupViews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 //    if ([self.nameLabel.text isEqualToString:@"Display name"]) {
-    [self getUserProfile];
+    [self _getUserProfile];
 //    }
 }
 
@@ -40,7 +37,7 @@
 //}
 
 #pragma mark - Operations
-- (void)getUserProfile {
+- (void)_getUserProfile {
     [self.userProfileManager getUserProfileWithCompletionHandler:^(NSURL * _Nullable avatarURL,
                                                                    NSString * _Nullable name,
                                                                    NSString * _Nullable numberOfPhotos,
@@ -65,34 +62,81 @@
             return;
         }
         
-        [self configureNameWithString:name];
-        [self configureAvatarWithImageURL:avatarURL];
-        [self configureNumberOfPhotosWithString:numberOfPhotos];
+        [self _configureNameWithString:name];
+        [self _configureAvatarWithImageURL:avatarURL];
+        [self _configureNumberOfPhotosWithString:numberOfPhotos];
     }];
+}
+
+#pragma mark - Views setup
+- (void)_setupViews {
+    self.view.backgroundColor = UIColor.whiteColor;
+    [self _setupAvatarImageView];
+    [self _setupNameLabel];
+    [self _setupNumberOfPhotosLabel];
+}
+
+- (void)_setupAvatarImageView {
+    [self.view addSubview:self.avatarImageView];
+    self.avatarImageView.frame = CGRectMake(kAvatarX,
+                                            kAvatarY + self._statusBarHeight,
+                                            kAvatarSize,
+                                            kAvatarSize);
+    self.avatarImageView.layer.cornerRadius = kAvatarSize / 2;
+    self.avatarImageView.layer.borderWidth = 1.0f;
+    self.avatarImageView.layer.masksToBounds = YES;
+    self.avatarImageView.layer.borderColor = kAppleBlue.CGColor;
+    self.avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.avatarImageView.image = [UIImage imageNamed:@"ic_person"];
+}
+
+- (void)_setupNameLabel {
+    // TODO: Setup the name label frame
+    [self.view addSubview:self.nameLabel];
+    self.nameLabel.frame = CGRectMake(kNameLabelX,
+                                      kNameLabelY + self._statusBarHeight,
+                                      kNameLabelWidth,
+                                      kNameLabelHeight);
+    self.nameLabel.textAlignment = NSTextAlignmentCenter;
+//    self.nameLabel.textColor = kAppleBlue;
+    self.nameLabel.text = @"Display name";
+}
+
+- (void)_setupNumberOfPhotosLabel {
+    // TODO: Setup the number of photos label frame
+    [self.view addSubview:self.numberOfPhotosLabel];
+    self.numberOfPhotosLabel.frame = CGRectMake(kNumberOfPhotoLabelX,
+                                                kNumberOfPhotoLabelY + self._statusBarHeight,
+                                                kNumberOfPhotoLabelWidth,
+                                                kNumberOfPhotoLabelHeight);
+    self.numberOfPhotosLabel.textAlignment = NSTextAlignmentCenter;
+//    self.numberOfPhotosLabel.textColor = ;
+    self.numberOfPhotosLabel.text = @"#Number Photos";
 }
 
 #pragma mark - Helpers
 
-- (void)configureAvatarWithImageURL:(NSURL *)avatarImageURL {
+- (void)_configureAvatarWithImageURL:(NSURL *)avatarImageURL {
     dispatch_async(dispatch_get_main_queue(), ^{
 //        self.avatarImageView.image = UIImage imageNamed:@"ic_"
         [self.avatarImageView setImageUsingURL:avatarImageURL];
     });
 }
 
-- (void)configureNameWithString:(NSString *)nameString {
+- (void)_configureNameWithString:(NSString *)nameString {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = nameString;
     });
 }
 
-- (void)configureNumberOfPhotosWithString:(NSString *)numberOfPhotos {
+- (void)_configureNumberOfPhotosWithString:(NSString *)numberOfPhotos {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.numberOfPhotosLabel.text = [NSString stringWithFormat:@"%@ Photos", numberOfPhotos];
     });
 }
 
-- (void)setAvatarImageViewAnchor {
+- (void)_setAvatarImageViewAnchor {
+    self.avatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.avatarImageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor
                                                     constant:kAvatarLead] setActive:YES];;
     [[self.avatarImageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
@@ -103,7 +147,8 @@
                                                    constant:kAvatarBottom] setActive:YES];
 }
 
-- (void)setNameLabelAnchor {
+- (void)_setNameLabelAnchor {
+    self.nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.nameLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor
                                                   constant:0] setActive:YES];
     [[self.nameLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
@@ -114,7 +159,8 @@
                                                  constant:kNameLabelBottom] setActive:YES];
 }
 
-- (void)setNumberOfPhotosLabelAnchor {
+- (void)_setNumberOfPhotosLabelAnchor {
+    self.numberOfPhotosLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.numberOfPhotosLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor
                                                     constant:0] setActive:YES];;
     [[self.numberOfPhotosLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor
@@ -124,38 +170,39 @@
     [[self.numberOfPhotosLabel.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor
                                                    constant:kNumberOfPhotoBottom] setActive:YES];
 }
+
+- (CGFloat)_statusBarHeight {
+    UIWindowScene * scene = nil;
+    for (UIWindowScene* wScene in [UIApplication sharedApplication].connectedScenes){
+        if (wScene.activationState == UISceneActivationStateForegroundActive){
+            scene = wScene;
+            break;
+        }
+    }
+    CGFloat statusBarHeight = scene.statusBarManager.statusBarFrame.size.height;
+    return statusBarHeight;
+}
+
 #pragma mark - Custom accessors
 
 - (UIImageView *)avatarImageView {
     if (_avatarImageView) return _avatarImageView;
     _avatarImageView = [[UIImageView alloc] init];
-    _avatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    _avatarImageView.layer.cornerRadius = kAvatarSize / 2;
-    _avatarImageView.layer.borderWidth = 1.0f;
-    _avatarImageView.layer.masksToBounds = YES;
-    _avatarImageView.layer.borderColor = UIColor.whiteColor.CGColor;
-    _avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _avatarImageView.image = [UIImage imageNamed:@"ic_person"];
+
     return _avatarImageView;
 }
 
 - (UILabel *)nameLabel {
     if (_nameLabel) return _nameLabel;
     _nameLabel = [[UILabel alloc] init];
-    _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _nameLabel.textAlignment = NSTextAlignmentCenter;
-    _nameLabel.textColor = UIColor.whiteColor;
-    _nameLabel.text = @"Display name";
+
     return _nameLabel;
 }
 
 - (UILabel *)numberOfPhotosLabel {
     if (_numberOfPhotosLabel) return _numberOfPhotosLabel;
     _numberOfPhotosLabel = [[UILabel alloc] init];
-    _numberOfPhotosLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _numberOfPhotosLabel.textAlignment = NSTextAlignmentCenter;
-    _numberOfPhotosLabel.textColor = UIColor.whiteColor;
-    _numberOfPhotosLabel.text = @"#Number Photos";
+
     return _numberOfPhotosLabel;
 
 }

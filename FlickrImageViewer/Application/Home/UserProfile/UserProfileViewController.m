@@ -36,34 +36,34 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
-    [self.navigationItem setRightBarButtonItem:self.settingButton animated:NO];
+//    [self.navigationItem setRightBarButtonItem:self.settingButton animated:NO];
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
 //                         forBarMetrics:UIBarMetricsDefault]; //UIImageNamed:@"transparent.png"
 //    self.navigationController.navigationBar.shadowImage = [UIImage new];////UIImageNamed:@"transparent.png"
 //    self.navigationController.navigationBar.translucent = YES;
 //    self.navigationController.view.backgroundColor = [UIColor clearColor];
     
-    [self setupView];
+    [self _setupView];
 }
 
 #pragma mark - Handlers
-- (void)onLogoutButtonClicked {
-    [self presentViewController:self.logoutModal animated:YES completion:nil];
-}
+//- (void)onLogoutButtonClicked {
+//    [self presentViewController:self.logoutModal animated:YES completion:nil];
+//}
 
 - (void)onSegmentedSelectionChanged:(UISegmentedControl *)segment {
     [self.segmentedControl changeUnderlinePosition];
-    [self updateView];
+    [self _updateView];
 }
 
 #pragma mark - Private methods
-- (void)setupView {
+- (void)_setupView {
 //    [self setupHeader];
-    [self setupSegmentedControls];
-    [self updateView];
+    [self _setupSegmentedControls];
+    [self _updateView];
 }
 
-- (void)setupHeader {
+- (void)_setupHeader {
     [self addChildViewController:self.headerViewController];
     
     
@@ -80,7 +80,7 @@
     [self.headerViewController didMoveToParentViewController:self];
 }
 
-- (void)setupSegmentedControls {
+- (void)_setupSegmentedControls {
     [self.segmentedControl removeAllSegments];
     [self.segmentedControl insertSegmentWithTitle:@"Public photos" atIndex:0 animated:NO];
     [self.segmentedControl insertSegmentWithTitle:@"Album" atIndex:1 animated:NO];
@@ -106,7 +106,7 @@
 
 }
 
-- (void)addAsChildViewController:(UIViewController *)viewController {
+- (void)_addAsChildViewController:(UIViewController *)viewController {
     [self addChildViewController:viewController];
     
     [self.view addSubview:viewController.view];
@@ -120,65 +120,65 @@
     [viewController didMoveToParentViewController:self];
 }
 
-- (void)removeAsChildViewController:(UIViewController *)viewController {
+- (void)_removeAsChildViewController:(UIViewController *)viewController {
     [viewController willMoveToParentViewController:nil];
     [viewController.view removeFromSuperview];
     [viewController removeFromParentViewController];
 }
 
-- (void)updateView {
+- (void)_updateView {
     if (self.segmentedControl.selectedSegmentIndex == 0) {
 //        [self removeAsChildViewController:self.albumViewController];
-        [self removeAsChildViewController:self.albumViewNavi];
-        [self addAsChildViewController:self.publicPhotoNavi];
+        [self _removeAsChildViewController:self.albumViewNavi];
+        [self _addAsChildViewController:self.publicPhotoNavi];
     } else {
-        [self removeAsChildViewController:self.publicPhotoNavi];
+        [self _removeAsChildViewController:self.publicPhotoNavi];
 //        [self addAsChildViewController:self.albumViewController];
-        [self addAsChildViewController:self.albumViewNavi];
+        [self _addAsChildViewController:self.albumViewNavi];
     }
 }
 
 
-- (void)logout {
+- (void)_logout {
     /// Navigate to Login Screen
     [AccountManager removeAccountInfo];
     [AppDelegate.shared updateView];
 }
 
 #pragma mark - Custom accessors
-- (UIAlertController *)logoutModal {
-    if (_logoutModal) return _logoutModal;
-    
-    _logoutModal = [UIAlertController alertControllerWithTitle:@"Hope to see you soon"
-                                                       message:@"Are you sure you want to logout?"
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Log out"
-                                                     style:UIAlertActionStyleDestructive
-                                                   handler:^(UIAlertAction * _Nonnull action) {
-        [self logout];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:nil];
-    [_logoutModal addAction:action];
-    [_logoutModal addAction:cancelAction];
-    _logoutModal.preferredAction = action;
-    return _logoutModal;
-}
-
-- (UIBarButtonItem *)settingButton {
-    if (_settingButton) return _settingButton;
-    UIAction *logoutAction = [UIAction actionWithTitle:@"Logout"
-                                                 image:nil
-                                            identifier:nil
-                                               handler:^(__kindof UIAction * _Nonnull action) {
-        [self onLogoutButtonClicked];
-    }];
-    UIMenu *settingMenu = [UIMenu menuWithChildren:@[logoutAction]];
-    _settingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings"]
-                                                       menu:settingMenu];
-    return _settingButton;
-}
+//- (UIAlertController *)logoutModal {
+//    if (_logoutModal) return _logoutModal;
+//
+//    _logoutModal = [UIAlertController alertControllerWithTitle:@"Hope to see you soon"
+//                                                       message:@"Are you sure you want to logout?"
+//                                                preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Log out"
+//                                                     style:UIAlertActionStyleDestructive
+//                                                   handler:^(UIAlertAction * _Nonnull action) {
+//        [self _logout];
+//    }];
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+//                                                           style:UIAlertActionStyleCancel
+//                                                         handler:nil];
+//    [_logoutModal addAction:action];
+//    [_logoutModal addAction:cancelAction];
+//    _logoutModal.preferredAction = action;
+//    return _logoutModal;
+//}
+//
+//- (UIBarButtonItem *)settingButton {
+//    if (_settingButton) return _settingButton;
+//    UIAction *logoutAction = [UIAction actionWithTitle:@"Logout"
+//                                                 image:nil
+//                                            identifier:nil
+//                                               handler:^(__kindof UIAction * _Nonnull action) {
+//        [self _onLogoutButtonClicked];
+//    }];
+//    UIMenu *settingMenu = [UIMenu menuWithChildren:@[logoutAction]];
+//    _settingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings"]
+//                                                       menu:settingMenu];
+//    return _settingButton;
+//}
 
 - (UISegmentedControl *)segmentedControl {
     if (_segmentedControl) return _segmentedControl;
