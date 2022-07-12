@@ -41,7 +41,7 @@
     [self.view addSubview:self.beginButton];
     
     [self.beginButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
-    [self.beginButton addTarget:self action:@selector(onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
+    [self.beginButton addTarget:self action:@selector(_onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
     
     self.loginHandler.delegate = self;
     
@@ -57,7 +57,7 @@
 
 #pragma mark - Private methods
 
-- (void)onClickGetStarted {
+- (void)_onClickGetStarted {
     [self.beginButton showLoading];
     [self.loginHandler startAuthenticationProcess];
 }

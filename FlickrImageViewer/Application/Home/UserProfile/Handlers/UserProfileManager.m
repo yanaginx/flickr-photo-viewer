@@ -21,7 +21,7 @@
                                                       NSString * _Nullable,
                                                       NSString * _Nullable,
                                                       NSError * _Nullable))completion {
-    NSURLRequest *request = [self userProfileURLRequest];
+    NSURLRequest *request = [self _userProfileURLRequest];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
                                                          NSURLResponse *response,
@@ -81,7 +81,7 @@
 }
 
 #pragma mark - Network related
-- (NSURLRequest *)userProfileURLRequest {
+- (NSURLRequest *)_userProfileURLRequest {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:kUserProfileMethod forKey:@"method"];

@@ -66,7 +66,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.cyanColor;
     if (currentPage != 1) currentPage = 1;
-    [self initialSetup];
+    [self _initialSetup];
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -87,17 +87,17 @@
 
 #pragma mark - Operations
 
-- (void)initialSetup {
-    [self setupCollectionView];
-    [self setupDynamicLayout];
-    [self setupViewModel];
+- (void)_initialSetup {
+    [self _setupCollectionView];
+    [self _setupDynamicLayout];
+    [self _setupViewModel];
 }
 
-- (void)setupViewModel {
+- (void)_setupViewModel {
     self.popularPhotoViewModel.photoFetcherdelegate = self;
 }
 
-- (void)setupCollectionView {
+- (void)_setupCollectionView {
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
@@ -107,7 +107,7 @@
     [self.view addSubview:self.collectionView];
 }
 
-- (void)setupDynamicLayout {
+- (void)_setupDynamicLayout {
     self.dynamicLayout.dataSource = self.popularPhotoViewModel;
     self.dynamicLayout.fixedHeight = kIsFixedHeight;
     self.dynamicLayout.rowMaximumHeight = kMaxRowHeight;
@@ -144,17 +144,17 @@
             case kNetworkError:
                 // Network error view
                 NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                [self viewNetworkError];
+                [self _viewNetworkError];
                 break;
             case kNoDataError:
                 // No data error view
                 NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                [self viewNoDataError];
+                [self _viewNoDataError];
                 break;
             default:
                 // Error occur view
                 NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                [self viewServerError];
+                [self _viewServerError];
                 break;
         }
         return;
@@ -190,17 +190,17 @@
 }
 
 #pragma mark - Private methods
-- (void)viewNetworkError {
+- (void)_viewNetworkError {
     // Check if there is any image appear:
     if (self.popularPhotoViewModel.numberOfItems > 0) {
         // Display toast only
-        [self displayNetworkErrorToast];
+        [self _displayNetworkErrorToast];
     } else {
-        [self displayNetworkErrorView];
+        [self _displayNetworkErrorView];
     }
 }
 
-- (void)displayNetworkErrorView {
+- (void)_displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -210,7 +210,7 @@
     });
 }
 
-- (void)displayNetworkErrorToast {
+- (void)_displayNetworkErrorToast {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *message = @"Network connection unavailable";
         
@@ -228,7 +228,7 @@
     });
 }
 
-- (void)viewNoDataError {
+- (void)_viewNoDataError {
     dispatch_async(dispatch_get_main_queue(), ^{
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
         noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -238,7 +238,7 @@
     });
 }
 
-- (void)viewServerError {
+- (void)_viewServerError {
     dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
         serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

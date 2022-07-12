@@ -74,10 +74,10 @@
     
     if (currentPage != 1) currentPage = 1;
 
-    [self setupLayoutSegmentedControl];
-    [self setupCollectionView];
+    [self _setupLayoutSegmentedControl];
+    [self _setupCollectionView];
     
-    [self getPhotoURLsForPage:currentPage];
+    [self _getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -103,7 +103,7 @@
 
 
 #pragma mark - Private methods
-- (void)getPhotoURLsForPage:(NSInteger)pageNum {
+- (void)_getPhotoURLsForPage:(NSInteger)pageNum {
     [self.publicPhotoManager getPublicPhotoURLsWithPage:pageNum
                                       completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                                                  NSError * _Nullable error) {
@@ -113,17 +113,17 @@
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [self viewNetworkError];
+                    [self _viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [self viewNoDataError];
+                    [self _viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [self viewServerError];
+                    [self _viewServerError];
                     break;
             }
             return;
@@ -167,40 +167,43 @@
     if (indexPath.row == self.dataSource.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self getPhotoURLsForPage:currentPage];
+        [self _getPhotoURLsForPage:currentPage];
     }
 }
 
 #pragma mark - NetworkErrorViewDelegate
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self _getPhotoURLsForPage:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self _getPhotoURLsForPage:currentPage];
 }
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-    [self getPhotoURLsForPage:1];
+    currentPage = 1;
+    [self _getPhotoURLsForPage:currentPage];
 }
 
 #pragma mark - Private methods
-- (void)viewNetworkError {
+- (void)_viewNetworkError {
     // Check if there is any image appear:
     if (self.dataSource.photos.count > 0) {
         // Display toast only
-        [self displayNetworkErrorToast];
+        [self _displayNetworkErrorToast];
     } else {
-        [self displayNetworkErrorView];
+        [self _displayNetworkErrorView];
     }
 }
 
-- (void)displayNetworkErrorView {
+- (void)_displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         networkErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -210,7 +213,7 @@
     });
 }
 
-- (void)displayNetworkErrorToast {
+- (void)_displayNetworkErrorToast {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *message = @"Network connection unavailable";
         
@@ -228,7 +231,7 @@
     });
 }
 
-- (void)viewNoDataError {
+- (void)_viewNoDataError {
     dispatch_async(dispatch_get_main_queue(), ^{
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
         noDataErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -238,7 +241,7 @@
     });
 }
 
-- (void)viewServerError {
+- (void)_viewServerError {
     dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
         serverErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -249,7 +252,7 @@
     });
 }
 
-- (void)setupLayoutSegmentedControl {
+- (void)_setupLayoutSegmentedControl {
     [self.layoutSegmentedControl removeAllSegments];
     UIImage *dynamicLayoutIcon = [[UIImage imageNamed:@"ic_dynamic_layout"]
                                  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -266,7 +269,7 @@
                                                 atIndex:fixedLayoutIdx
                                                animated:NO];
     [self.layoutSegmentedControl addTarget:self
-                                    action:@selector(onSegmentedSelectionChanged:)
+                                    action:@selector(_onSegmentedSelectionChanged:)
                           forControlEvents:UIControlEventValueChanged];
     self.layoutSegmentedControl.selectedSegmentIndex = dynamicLayoutIdx;
     self.layoutSegmentedControl.frame = CGRectMake(self.view.bounds.origin.x,
@@ -277,19 +280,19 @@
     [self.layoutSegmentedControl removeBorder];
 }
 
-- (void)setupCollectionView {
+- (void)_setupCollectionView {
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
 }
 
-- (void)onSegmentedSelectionChanged:(UISegmentedControl *)segment {
-    [self updateIcon];
-    [self updateLayout];
+- (void)_onSegmentedSelectionChanged:(UISegmentedControl *)segment {
+    [self _updateIcon];
+    [self _updateLayout];
 }
 
-- (void)updateIcon {
+- (void)_updateIcon {
     if (self.layoutSegmentedControl.selectedSegmentIndex == dynamicLayoutIdx) {
         [self.layoutSegmentedControl setImage:[UIImage imageNamed:@"ic_dynamic_layout"]
                             forSegmentAtIndex:dynamicLayoutIdx];
@@ -304,15 +307,15 @@
     }
 }
 
-- (void)updateLayout {
+- (void)_updateLayout {
     if (self.layoutSegmentedControl.selectedSegmentIndex == dynamicLayoutIdx) {
-        [self switchToDynamicLayout];
+        [self _switchToDynamicLayout];
     } else {
-        [self switchToFixedLayout];
+        [self _switchToFixedLayout];
     }
 }
 
-- (void)switchToDynamicLayout {
+- (void)_switchToDynamicLayout {
     [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
     [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
 //    if (self.dataSource.photos.count > 0) {
@@ -322,7 +325,7 @@
 //    }
 }
 
-- (void)switchToFixedLayout {
+- (void)_switchToFixedLayout {
     [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
     [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
 //    if (self.dataSource.photos.count > 0) {

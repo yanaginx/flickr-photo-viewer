@@ -22,7 +22,7 @@
                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
                                           NSError * _Nullable))completion {
     
-    NSURLRequest *request = [self publicPhotoURLRequestWithPageNum:pageNum];
+    NSURLRequest *request = [self _publicPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
@@ -107,7 +107,7 @@
 }
 
 #pragma mark - Network related
-- (NSURLRequest *)publicPhotoURLRequestWithPageNum:(NSInteger)pageNum {
+- (NSURLRequest *)_publicPhotoURLRequestWithPageNum:(NSInteger)pageNum {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:kPublicPhotosMethod forKey:@"method"];

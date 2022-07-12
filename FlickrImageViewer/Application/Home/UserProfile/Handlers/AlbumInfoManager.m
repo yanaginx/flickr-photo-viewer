@@ -16,7 +16,7 @@
 - (void)getUserAlbumInfosWithPage:(NSInteger)pageNum
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable,
                                             NSError * _Nullable))completion {
-    NSURLRequest *request = [self albumInfoURLRequestWithPageNum:pageNum];
+    NSURLRequest *request = [self _albumInfoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
                                                          NSURLResponse *response,
@@ -95,7 +95,7 @@
 }
 
 #pragma mark - Network related
-- (NSURLRequest *)albumInfoURLRequestWithPageNum:(NSInteger)pageNum {
+- (NSURLRequest *)_albumInfoURLRequestWithPageNum:(NSInteger)pageNum {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:kGetAlbumInfosMethod forKey:@"method"];

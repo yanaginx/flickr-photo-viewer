@@ -56,7 +56,7 @@
     [super viewDidLoad];
     [self setupViews];
     if (currentPage != 1) currentPage = 1;
-    [self getAlbumInfosForPage:currentPage];
+    [self _getAlbumInfosForPage:currentPage];
     // Do any additional setup after loading the view.
 }
 
@@ -73,11 +73,11 @@
 
 #pragma mark - Operations
 - (void)setupViews {
-    [self setupCollectionView];
-    [self setupSaveButton];
+    [self _setupCollectionView];
+    [self _setupSaveButton];
 }
 
-- (void)setupCollectionView {
+- (void)_setupCollectionView {
     self.collectionView.backgroundColor = UIColor.lightGrayColor;
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
@@ -86,21 +86,21 @@
     [self.view addSubview:self.collectionView];
 }
 
-- (void)setupSaveButton {
+- (void)_setupSaveButton {
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save"
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
-                                                                  action:@selector(saveAlbumIDAndDismiss)];
+                                                                  action:@selector(_saveAlbumIDAndDismiss)];
     [self.navigationItem setRightBarButtonItem:saveButton];
-    [self toggleSaveButton];
+    [self _toggleSaveButton];
 }
 
-- (void)saveAlbumIDAndDismiss {
+- (void)_saveAlbumIDAndDismiss {
     [self.delegate onFinishSelectAlbumInfo:self.selectedAlbumInfo];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)toggleSaveButton {
+- (void)_toggleSaveButton {
     if (self.selectedAlbumInfo) {
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
     } else {
@@ -108,7 +108,7 @@
     }
 }
 
-- (void)getAlbumInfosForPage:(NSInteger)pageNum {
+- (void)_getAlbumInfosForPage:(NSInteger)pageNum {
    [self.albumInfoManager getUserAlbumInfosWithPage:pageNum
                                   completionHandler:^(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
                                                                                 NSError * _Nullable error) {
@@ -119,17 +119,17 @@
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
-                    [self viewNetworkError];
+                    [self _viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
-                    [self viewNoDataError];
+                    [self _viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
-                    [self viewServerError];
+                    [self _viewServerError];
                     break;
             }
             return;
@@ -144,17 +144,17 @@
     }];
 }
 
-- (void)viewNetworkError {
+- (void)_viewNetworkError {
     // Check if there is any image appear:
     if (self.dataSource.albumInfos.count > 0) {
         // Display toast only
-        [self displayNetworkErrorToast];
+        [self _displayNetworkErrorToast];
     } else {
-        [self displayNetworkErrorView];
+        [self _displayNetworkErrorView];
     }
 }
 
-- (void)displayNetworkErrorView {
+- (void)_displayNetworkErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         NetworkErrorViewController *networkErrorVC = [[NetworkErrorViewController alloc] init];
         self.networkErrorViewController = networkErrorVC;
@@ -170,7 +170,7 @@
         [self.networkErrorViewController didMoveToParentViewController:self];    });
 }
 
-- (void)displayNetworkErrorToast {
+- (void)_displayNetworkErrorToast {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *message = @"Network connection unavailable";
         
@@ -188,7 +188,7 @@
     });
 }
 
-- (void)viewNoDataError {
+- (void)_viewNoDataError {
     dispatch_async(dispatch_get_main_queue(), ^{
         NoDataErrorViewController *noDataErrorVC = [[NoDataErrorViewController alloc] init];
         self.noDataErrorViewController = noDataErrorVC;
@@ -204,7 +204,7 @@
     });
 }
 
-- (void)viewServerError {
+- (void)_viewServerError {
     dispatch_async(dispatch_get_main_queue(), ^{
         ServerErrorViewController *serverErrorVC = [[ServerErrorViewController alloc] init];
         self.serverErrorViewController = serverErrorVC;
@@ -220,9 +220,9 @@
     });
 }
 
-- (void)selectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
+- (void)_selectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
     AlbumInfo *albumInfo = self.dataSource.albumInfos[indexPath.row];
-    [self selectAlbumInfo:albumInfo];
+    [self _selectAlbumInfo:albumInfo];
     // Change the color of the cell
     AlbumInfoCollectionViewCell *cell = (AlbumInfoCollectionViewCell *)[self.collectionView
                                                                         cellForItemAtIndexPath:indexPath];
@@ -231,17 +231,17 @@
     cell.selectedBackgroundView = coloredView;
 }
 
-- (void)selectAlbumInfo:(AlbumInfo *)albumInfo {
+- (void)_selectAlbumInfo:(AlbumInfo *)albumInfo {
     NSLog(@"[DEBUG] %s : albumID: %@, albumName: %@", __func__, albumInfo.albumID, albumInfo.albumName);
     self.selectedAlbumInfo = albumInfo;
-    [self toggleSaveButton];
+    [self _toggleSaveButton];
 }
 
-- (void)deselectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
+- (void)_deselectAlbumInfoAtIndexPath:(NSIndexPath *)indexPath {
     AlbumInfo *albumInfo = self.dataSource.albumInfos[indexPath.row];
     if (albumInfo == self.selectedAlbumInfo) {
         self.selectedAlbumInfo = nil;
-        [self toggleSaveButton];
+        [self _toggleSaveButton];
     }
 }
 
@@ -252,7 +252,7 @@
     if (indexPath.row == self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self getAlbumInfosForPage:currentPage];
+        [self _getAlbumInfosForPage:currentPage];
     }
 }
 
@@ -263,7 +263,7 @@
     [self.networkErrorViewController removeFromParentViewController];
     self.networkErrorViewController = nil;
     currentPage = 1;
-    [self getAlbumInfosForPage:currentPage];
+    [self _getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
@@ -273,7 +273,7 @@
     [self.serverErrorViewController removeFromParentViewController];
     self.serverErrorViewController = nil;
     currentPage = 1;
-    [self getAlbumInfosForPage:currentPage];
+    [self _getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - NoDataErrorViewDelegate
@@ -283,16 +283,16 @@
     [self.noDataErrorViewController removeFromParentViewController];
     self.noDataErrorViewController = nil;
     currentPage = 1;
-    [self getAlbumInfosForPage:currentPage];
+    [self _getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self selectAlbumInfoAtIndexPath:indexPath];
+    [self _selectAlbumInfoAtIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self deselectAlbumInfoAtIndexPath:indexPath];
+    [self _deselectAlbumInfoAtIndexPath:indexPath];
 }
 
 #pragma mark - Custom Accessors

@@ -27,11 +27,11 @@
     NSString *secretToken;
 }
 
-- (NSURLRequest *)requestTokenURLRequest;
-- (NSURLRequest *)accessTokenURLRequestFromOAuthToken:(NSString *)request_token
+- (NSURLRequest *)_requestTokenURLRequest;
+- (NSURLRequest *)_accessTokenURLRequestFromOAuthToken:(NSString *)request_token
                                      OAuthTokenSecret:(NSString *)request_token_secret
                                         OAuthVerifier:(NSString *)verifier;
-- (NSURL *)authorizationURLFromOAuthToken:(NSString *)request_token;
+- (NSURL *)_authorizationURLFromOAuthToken:(NSString *)request_token;
 
 @end
 
@@ -62,20 +62,20 @@ static AuthenticationState currentState = GettingRequestToken;
 - (void)startAuthenticationProcess {
     switch (currentState) {
         case GettingRequestToken:
-            [self getRequestToken];
+            [self _getRequestToken];
             NSLog(@"[DEBUG] %s : currentState: GettingRequestToken", __func__);
             break;
         case GettingAuthorization:
-            [self getAuthorization];
+            [self _getAuthorization];
             NSLog(@"[DEBUG] %s : currentState: GettingAuthorization", __func__);
             break;
         case GettingAccessToken:
             // Get the access token
-            [self getAccessToken];
+            [self _getAccessToken];
             NSLog(@"[DEBUG] %s : currentState: GettingAccessToken", __func__);
             break;
         case SavingUserInfo:
-            [self saveUserInfo];
+            [self _saveUserInfo];
             NSLog(@"[DEBUG] %s: currentState: SavingUserInfo", __func__);
             break;
         default:
@@ -83,12 +83,14 @@ static AuthenticationState currentState = GettingRequestToken;
     }
 }
 
-- (void)getRequestToken {
+#pragma mark - Private methods
+
+- (void)_getRequestToken {
     if (currentState != GettingRequestToken) {
         NSLog(@"[ERROR] %s : NOT CORRECT STATE", __func__);
         return;
     }
-    NSURLRequest *request = [self requestTokenURLRequest];
+    NSURLRequest *request = [self _requestTokenURLRequest];
     @weakify(self)
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
@@ -100,27 +102,27 @@ static AuthenticationState currentState = GettingRequestToken;
                   __func__,
                   error.localizedDescription);
             [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         if (!data) {
             [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         NSString *responseDataString = [[NSString alloc] initWithData:data
                                                              encoding:NSASCIIStringEncoding];
-        if (![self isValidRequestTokenResponse:responseDataString]) {
+        if (![self _isValidRequestTokenResponse:responseDataString]) {
             [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         NSLog(@"[DEBUG] %s : request access token response: %@", __func__, responseDataString);
         
-        BOOL isTokenAndSecretParsed = [self isParseRequestTokenAndSecretSuccessfulFromQuery:responseDataString];
+        BOOL isTokenAndSecretParsed = [self _isParseRequestTokenAndSecretSuccessfulFromQuery:responseDataString];
         if (!isTokenAndSecretParsed) {
             [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         
@@ -136,20 +138,20 @@ static AuthenticationState currentState = GettingRequestToken;
     }] resume];
 }
 
-- (void)getAuthorization {
+- (void)_getAuthorization {
     if (currentState != GettingAuthorization ||
         [oauthToken isEqualToString:@""]) {
         NSLog(@"[ERROR] %s : NOT CORRECT STATE OR NOT SUFFICENT INFO", __func__);
         return;
     }
-    NSURL *authorizationURL = [self authorizationURLFromOAuthToken:oauthToken];
-    ASWebAuthenticationSession *authSession = [self authSessionWithAuthorizationURL:authorizationURL
-                                                                  callbackURLScheme:kCallbackURLScheme];
+    NSURL *authorizationURL = [self _authorizationURLFromOAuthToken:oauthToken];
+    ASWebAuthenticationSession *authSession = [self _authSessionWithAuthorizationURL:authorizationURL
+                                                                   callbackURLScheme:kCallbackURLScheme];
     // start the authorization session in view
     [self.delegate requestAuthorizationUsingAuthSession:authSession];
 }
 
-- (void)getAccessToken {
+- (void)_getAccessToken {
     if (currentState != GettingAccessToken ||
         [oauthToken isEqualToString:@""] ||
         [oauthTokenSecret isEqualToString:@""] ||
@@ -157,9 +159,9 @@ static AuthenticationState currentState = GettingRequestToken;
         NSLog(@"[ERROR] %s : NOT CORRECT STATE OR NOT SUFFICENT INFO", __func__);
         return;
     }
-    NSURLRequest *request = [self accessTokenURLRequestFromOAuthToken:oauthToken
-                                                     OAuthTokenSecret:oauthTokenSecret
-                                                        OAuthVerifier:oauthVerifier];
+    NSURLRequest *request = [self _accessTokenURLRequestFromOAuthToken:oauthToken
+                                                      OAuthTokenSecret:oauthTokenSecret
+                                                         OAuthVerifier:oauthVerifier];
     @weakify(self)
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
@@ -171,30 +173,30 @@ static AuthenticationState currentState = GettingRequestToken;
                   __func__,
                   error.localizedDescription);
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             currentState = GettingRequestToken;
             return;
         }
         if (!data) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorServerError];
-            [self resetVariables];
+            [self _resetVariables];
             currentState = GettingRequestToken;
             return;
         }
         NSString *responseDataString = [[NSString alloc] initWithData:data
                                                              encoding:NSASCIIStringEncoding];
-        if (![self isValidAccessTokenResponse:responseDataString]) {
+        if (![self _isValidAccessTokenResponse:responseDataString]) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             currentState = GettingRequestToken;
             return;
         }
         NSLog(@"[DEBUG] %s : request access token response: %@", __func__, responseDataString);
         
-        BOOL isTokenAndSecretParsed = [self isParseAccessTokenAndSecretSuccessfulFromQuery:responseDataString];
+        BOOL isTokenAndSecretParsed = [self _isParseAccessTokenAndSecretSuccessfulFromQuery:responseDataString];
         if (!isTokenAndSecretParsed) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
-            [self resetVariables];
+            [self _resetVariables];
             currentState = GettingRequestToken;
             return;
         }
@@ -211,7 +213,7 @@ static AuthenticationState currentState = GettingRequestToken;
     }] resume];
 }
 
-- (void)saveUserInfo {
+- (void)_saveUserInfo {
     if (currentState != SavingUserInfo ||
         [userNSID isEqualToString:@""] ||
         [accessToken isEqualToString:@""] ||
@@ -225,7 +227,7 @@ static AuthenticationState currentState = GettingRequestToken;
     if (!AccountManager.isUserInfoSetSuccessful) {
         [self.delegate onFinishSavingUserInfo:LoginHandlerErrorNotValidData];
         currentState = GettingRequestToken;
-        [self resetVariables];
+        [self _resetVariables];
         return;
     }
     // Changing state
@@ -236,7 +238,7 @@ static AuthenticationState currentState = GettingRequestToken;
 
 #pragma mark - Token URL & URLRequest
 
-- (NSURLRequest *)requestTokenURLRequest {
+- (NSURLRequest *)_requestTokenURLRequest {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kCallbackURL forKey:@"oauth_callback"];
         
@@ -251,7 +253,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return request;
 }
 
-- (NSURL *)authorizationURLFromOAuthToken:(NSString *)oauthToken {
+- (NSURL *)_authorizationURLFromOAuthToken:(NSString *)oauthToken {
     NSString *authorizationURLString = [NSString stringWithFormat:@"%@?oauth_token=%@&perms=read&perms=write",
                                                                     kAuthorizationEndpoint,
                                                                     oauthToken];
@@ -259,9 +261,9 @@ static AuthenticationState currentState = GettingRequestToken;
     return [NSURL URLWithString:authorizationURLString];
 }
 
-- (NSURLRequest *)accessTokenURLRequestFromOAuthToken:(NSString *)requestToken
-                                     OAuthTokenSecret:(NSString *)requestTokenSecret
-                                        OAuthVerifier:(NSString *)verifier {
+- (NSURLRequest *)_accessTokenURLRequestFromOAuthToken:(NSString *)requestToken
+                                      OAuthTokenSecret:(NSString *)requestTokenSecret
+                                         OAuthVerifier:(NSString *)verifier {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kCallbackURL forKey:@"oauth_callback"];
     [params setObject:verifier forKey:@"oauth_verifier"];
@@ -278,58 +280,8 @@ static AuthenticationState currentState = GettingRequestToken;
     return request;
 }
 
-
-- (NSURLRequest *)accessTokenURLRequest {
-    NSString *requestAccessToken = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
-    NSString *requestTokenSecret = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token_secret"];
-    NSString *requestVerifier = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_verifier"];
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:kCallbackURL forKey:@"oauth_callback"];
-    [params setObject:requestVerifier forKey:@"oauth_verifier"];
-    
-
-    NSURLRequest *request = [OAuth URLRequestForPath:kAccessTokenPath
-                                       GETParameters:params
-                                              scheme:@"https"
-                                                host:kOAuthHost
-                                         consumerKey:kConsumerKey
-                                      consumerSecret:kConsumerSecret
-                                         accessToken:requestAccessToken
-                                         tokenSecret:requestTokenSecret];
-    return request;
-}
-
-- (NSString *)userAccessToken {
-    return [NSUserDefaults.standardUserDefaults stringForKey:@"user_oauth_token"];
-}
-
-- (NSString *)userTokenSecret {
-    return [NSUserDefaults.standardUserDefaults stringForKey:@"user_oauth_token_secret"];
-}
-
-- (NSString *)userNSID {
-    return [NSUserDefaults.standardUserDefaults stringForKey:@"user_nsid"];
-}
-
-- (NSURL *)authorizationURL {
-    NSString *requestOAuthToken = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token"];
-    NSString *requestOAuthTokenSecret = [NSUserDefaults.standardUserDefaults stringForKey:@"request_oauth_token_secret"];
-    if (!requestOAuthToken || !requestOAuthTokenSecret) return nil;
-    
-    NSString *authorizationURLString = [NSString stringWithFormat:@"%@?oauth_token=%@&perms=read&perms=write",
-                                                                    kAuthorizationEndpoint,
-                                                                    requestOAuthToken];
-    
-    return [NSURL URLWithString:authorizationURLString];
-}
-
-- (NSString *)callbackURLScheme {
-    return @"flickrz";
-}
-
 #pragma mark - Authorization Session
-- (ASWebAuthenticationSession *)authSessionWithAuthorizationURL:(NSURL *)authorizationURL
+- (ASWebAuthenticationSession *)_authSessionWithAuthorizationURL:(NSURL *)authorizationURL
                                               callbackURLScheme:(NSString *)URLScheme {
     @weakify(self)
     ASWebAuthenticationSession *session = [[ASWebAuthenticationSession alloc] initWithURL:authorizationURL
@@ -342,31 +294,31 @@ static AuthenticationState currentState = GettingRequestToken;
                   error.localizedDescription);
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
             currentState = GettingRequestToken;
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         if (callbackURL == nil) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNetworkError];
             currentState = GettingRequestToken;
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         
         NSLog(@"[DEBUG] %s: url: %@", __func__, !callbackURL.baseURL ? @"No base URL" : callbackURL.baseURL.absoluteString);
         NSLog(@"[DEBUG] %s: url query: %@", __func__, !callbackURL.query ? @"No query string" : callbackURL.query);
         
-        if (![self isValidAuthorizationResponse:callbackURL.query]) {
+        if (![self _isValidAuthorizationResponse:callbackURL.query]) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
             currentState = GettingRequestToken;
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         
-        BOOL isTokenAndVerifierParsed = [self isParseTokenAndVerifierSuccessfulFromQuery:callbackURL.query];
+        BOOL isTokenAndVerifierParsed = [self _isParseTokenAndVerifierSuccessfulFromQuery:callbackURL.query];
         if (!isTokenAndVerifierParsed) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
             currentState = GettingRequestToken;
-            [self resetVariables];
+            [self _resetVariables];
             return;
         }
         NSLog(@"[DEBUG] %s : token parsed: %@, verifier parsed: %@",
@@ -384,7 +336,7 @@ static AuthenticationState currentState = GettingRequestToken;
 
 #pragma mark - Helper
 
-- (BOOL)isValidRequestTokenResponse:(NSString *)responseString {
+- (BOOL)_isValidRequestTokenResponse:(NSString *)responseString {
     if (responseString == nil) return NO;
     NSArray *queryItem = [responseString componentsSeparatedByString:@"&"];
     for (NSString *item in queryItem) {
@@ -393,7 +345,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return NO;
 }
 
-- (BOOL)isValidAccessTokenResponse:(NSString *)responseString {
+- (BOOL)_isValidAccessTokenResponse:(NSString *)responseString {
     if (responseString == nil) return NO;
     NSArray *queryItem = [responseString componentsSeparatedByString:@"&"];
     for (NSString *pair in queryItem) {
@@ -404,7 +356,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return NO;
 }
 
-- (BOOL)isValidAuthorizationResponse:(NSString *)responseString {
+- (BOOL)_isValidAuthorizationResponse:(NSString *)responseString {
     if (responseString == nil) return NO;
     NSArray *queryItem = [responseString componentsSeparatedByString:@"&"];
     for (NSString *pair in queryItem) {
@@ -415,7 +367,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return NO;
 }
 
-- (BOOL)isParseRequestTokenAndSecretSuccessfulFromQuery:(NSString *)queryString {
+- (BOOL)_isParseRequestTokenAndSecretSuccessfulFromQuery:(NSString *)queryString {
     BOOL isSuccessful = NO;
     NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
     NSString *token = @"";
@@ -435,7 +387,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return isSuccessful;
 }
 
-- (BOOL)isParseTokenAndVerifierSuccessfulFromQuery:(NSString *)queryString {
+- (BOOL)_isParseTokenAndVerifierSuccessfulFromQuery:(NSString *)queryString {
     BOOL isSuccessful = NO;
     NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
     NSString *token = @"";
@@ -454,7 +406,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return isSuccessful;
 }
 
-- (BOOL)isParseAccessTokenAndSecretSuccessfulFromQuery:(NSString *)queryString {
+- (BOOL)_isParseAccessTokenAndSecretSuccessfulFromQuery:(NSString *)queryString {
     BOOL isSuccessful = NO;
     NSArray *queryItem = [queryString componentsSeparatedByString:@"&"];
     NSString *token = @"";
@@ -478,7 +430,7 @@ static AuthenticationState currentState = GettingRequestToken;
     return isSuccessful;
 }
 
-- (void)resetVariables {
+- (void)_resetVariables {
     oauthToken = @"";
     oauthTokenSecret = @"";
     oauthVerifier = @"";

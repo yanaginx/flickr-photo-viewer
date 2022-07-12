@@ -49,18 +49,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
-    [self registerLibraryObserver];
-    [self checkPermission];
+    [self _registerLibraryObserver];
+    [self _checkPermission];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self removeLibraryObserver];
+    [self _removeLibraryObserver];
 }
 
 #pragma mark - Operations
 
-- (void)checkPermission {
+- (void)_checkPermission {
     @weakify(self)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -73,27 +73,27 @@
 - (void)showUIForAuthorizationStatus:(PHAuthorizationStatus)status {
     switch (status) {
         case PHAuthorizationStatusAuthorized:
-            [self setupAuthorizedView];
+            [self _setupAuthorizedView];
             break;
         case PHAuthorizationStatusLimited:
-            [self setupAuthorizedView];
+            [self _setupAuthorizedView];
             break;
         case PHAuthorizationStatusDenied:
-            [self displayPermissionErrorView];
+            [self _displayPermissionErrorView];
             break;
         default:
             break;
     }
 }
 
-- (void)setupAuthorizedView {
-    [self setupTitle];
-    [self setupNextButton];
-    [self setupDismissButton];
-    [self setupCollectionView];
+- (void)_setupAuthorizedView {
+    [self _setupTitle];
+    [self _setupNextButton];
+    [self _setupDismissButton];
+    [self _setupCollectionView];
 }
 
-- (void)setupTitle {
+- (void)_setupTitle {
     self.navigationItem.title = @"Photo library";
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                              style:UIBarButtonItemStylePlain
@@ -101,24 +101,24 @@
                                                                             action:nil];
 }
 
-- (void)setupNextButton {
+- (void)_setupNextButton {
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
-                                                                  action:@selector(navigateToPostView)];
+                                                                  action:@selector(_navigateToPostView)];
     [self.navigationItem setRightBarButtonItem:nextButton];
-    [self toggleNextButton];
+    [self _toggleNextButton];
 }
 
-- (void)setupDismissButton {
+- (void)_setupDismissButton {
     UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_cancel"]
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self
-                                                                     action:@selector(dismiss)];
+                                                                     action:@selector(_dismiss)];
     [self.navigationItem setLeftBarButtonItem:dismissButton];
 }
 
-- (void)setupCollectionView {
+- (void)_setupCollectionView {
     self.collectionView.frame = self.view.bounds;
     CGFloat cellWidth = (self.collectionView.frame.size.width - (2 * kMargin * ((CGFloat)rowCount - 1))) / (CGFloat)rowCount;
     CGSize targetSize = CGSizeMake(cellWidth, cellWidth);
@@ -139,17 +139,17 @@
     [self.view addSubview:self.collectionView];
 }
 
-- (void)registerLibraryObserver {
+- (void)_registerLibraryObserver {
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self.dataSource];
 }
 
-- (void)removeLibraryObserver {
+- (void)_removeLibraryObserver {
     [PHPhotoLibrary.sharedPhotoLibrary unregisterChangeObserver:self.dataSource];
 }
 
 
 
-- (void)displayPermissionErrorView {
+- (void)_displayPermissionErrorView {
     dispatch_async(dispatch_get_main_queue(), ^{
         PermissionErrorViewController *permissionErrorVC = [[PermissionErrorViewController alloc] init];
         permissionErrorVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -165,14 +165,14 @@
     [self.dataSource.selectedAssets setObject:photoAsset
                                        forKey:photoAsset.localIdentifier];
     NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
-    [self toggleNextButton];
+    [self _toggleNextButton];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     PHAsset *photoAsset = [self.dataSource.galleryManager.fetchResult objectAtIndex:indexPath.item];
     [self.dataSource.selectedAssets removeObjectForKey:photoAsset.localIdentifier];
     NSLog(@"[DEBUG] %s: current selected count: %lu", __func__, (unsigned long)self.dataSource.selectedAssets.count);
-    [self toggleNextButton];
+    [self _toggleNextButton];
 }
 
 #pragma mark - PermissionErrorViewDelegate
@@ -189,7 +189,7 @@
 
 #pragma mark - Handlers
 
-- (void)toggleNextButton {
+- (void)_toggleNextButton {
     if (self.dataSource.selectedAssets.count > 0) {
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
     } else {
@@ -197,7 +197,7 @@
     }
 }
 
-- (void)navigateToPostView {
+- (void)_navigateToPostView {
     UploadPostViewController *uploadPostVC = [[UploadPostViewController alloc]
                                               initWithUploadPhotoManager:self.uploadPhotoManager
                                               galleryManager:self.dataSource.galleryManager];
@@ -206,7 +206,7 @@
                                          animated:YES];
 }
 
-- (void)dismiss {
+- (void)_dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

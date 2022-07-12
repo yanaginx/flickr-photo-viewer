@@ -22,8 +22,8 @@
                                   page:(NSInteger)pageNum
                      completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
                                                  NSError * _Nullable))completion {
-    NSURLRequest *request = [self albumDetailPhotosURLRequestWithAlbumID:albumID
-                                                                 pageNum:pageNum];
+    NSURLRequest *request = [self _albumDetailPhotosURLRequestWithAlbumID:albumID
+                                                                  pageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
                                                          NSURLResponse *response,
@@ -107,8 +107,8 @@
 
 
 #pragma mark - Network related
-- (NSURLRequest *)albumDetailPhotosURLRequestWithAlbumID:(NSString *)albumID
-                                                 pageNum:(NSInteger)pageNum {
+- (NSURLRequest *)_albumDetailPhotosURLRequestWithAlbumID:(NSString *)albumID
+                                                  pageNum:(NSInteger)pageNum {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:kGetAlbumDetailPhotosMethod forKey:@"method"];
