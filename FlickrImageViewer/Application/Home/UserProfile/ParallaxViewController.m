@@ -8,15 +8,18 @@
 #import "ParallaxViewController.h"
 #import "UserProfileViewController.h"
 #import "../UserProfile/SubViewControllers/HeaderViewController.h"
+#import "../UserProfile/SubViewControllers/PublicPhotosViewController.h"
+#import "../UserProfile/SubViewControllers/AlbumViewController.h"
 
 #import "../../Main/AppDelegate.h"
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../Common/Constants/Constants.h"
 
-@interface ParallaxViewController ()
+@interface ParallaxViewController () <PublicPhotosRefreshDelegate, AlbumRefreshDelegate>
 
 @property (nonatomic, strong) UserProfileViewController *userProfileViewController;
 @property (nonatomic, strong) HeaderViewController *headerVC;
+@property (nonatomic, strong) UIRefreshControl *refreshController;
 
 @property (nonatomic, strong) UIAlertController *logoutModal;
 @property (nonatomic, strong) UIBarButtonItem *settingButton;
@@ -34,6 +37,7 @@
 - (void)_setupViews {
     [self _setupViewControllers];
     [self _setupSettingSection];
+    [self _setupRefreshControl];
 }
 
 - (void)_setupViewControllers {
@@ -42,6 +46,24 @@
     self.headerViewController.parallaxHeader.minimumHeight = 0;
     self.childViewController = self.userProfileViewController;
     self.navigationController.navigationBar.tintColor = UIColor.blackColor;
+}
+
+- (void)_setupRefreshControl {
+    [self.refreshController addTarget:self
+                            action:@selector(_refreshData)
+                  forControlEvents:UIControlEventValueChanged];
+    self.scrollView.refreshControl = self.refreshController;
+    self.userProfileViewController.publicPhotoViewController.delegate = self;
+    self.userProfileViewController.albumViewController.delegate = self;
+}
+
+- (void)_refreshData {
+    if (self.userProfileViewController.currentSubViewController == PublicPhotos) {
+        [self.userProfileViewController.publicPhotoViewController getPhotosForFirstPage];
+    } else {
+        [self.userProfileViewController.albumViewController getAlbumsForFirstPage];
+    }
+    // refresh album infos instead
 }
 
 - (void)_setupSettingSection {
@@ -66,6 +88,17 @@
     [self.logoutModal addAction:cancelAction];
     self.logoutModal.preferredAction = action;
 }
+
+#pragma mark - PublicPhotosRefreshDelegate
+- (void)cancelRefreshingAfterFetchingPublicPhotos {
+    [self.refreshController endRefreshing];
+}
+
+#pragma mark - AlbumRefreshDelegate
+- (void)cancelRefreshingAfterFetchingAlbums {
+    [self.refreshController endRefreshing];
+}
+
 
 
 #pragma mark - Handlers
@@ -114,6 +147,13 @@
     _settingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_outlined_big"]
                                                        menu:settingMenu];
     return _settingButton;
+}
+
+- (UIRefreshControl *)refreshController {
+    if (_refreshController) return _refreshController;
+    
+    _refreshController = [[UIRefreshControl alloc] init];
+    return _refreshController;
 }
 
 @end

@@ -36,6 +36,7 @@
     NSInteger currentPage;
     NSInteger numOfPhotosBeforeNewFetch;
     BOOL isLastPage;
+    BOOL isRefreshing;
     NSInteger dynamicLayoutIdx;
     NSInteger fixedLayoutIdx;
 }
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) PublicPhotoDataSource *dataSource;
 @property (nonatomic, strong) PublicPhotoManager *publicPhotoManager;
 
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UISegmentedControl *layoutSegmentedControl;
 
 @end
@@ -59,6 +61,7 @@
         currentPage = 1;
         numOfPhotosBeforeNewFetch = 5;
         isLastPage = NO;
+        isRefreshing = NO;
         dynamicLayoutIdx = 0;
         fixedLayoutIdx = 1;
     }
@@ -69,14 +72,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view addSubview:self.collectionView];
-    [self.view addSubview:self.layoutSegmentedControl];
     
     if (currentPage != 1) currentPage = 1;
 
-    [self _setupLayoutSegmentedControl];
-    [self _setupCollectionView];
-    
+    [self _setupViews];
     [self _getPhotoURLsForPage:currentPage];
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -101,6 +100,18 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
+#pragma mark - Public methods
+- (void)getPhotosForFirstPage {
+    currentPage = 1;
+    if (isRefreshing) {
+        // Call the delegate to cancel the refreshing
+        [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
+    }
+    isRefreshing = YES;
+    [self.dataSource.photos removeAllObjects];
+    [self.dynamicLayout clearCache];
+    [self _getPhotoURLsForPage:currentPage];
+}
 
 #pragma mark - Private methods
 - (void)_getPhotoURLsForPage:(NSInteger)pageNum {
@@ -134,6 +145,11 @@
         }
         [self.dataSource.photos addObjectsFromArray:photosFetched];
         dispatch_async(dispatch_get_main_queue(), ^{
+            // Delegate calling to stop refreshing when finish fetching data
+            if (self->isRefreshing) {
+                self->isRefreshing = NO;
+                [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
+            }
             [self.collectionView reloadData];
         });
     }];
@@ -252,7 +268,13 @@
     });
 }
 
+- (void)_setupViews {
+    [self _setupCollectionView];
+    [self _setupLayoutSegmentedControl];
+}
+
 - (void)_setupLayoutSegmentedControl {
+    [self.view addSubview:self.layoutSegmentedControl];
     [self.layoutSegmentedControl removeAllSegments];
     UIImage *dynamicLayoutIcon = [[UIImage imageNamed:@"ic_dynamic_layout"]
                                  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -281,6 +303,7 @@
 }
 
 - (void)_setupCollectionView {
+    [self.view addSubview:self.collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;
@@ -384,6 +407,12 @@
     
     _publicPhotoManager = [[PublicPhotoManager alloc] init];
     return _publicPhotoManager;
+}
+
+- (UIRefreshControl *)refreshControl {
+    if (_refreshControl) return _refreshControl;
+    _refreshControl = [[UIRefreshControl alloc] init];
+    return _refreshControl;
 }
 
 @end

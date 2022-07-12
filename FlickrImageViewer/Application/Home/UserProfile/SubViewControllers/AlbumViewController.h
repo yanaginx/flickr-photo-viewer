@@ -9,9 +9,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol AlbumRefreshDelegate <NSObject>
+
+- (void)cancelRefreshingAfterFetchingAlbums;
+
+@end
+
 @interface AlbumViewController : UIViewController
 
+@property (nonatomic, weak) id<AlbumRefreshDelegate> delegate;
 @property (nonatomic, weak) UINavigationController *profileNavigationController;
+
+- (void)getAlbumsForFirstPage;
 
 @end
 

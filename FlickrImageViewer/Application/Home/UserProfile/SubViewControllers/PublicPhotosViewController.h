@@ -9,7 +9,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol PublicPhotosRefreshDelegate <NSObject>
+
+- (void)cancelRefreshingAfterFetchingPublicPhotos;
+
+@end
+
 @interface PublicPhotosViewController : UIViewController
+
+@property (nonatomic, weak) id<PublicPhotosRefreshDelegate> delegate;
+
+- (void)getPhotosForFirstPage;
 
 @end
 

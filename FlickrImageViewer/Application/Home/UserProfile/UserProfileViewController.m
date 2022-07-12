@@ -16,14 +16,16 @@
 #import "../../Main/AppDelegate.h"
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
 
-@interface UserProfileViewController ()
+@interface UserProfileViewController () {
+    CurrentProfileSubViewController currentSubVC;
+}
 
 @property (nonatomic, strong) UIAlertController *logoutModal;
 @property (nonatomic, strong) UIBarButtonItem *settingButton;
 
 //@property (nonatomic, strong) HeaderViewController *headerViewController;
-@property (nonatomic, strong) PublicPhotosViewController *publicPhotoViewController;
-@property (nonatomic, strong) AlbumViewController *albumViewController;
+//@property (nonatomic, strong) PublicPhotosViewController *publicPhotoViewController;
+//@property (nonatomic, strong) AlbumViewController *albumViewController;
 @property (nonatomic, strong) UINavigationController *publicPhotoNavi;
 @property (nonatomic, strong) UINavigationController *albumViewNavi;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -44,6 +46,10 @@
 //    self.navigationController.view.backgroundColor = [UIColor clearColor];
     
     [self _setupView];
+}
+
+- (CurrentProfileSubViewController)currentSubViewController {
+    return currentSubVC;
 }
 
 #pragma mark - Handlers
@@ -131,10 +137,12 @@
 //        [self removeAsChildViewController:self.albumViewController];
         [self _removeAsChildViewController:self.albumViewNavi];
         [self _addAsChildViewController:self.publicPhotoNavi];
+        currentSubVC = PublicPhotos;
     } else {
         [self _removeAsChildViewController:self.publicPhotoNavi];
 //        [self addAsChildViewController:self.albumViewController];
         [self _addAsChildViewController:self.albumViewNavi];
+        currentSubVC = Albums;
     }
 }
 
