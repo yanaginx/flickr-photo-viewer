@@ -32,6 +32,7 @@
                                      PopularPhotoViewModelDelegate> {
     NSInteger currentPage;
     BOOL isLastPage;
+    BOOL isRefreshing;
     NSInteger numOfPhotosBeforeNewFetch;
 }
 
@@ -40,6 +41,7 @@
 @property (nonatomic, strong) PopularPhotoDataSource *dataSource;
 @property (nonatomic, strong) PopularPhotoManager *popularPhotoManager;
 @property (nonatomic, strong) PopularPhotoViewModel *popularPhotoViewModel;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -51,6 +53,7 @@
         currentPage = 1;
         numOfPhotosBeforeNewFetch = 5;
         isLastPage = NO;
+        isRefreshing = NO;
         
         self.dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
         self.popularPhotoManager = [[PopularPhotoManager alloc] init];
@@ -58,6 +61,7 @@
                                                                              photoManager:self.popularPhotoManager];
         self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                                  collectionViewLayout:self.dynamicLayout];
+        self.refreshControl = [[UIRefreshControl alloc] init];
     }
     return self;
 }
@@ -91,6 +95,7 @@
     [self _setupCollectionView];
     [self _setupDynamicLayout];
     [self _setupViewModel];
+    [self _setupRefreshControl];
 }
 
 - (void)_setupViewModel {
@@ -100,7 +105,7 @@
 - (void)_setupCollectionView {
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.prefetchDataSource = self.dataSource;
+//    self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
     [self.collectionView registerClass:[PopularPhotoCollectionViewCell class]
             forCellWithReuseIdentifier:PopularPhotoCollectionViewCell.reuseIdentifier];
@@ -111,6 +116,24 @@
     self.dynamicLayout.dataSource = self.popularPhotoViewModel;
     self.dynamicLayout.fixedHeight = kIsFixedHeight;
     self.dynamicLayout.rowMaximumHeight = kMaxRowHeight;
+}
+
+- (void)_setupRefreshControl {
+    currentPage = 1;
+    [self.refreshControl addTarget:self
+                            action:@selector(_getPhotosForCurrentPage)
+                  forControlEvents:UIControlEventValueChanged];
+    self.collectionView.refreshControl = self.refreshControl;
+}
+
+- (void)_getPhotosForCurrentPage {
+    if (!isRefreshing) {
+        isRefreshing = YES;
+        [self.popularPhotoViewModel removeAllPhotos];
+        [self.popularPhotoViewModel getPhotosForPage:currentPage];
+    } else {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -161,6 +184,10 @@
     }
     self->isLastPage = isLastPage;
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (self->isRefreshing) {
+            self->isRefreshing = NO;
+            [self.refreshControl endRefreshing];
+        }
         [self.collectionView reloadData];
     });
 }

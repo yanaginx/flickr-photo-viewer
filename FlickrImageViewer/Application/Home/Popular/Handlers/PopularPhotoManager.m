@@ -88,6 +88,10 @@
                 width_m = 500;
                 height_m = width_m * aspectRatio;
             }
+            if (width_m == 0 || height_m == 0) {
+                height_m = heightFetched.floatValue;
+                width_m = widthFetched.floatValue;
+            }
             CGSize imageSize = CGSizeMake(width_m, height_m);
             
             Photo *photo = [[Photo alloc] initWithImageURL:photoURL
@@ -104,8 +108,8 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
     [params setObject:kConsumerKey forKey:@"api_key"];
-    [params setObject:kPopularPhotosMethod forKey:@"method"];
-    [params setObject:kPopularUserID forKey:@"user_id"];
+    [params setObject:kRecentPhotosMethod forKey:@"method"];
+//    [params setObject:kPopularUserID forKey:@"user_id"];
     [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:kResponseFormat forKey:@"format"];
     [params setObject:kResultsPerPage forKey:@"per_page"];

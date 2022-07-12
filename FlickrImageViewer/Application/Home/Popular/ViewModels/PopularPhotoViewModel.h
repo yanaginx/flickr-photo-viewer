@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)getPhotosForPage:(NSInteger)page;
 
+- (void)removeAllPhotos;
+
 - (instancetype)initWithDynamicLayout:(DynamicCollectionViewLayout *)dynamicLayout
                          photoManager:(PopularPhotoManager *)photoManager;
 

@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) PopularPhotoManager *popularPhotoManager;
 @property (nonatomic, strong) NSMutableArray<Photo *> *photos;
-@property (nonatomic, strong) NSMutableArray<UIImage *> *photoImages;
 @property (nonatomic, strong) DynamicCollectionViewLayout *dynamicCellSizeCalculator;
 
 @end
@@ -37,7 +36,6 @@
     self = [super init];
     if (self) {
         self.photos = [NSMutableArray array];
-        self.photoImages = [NSMutableArray array];
         self.popularPhotoManager = [[PopularPhotoManager alloc] init];
     }
     return self;
@@ -65,6 +63,11 @@
         [self.photoFetcherdelegate onFinishGettingPhotosWithErrorCode:noErrorCodeNumber
                                                        lastPageStatus:isLastPageNumber];
     }];
+}
+
+- (void)removeAllPhotos {
+    [self.dynamicCellSizeCalculator clearCache];
+    [self.photos removeAllObjects];
 }
 
 - (NSUInteger)numberOfItems {

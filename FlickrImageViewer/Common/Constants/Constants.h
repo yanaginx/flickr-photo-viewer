@@ -41,6 +41,7 @@
 #define kPublicPhotosMethod @"flickr.people.getPublicPhotos"
 #define kUserProfileMethod @"flickr.people.getInfo"
 #define kPopularPhotosMethod @"flickr.photos.getPopular"
+#define kRecentPhotosMethod @"flickr.photos.getRecent"
 #define kGetAlbumInfosMethod @"flickr.photosets.getList"
 #define kGetAlbumDetailPhotosMethod @"flickr.photosets.getPhotos"
 #define kAddPhotoToPhotosetMethod @"flickr.photosets.addPhoto"
