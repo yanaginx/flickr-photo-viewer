@@ -78,89 +78,99 @@
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver
-- (void)_processChanges:(PHFetchResultChangeDetails *)changes {
+- (void)photoLibraryDidChange:(PHChange *)changeInstance {
+    PHFetchResultChangeDetails *changes = [changeInstance changeDetailsForFetchResult:self.galleryManager.fetchResult];
+    if (changes == nil) return;
+    [self _processChangeDetails:changes];
+}
+
+#pragma mark - Helpers
+- (void)_processChangeDetails:(PHFetchResultChangeDetails *)changes {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.galleryManager.fetchResult = changes.fetchResultAfterChanges;
         if (changes.hasIncrementalChanges) {
             [self.collectionView performBatchUpdates:^{
-                NSIndexSet *removed = changes.removedIndexes;
-                if (removed != nil && removed.count != 0) {
-                    NSMutableArray<NSIndexPath *> *indexPathsToRemove = [NSMutableArray array];
-                    [removed enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
-                                                                     inSection:0];
-                        [indexPathsToRemove addObject:indexPath];
-                    }];
-                    [self.collectionView deleteItemsAtIndexPaths:indexPathsToRemove];
-                }
-                // Remove objects from selected assets
-                NSArray *removedObjects = changes.removedObjects;
-                for (PHAsset *removedAsset in removedObjects) {
-                    if ([self.selectedAssets objectForKey:removedAsset.localIdentifier] != nil) {
-                        [self.selectedAssets removeObjectForKey:removedAsset.localIdentifier];
-                        NSLog(@"[DEBUG] %s : current selected assets: %lu",
-                              __func__,
-                              (unsigned long)self.selectedAssets.count);
-                    }
-                }
-                NSIndexSet *inserted = changes.insertedIndexes;
-                if (inserted != nil && inserted.count != 0) {
-                    NSMutableArray<NSIndexPath *> *indexPathsToAdd = [NSMutableArray array];
-                    [inserted enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
-                                                                     inSection:0];
-                        [indexPathsToAdd addObject:indexPath];
-                    }];
-                    [self.collectionView insertItemsAtIndexPaths:indexPathsToAdd];
-                }
-                [changes enumerateMovesWithBlock:^(NSUInteger fromIndex,
-                                                   NSUInteger toIndex) {
-                    NSIndexPath *fromIndexPath = [NSIndexPath indexPathForItem:fromIndex
-                                                                     inSection:0];
-                    NSIndexPath *toIndexPath = [NSIndexPath indexPathForItem:toIndex
-                                                                   inSection:0];
-                    [self.collectionView moveItemAtIndexPath:fromIndexPath
-                                                 toIndexPath:toIndexPath];
-                }];
+                [self _batchUpdateWithChangeDetails:changes];
             } completion:nil];
-            NSIndexSet *changed = changes.changedIndexes;
-            if (changed != nil && changed.count != 0) {
-                NSMutableArray<NSIndexPath *> *indexPathsToChange = [NSMutableArray array];
-                [changed enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
-                                                                 inSection:0];
-                    [indexPathsToChange addObject:indexPath];
-                }];
-                NSArray *changedObjects = changes.changedObjects;
-                for (PHAsset *changedObject in changedObjects) {
-                    if ([self.selectedAssets objectForKey:changedObject.localIdentifier] != nil) {
-                        NSLog(@"[DEBUG] %s : The local identifier didnt change",
-                              __func__);
-                    }
-                }
-                [self.collectionView reloadItemsAtIndexPaths:indexPathsToChange];
-                // Reselect the edited cells
-                for (NSIndexPath* indexPath in indexPathsToChange) {
-                    GalleryCollectionViewCell *cellToChange = (GalleryCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-                    if ([self.selectedAssets objectForKey:cellToChange.photoAssetIdentifier] != nil) {
-                        [self.collectionView selectItemAtIndexPath:indexPath
-                                                          animated:NO
-                                                    scrollPosition:UICollectionViewScrollPositionNone];
-                        
-                    }
-                }
-            }
+            [self _updateChangedIndexesOfChangeDetails:changes];
         } else {
             [self.collectionView reloadData];
         }
     });
 }
 
-- (void)photoLibraryDidChange:(PHChange *)changeInstance {
-    PHFetchResultChangeDetails *changes = [changeInstance changeDetailsForFetchResult:self.galleryManager.fetchResult];
-    if (changes == nil) return;
-    [self _processChanges:changes];
+- (void)_batchUpdateWithChangeDetails:(PHFetchResultChangeDetails *)changes {
+    NSIndexSet *removed = changes.removedIndexes;
+    if (removed != nil && removed.count != 0) {
+        NSMutableArray<NSIndexPath *> *indexPathsToRemove = [NSMutableArray array];
+        [removed enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
+                                                         inSection:0];
+            [indexPathsToRemove addObject:indexPath];
+        }];
+        [self.collectionView deleteItemsAtIndexPaths:indexPathsToRemove];
+    }
+    // Remove objects from selected assets
+    NSArray *removedObjects = changes.removedObjects;
+    for (PHAsset *removedAsset in removedObjects) {
+        if ([self.selectedAssets objectForKey:removedAsset.localIdentifier] != nil) {
+            [self.selectedAssets removeObjectForKey:removedAsset.localIdentifier];
+            NSLog(@"[DEBUG] %s : current selected assets: %lu",
+                  __func__,
+                  (unsigned long)self.selectedAssets.count);
+        }
+    }
+    NSIndexSet *inserted = changes.insertedIndexes;
+    if (inserted != nil && inserted.count != 0) {
+        NSMutableArray<NSIndexPath *> *indexPathsToAdd = [NSMutableArray array];
+        [inserted enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
+                                                         inSection:0];
+            [indexPathsToAdd addObject:indexPath];
+        }];
+        [self.collectionView insertItemsAtIndexPaths:indexPathsToAdd];
+    }
+    [changes enumerateMovesWithBlock:^(NSUInteger fromIndex,
+                                       NSUInteger toIndex) {
+        NSIndexPath *fromIndexPath = [NSIndexPath indexPathForItem:fromIndex
+                                                         inSection:0];
+        NSIndexPath *toIndexPath = [NSIndexPath indexPathForItem:toIndex
+                                                       inSection:0];
+        [self.collectionView moveItemAtIndexPath:fromIndexPath
+                                     toIndexPath:toIndexPath];
+    }];
 }
+
+- (void)_updateChangedIndexesOfChangeDetails:(PHFetchResultChangeDetails *)changes {
+    NSIndexSet *changed = changes.changedIndexes;
+    if (changed != nil && changed.count != 0) {
+        NSMutableArray<NSIndexPath *> *indexPathsToChange = [NSMutableArray array];
+        [changed enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx
+                                                         inSection:0];
+            [indexPathsToChange addObject:indexPath];
+        }];
+        NSArray *changedObjects = changes.changedObjects;
+        for (PHAsset *changedObject in changedObjects) {
+            if ([self.selectedAssets objectForKey:changedObject.localIdentifier] != nil) {
+                NSLog(@"[DEBUG] %s : The local identifier didnt change",
+                      __func__);
+            }
+        }
+        [self.collectionView reloadItemsAtIndexPaths:indexPathsToChange];
+        // Reselect the edited cells
+        for (NSIndexPath* indexPath in indexPathsToChange) {
+            GalleryCollectionViewCell *cellToChange = (GalleryCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            if ([self.selectedAssets objectForKey:cellToChange.photoAssetIdentifier] != nil) {
+                [self.collectionView selectItemAtIndexPath:indexPath
+                                                  animated:NO
+                                            scrollPosition:UICollectionViewScrollPositionNone];
+                
+            }
+        }
+    }
+}
+
 
 #pragma mark - Custom Accessors
 - (GalleryManager *)galleryManager {
