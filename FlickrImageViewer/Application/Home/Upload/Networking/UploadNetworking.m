@@ -21,10 +21,12 @@
     NSURLRequest *request = [self _uploadPhotoURLRequestWithImage:image
                                                             title:imageName
                                                       description:imageDescription];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:request
-                                     completionHandler:^(NSData *data,
-                                                         NSURLResponse *response,
-                                                         NSError *error) {
+    NSData *bodyData = request.HTTPBody;
+    [[[NSURLSession sharedSession] uploadTaskWithRequest:request
+                                                fromData:bodyData
+                                       completionHandler:^(NSData *data,
+                                                           NSURLResponse *response,
+                                                           NSError *error) {
         if (error) {
             if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."] ||
                 [error.localizedDescription isEqualToString:@"The request timed out."]) {

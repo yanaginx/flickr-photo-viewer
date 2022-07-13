@@ -78,9 +78,7 @@
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver
-- (void)photoLibraryDidChange:(PHChange *)changeInstance {
-    PHFetchResultChangeDetails *changes = [changeInstance changeDetailsForFetchResult:self.galleryManager.fetchResult];
-    if (changes == nil) return;
+- (void)_processChanges:(PHFetchResultChangeDetails *)changes {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.galleryManager.fetchResult = changes.fetchResultAfterChanges;
         if (changes.hasIncrementalChanges) {
@@ -133,25 +131,35 @@
                                                                  inSection:0];
                     [indexPathsToChange addObject:indexPath];
                 }];
-//                NSArray *changedObjects = changes.changedObjects;
-//                for (PHAsset *changedObject in changedObjects) {
-//                    if ([self.selectedAssets objectForKey:changedObject.localIdentifier] != nil) {
-//                        NSLog(@"[DEBUG] %s : The local identifier didnt change",
-//                              __func__);
-//                    }
-//                }
+                NSArray *changedObjects = changes.changedObjects;
+                for (PHAsset *changedObject in changedObjects) {
+                    if ([self.selectedAssets objectForKey:changedObject.localIdentifier] != nil) {
+                        NSLog(@"[DEBUG] %s : The local identifier didnt change",
+                              __func__);
+                    }
+                }
                 [self.collectionView reloadItemsAtIndexPaths:indexPathsToChange];
                 // Reselect the edited cells
                 for (NSIndexPath* indexPath in indexPathsToChange) {
-                    [self.collectionView selectItemAtIndexPath:indexPath
-                                                      animated:NO
-                                                scrollPosition:UICollectionViewScrollPositionNone];
+                    GalleryCollectionViewCell *cellToChange = (GalleryCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+                    if ([self.selectedAssets objectForKey:cellToChange.photoAssetIdentifier] != nil) {
+                        [self.collectionView selectItemAtIndexPath:indexPath
+                                                          animated:NO
+                                                    scrollPosition:UICollectionViewScrollPositionNone];
+                        
+                    }
                 }
             }
         } else {
             [self.collectionView reloadData];
         }
     });
+}
+
+- (void)photoLibraryDidChange:(PHChange *)changeInstance {
+    PHFetchResultChangeDetails *changes = [changeInstance changeDetailsForFetchResult:self.galleryManager.fetchResult];
+    if (changes == nil) return;
+    [self _processChanges:changes];
 }
 
 #pragma mark - Custom Accessors
