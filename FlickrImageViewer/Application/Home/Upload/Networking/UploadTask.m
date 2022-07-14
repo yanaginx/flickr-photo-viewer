@@ -10,7 +10,7 @@
 #import "UploadNetworking.h"
 #import "UploadInfo.h"
 
-#define kKeyPath @"uploadTaskState"
+#define kKeyPath @"state"
 
 static void * const UploadTaskContext = (void*)&UploadTaskContext;
 
@@ -63,9 +63,9 @@ static void * const UploadTaskContext = (void*)&UploadTaskContext;
                        semaphore:(dispatch_semaphore_t)dispatchSemaphore {
     dispatch_group_enter(dispatchGroup);
     dispatch_semaphore_wait(dispatchSemaphore, DISPATCH_TIME_FOREVER);
-    @weakify(self)
+//    @weakify(self)
     dispatch_async(dispatchQueue, ^{
-        @strongify(self)
+//        @strongify(self)
         self.state = UploadTaskStateInProgress;
         [self.uploadNetworking uploadUserImage:self.uploadInfo.image
                                          title:self.uploadInfo.imageTitle
@@ -109,8 +109,14 @@ static void * const UploadTaskContext = (void*)&UploadTaskContext;
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
-    if (context != UploadTaskContext) return;
-    self.stateUpdateHandler(self);
+    if (context == UploadTaskContext) {
+        self.stateUpdateHandler(self);
+    } else {
+        [super observeValueForKeyPath:keyPath
+                             ofObject:object
+                               change:change
+                              context:context];
+    }
 }
 
 #pragma mark - Lazy loading

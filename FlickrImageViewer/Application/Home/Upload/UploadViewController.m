@@ -16,6 +16,7 @@
 #import "Handlers/GalleryManager.h"
 #import "Handlers/UploadPhotoManager.h"
 #import "DataSource/GalleryDataSource.h"
+#import "ViewModels/GalleryViewModel.h"
 
 @interface UploadViewController () <UICollectionViewDelegate, PermissionErrorViewDelegate> {
     int rowCount;
@@ -23,7 +24,8 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) GalleryDataSource *dataSource;
-@property (strong) UploadPhotoManager *uploadPhotoManager;
+@property (nonatomic, strong) UploadPhotoManager *uploadPhotoManager;
+@property (nonatomic, strong) GalleryViewModel *galleryViewModel;
 
 @end
 

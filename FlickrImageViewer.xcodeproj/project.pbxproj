@@ -56,6 +56,7 @@
 		B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BF1286D4B92001189EE /* HeaderViewController.m */; };
 		B2A10BFA286EA038001189EE /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BF9286EA038001189EE /* UserProfileManager.m */; };
 		B2A10BFD286EA16D001189EE /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A10BFC286EA16D001189EE /* Photo.m */; };
+		B2B096BD28802661009A4E75 /* GalleryViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B096BC28802661009A4E75 /* GalleryViewModel.m */; };
 		B2BF06CA286ED052002F4B1B /* PublicPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06C9286ED052002F4B1B /* PublicPhotoManager.m */; };
 		B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06CC286ED968002F4B1B /* PublicPhotoCollectionViewCell.m */; };
 		B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BF06D028702BA7002F4B1B /* AccountManager.m */; };
@@ -203,6 +204,8 @@
 		B2A10BF9286EA038001189EE /* UserProfileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
 		B2A10BFB286EA16D001189EE /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		B2A10BFC286EA16D001189EE /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		B2B096BB28802661009A4E75 /* GalleryViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryViewModel.h; sourceTree = "<group>"; };
+		B2B096BC28802661009A4E75 /* GalleryViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryViewModel.m; sourceTree = "<group>"; };
 		B2BF06C8286ED052002F4B1B /* PublicPhotoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoManager.h; sourceTree = "<group>"; };
 		B2BF06C9286ED052002F4B1B /* PublicPhotoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicPhotoManager.m; sourceTree = "<group>"; };
 		B2BF06CB286ED968002F4B1B /* PublicPhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicPhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -383,6 +386,7 @@
 		B23A30D128604F4000E976C8 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				B2B096BA2880263E009A4E75 /* ViewModels */,
 				B221556C287C0E3700F2A074 /* Networking */,
 				B20A5C5D2875939F00F692C7 /* DataSource */,
 				B2CAD5802873E832007AAE9B /* Handlers */,
@@ -710,6 +714,15 @@
 			path = Handlers;
 			sourceTree = "<group>";
 		};
+		B2B096BA2880263E009A4E75 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B2B096BB28802661009A4E75 /* GalleryViewModel.h */,
+				B2B096BC28802661009A4E75 /* GalleryViewModel.m */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		B2BF06CE28702B8E002F4B1B /* AccountManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -1018,6 +1031,7 @@
 				B20A5C632875970500F692C7 /* GalleryManager.m in Sources */,
 				B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */,
 				B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */,
+				B2B096BD28802661009A4E75 /* GalleryViewModel.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
 				B277DAE42872B6B000EEEBCB /* AlbumDetailPhotoManager.m in Sources */,
@@ -1423,6 +1437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FlickrImageViewer/FlickrImageViewerProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

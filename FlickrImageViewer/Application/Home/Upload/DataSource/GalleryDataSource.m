@@ -19,6 +19,10 @@
 
 @implementation GalleryDataSource
 
+- (void)dealloc {
+    [self.galleryManager.imageCacheManager stopCachingImagesForAllAssets];
+}
+
 
 #pragma mark - UICollectionViewDataSource
 

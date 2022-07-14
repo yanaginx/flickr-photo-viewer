@@ -63,45 +63,48 @@
     [self.delegate onStartUploadingImage];
     // Create upload tasks
     for (PHAsset *imageAsset in imageAssets) {
-//        dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-        options.synchronous = YES;
-        [self.imageCacheManager requestImageForAsset:imageAsset
-                                          targetSize:PHImageManagerMaximumSize
-                                         contentMode:PHImageContentModeAspectFill
-                                             options:options
-                                       resultHandler:^(UIImage * _Nullable result,
-                                                       NSDictionary * _Nullable info) {
-//            NSLog(@"[DEBUG] %s: image info: %@",
-//                  __func__,
-//                  result);
-//
-            if (result) {
-                UploadInfo *uploadInfo = [[UploadInfo alloc] initWithImage:result
-                                                                     title:title
-                                                               description:description
-                                                                   albumID:albumID];
-                UploadTask *uploadTask = [[UploadTask alloc] init];
-                uploadTask.taskIdentifier = [[NSUUID alloc] init];
-                uploadTask.uploadInfo = uploadInfo;
-                uploadTask.stateUpdateHandler = ^(UploadTask * _Nonnull uploadTask) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        switch (uploadTask.state) {
-                            case UploadTaskStateCompleted:
-                                [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
-                                break;
-                            case UploadTaskStateCompletedWithError:
-                                [self.delegate onFinishUploadingImageWithErrorCode:kServerError];
-                                break;
-                            default:
-                                break;
-                        }
-                    });
-                };
-                [self->uploadTasks addObject:uploadTask];
-            }
-        }];
-//        });
+        dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+            options.synchronous = YES;
+            [self.imageCacheManager requestImageForAsset:imageAsset
+                                              targetSize:PHImageManagerMaximumSize
+                                             contentMode:PHImageContentModeAspectFill
+                                                 options:options
+                                           resultHandler:^(UIImage * _Nullable result,
+                                                           NSDictionary * _Nullable info) {
+                //            NSLog(@"[DEBUG] %s: image info: %@",
+                //                  __func__,
+                //                  result);
+                //
+                if (result) {
+                    UploadInfo *uploadInfo = [[UploadInfo alloc] initWithImage:result
+                                                                         title:title
+                                                                   description:description
+                                                                       albumID:albumID];
+                    UploadTask *uploadTask = [[UploadTask alloc] initWithTaskIdentifier:[[NSUUID alloc] init]
+                                                                     stateUpdateHandler:^(UploadTask * _Nonnull uploadTask) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            switch (uploadTask.state) {
+                                case UploadTaskStateCompleted:
+                                    [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
+                                    break;
+                                case UploadTaskStateCompletedWithError:
+                                    [self.delegate onFinishUploadingImageWithErrorCode:kServerError];
+                                    break;
+                                default:
+                                    break;
+                            }
+                        });
+                    }
+                                                                             uploadInfo:uploadInfo];
+                    //                uploadTask.taskIdentifier = [[NSUUID alloc] init];
+                    //                uploadTask.uploadInfo = uploadInfo;
+                    //                uploadTask.stateUpdateHandler = ^(UploadTask * _Nonnull uploadTask) {
+                    //                };
+                    [self->uploadTasks addObject:uploadTask];
+                }
+            }];
+        });
     }
 //        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
 //              __func__,
@@ -111,10 +114,13 @@
     
     // Start the upload tasks
     for (UploadTask *uploadTask in uploadTasks) {
+//        NSLog(@"[DEBUG] %s: upload task image: %@", __func__, uploadTask.uploadInfo.image);
         [uploadTask startUploadTaskWithQueue:self->uploadQueue
                                        group:self->uploadGroup
                                    semaphore:self->uploadSemaphore];
     }
+    [uploadTasks removeAllObjects];
+    // This is being called everytime a new batch is started
     @weakify(self)
     dispatch_group_notify(uploadGroup, dispatch_get_main_queue(), ^{
         @strongify(self)
