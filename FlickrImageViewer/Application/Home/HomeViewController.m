@@ -84,6 +84,9 @@
 }
 
 #pragma mark - UploadPhotoManagerDelegate
+- (void)onStartUploadingImage {
+    NSLog(@"[DEBUG] %s: Start uploading!", __func__);
+}
 
 - (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode {
     switch (errorCode) {
@@ -95,8 +98,12 @@
             break;
         case kNoDataError:
             NSLog(@"[DEBUG] %s: No data error!", __func__);
-        default:
+            break;
+        case kNoError:
             NSLog(@"[DEBUG] %s: Upload finished! Continuing...", __func__);
+            break;
+        default:
+            NSLog(@"[DEBUG] %s: Upload finished for all images!", __func__);
             break;
     }
 }

@@ -34,6 +34,11 @@
     return self;
 }
 
+- (void)dealloc {
+    [self.photoImageView removeFromSuperview];
+    self.photoImageView = nil;
+}
+
 #pragma mark - Operations
 
 - (void)configureWithImage:(UIImage *)image {

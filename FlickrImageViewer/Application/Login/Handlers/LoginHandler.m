@@ -25,6 +25,7 @@
     NSString *userNSID;
     NSString *accessToken;
     NSString *secretToken;
+    AuthenticationState currentState;
 }
 
 - (NSURLRequest *)_requestTokenURLRequest;
@@ -51,11 +52,12 @@
         userNSID = @"";
         accessToken = @"";
         secretToken = @"";
+        
+        currentState = GettingRequestToken;
     }
     return self;
 }
 
-static AuthenticationState currentState = GettingRequestToken;
 
 #pragma mark - Operations
 
@@ -133,7 +135,7 @@ static AuthenticationState currentState = GettingRequestToken;
         // Confirm there is no error
         [self.delegate onFinishGettingRequestTokenWithErrorCode:LoginHandlerNoError];
         // Changing state
-        currentState = GettingAuthorization;
+        self->currentState = GettingAuthorization;
         [self startAuthenticationProcess];
     }] resume];
 }
@@ -174,13 +176,13 @@ static AuthenticationState currentState = GettingRequestToken;
                   error.localizedDescription);
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
             [self _resetVariables];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             return;
         }
         if (!data) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorServerError];
             [self _resetVariables];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             return;
         }
         NSString *responseDataString = [[NSString alloc] initWithData:data
@@ -188,7 +190,7 @@ static AuthenticationState currentState = GettingRequestToken;
         if (![self _isValidAccessTokenResponse:responseDataString]) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
             [self _resetVariables];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             return;
         }
         NSLog(@"[DEBUG] %s : request access token response: %@", __func__, responseDataString);
@@ -197,7 +199,7 @@ static AuthenticationState currentState = GettingRequestToken;
         if (!isTokenAndSecretParsed) {
             [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerErrorNotValidData];
             [self _resetVariables];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             return;
         }
         
@@ -208,7 +210,7 @@ static AuthenticationState currentState = GettingRequestToken;
         // Confirm there is no error
         [self.delegate onFinishGettingAccessTokenWithErrorCode:LoginHandlerNoError];
         // Changing state
-        currentState = SavingUserInfo;
+        self->currentState = SavingUserInfo;
         [self startAuthenticationProcess];
     }] resume];
 }
@@ -293,13 +295,13 @@ static AuthenticationState currentState = GettingRequestToken;
                   __func__,
                   error.localizedDescription);
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             [self _resetVariables];
             return;
         }
         if (callbackURL == nil) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNetworkError];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             [self _resetVariables];
             return;
         }
@@ -309,7 +311,7 @@ static AuthenticationState currentState = GettingRequestToken;
         
         if (![self _isValidAuthorizationResponse:callbackURL.query]) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             [self _resetVariables];
             return;
         }
@@ -317,7 +319,7 @@ static AuthenticationState currentState = GettingRequestToken;
         BOOL isTokenAndVerifierParsed = [self _isParseTokenAndVerifierSuccessfulFromQuery:callbackURL.query];
         if (!isTokenAndVerifierParsed) {
             [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerErrorNotValidData];
-            currentState = GettingRequestToken;
+            self->currentState = GettingRequestToken;
             [self _resetVariables];
             return;
         }
@@ -328,7 +330,7 @@ static AuthenticationState currentState = GettingRequestToken;
         // Confirm there is no error
         [self.delegate onFinishGettingAuthorizationWithErrorCode:LoginHandlerNoError];
         // Changing state
-        currentState = GettingAccessToken;
+        self->currentState = GettingAccessToken;
         [self startAuthenticationProcess];
     }];
     return session;

@@ -8,14 +8,28 @@
 #import "UploadPhotoManager.h"
 #import "GalleryManager.h"
 #import "../Networking/UploadNetworking.h"
+#import "../Networking/UploadTask.h"
+#import "../Networking/UploadInfo.h"
 
 #import "../../../../Common/Constants/Constants.h"
 #import "../../../../Common/Utilities/Scope/Scope.h"
 
 #define kDefaultTitle @"Default title"
 #define kDefaultDescription @"Default description"
+#define kMaxAsyncUploadTask 10
 
-@interface UploadPhotoManager ()
+@interface UploadPhotoManager () {
+    dispatch_queue_t serialUploadQueue;
+    NSInteger numberOfPhotosUploaded;
+    NSInteger numberOfPhotosOnLastBatch;
+    dispatch_queue_t uploadQueue;
+    dispatch_group_t uploadGroup;
+    dispatch_semaphore_t uploadSemaphore;
+    NSMutableArray *uploadTasks;
+}
+
+// A queue to hold the current requests
+// @property (strong) NSArray<PHAsset *> *imageAssetsExecuting;
 
 @property (nonatomic, strong) NSArray<PHAsset *> *imageAssetsForUpload;
 @property (nonatomic, strong) PHCachingImageManager *imageCacheManager;
@@ -25,39 +39,87 @@
 
 @implementation UploadPhotoManager
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        serialUploadQueue = dispatch_queue_create("serial_upload_queue", DISPATCH_QUEUE_SERIAL);
+        uploadQueue = dispatch_queue_create("vng.duongvc.upload", DISPATCH_QUEUE_CONCURRENT);
+        uploadGroup = dispatch_group_create();
+        uploadSemaphore = dispatch_semaphore_create(10);
+        uploadTasks = [NSMutableArray array];
+        numberOfPhotosUploaded = 0;
+        numberOfPhotosOnLastBatch = 0;
+    }
+    return self;
+}
+
 #pragma mark - Public methods
 
 - (void)uploadSelectedImages:(NSArray<PHAsset *> *)imageAssets
                    withTitle:(NSString *)title
                  description:(NSString *)description
                      albumID:(NSString *)albumID {
-    dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        for (PHAsset *imageAsset in imageAssets) {
-            // fetch full size image to gallery into image
-            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-            options.synchronous = YES;
-            [self.imageCacheManager requestImageForAsset:imageAsset
-                                              targetSize:PHImageManagerMaximumSize
-                                             contentMode:PHImageContentModeAspectFill
-                                                 options:options
-                                           resultHandler:^(UIImage * _Nullable result,
-                                                           NSDictionary * _Nullable info) {
-                NSLog(@"[DEBUG] %s: image info: %@",
-                      __func__,
-                      result);
-                if (result) {
-                    [self _uploadUserImage:result
-                                 withTitle:title
-                               description:description
-                                   albumID:albumID];
-                }
-            }];
-        }
+    // Call the delegate to start the pop over
+    [self.delegate onStartUploadingImage];
+    // Create upload tasks
+    for (PHAsset *imageAsset in imageAssets) {
+//        dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+        options.synchronous = YES;
+        [self.imageCacheManager requestImageForAsset:imageAsset
+                                          targetSize:PHImageManagerMaximumSize
+                                         contentMode:PHImageContentModeAspectFill
+                                             options:options
+                                       resultHandler:^(UIImage * _Nullable result,
+                                                       NSDictionary * _Nullable info) {
+//            NSLog(@"[DEBUG] %s: image info: %@",
+//                  __func__,
+//                  result);
+//
+            if (result) {
+                UploadInfo *uploadInfo = [[UploadInfo alloc] initWithImage:result
+                                                                     title:title
+                                                               description:description
+                                                                   albumID:albumID];
+                UploadTask *uploadTask = [[UploadTask alloc] init];
+                uploadTask.taskIdentifier = [[NSUUID alloc] init];
+                uploadTask.uploadInfo = uploadInfo;
+                uploadTask.stateUpdateHandler = ^(UploadTask * _Nonnull uploadTask) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        switch (uploadTask.state) {
+                            case UploadTaskStateCompleted:
+                                [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
+                                break;
+                            case UploadTaskStateCompletedWithError:
+                                [self.delegate onFinishUploadingImageWithErrorCode:kServerError];
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                };
+                [self->uploadTasks addObject:uploadTask];
+            }
+        }];
+//        });
+    }
 //        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
 //              __func__,
 //              title,
 //              description,
 //              albumID);
+    
+    // Start the upload tasks
+    for (UploadTask *uploadTask in uploadTasks) {
+        [uploadTask startUploadTaskWithQueue:self->uploadQueue
+                                       group:self->uploadGroup
+                                   semaphore:self->uploadSemaphore];
+    }
+    @weakify(self)
+    dispatch_group_notify(uploadGroup, dispatch_get_main_queue(), ^{
+        @strongify(self)
+        [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
+        NSLog(@"[DEBUG] %s: all photos uploaded", __func__);
     });
 }
 
@@ -82,7 +144,12 @@
             [self _addImageWithID:uploadedPhotoID
                         toAlbumID:albumID];
         } else {
-            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
+            self->numberOfPhotosUploaded += 1;
+            if (self->numberOfPhotosUploaded == self.imageAssetsForUpload.count) {
+                [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
+            } else {
+                [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
+            }
         }
     }];
 }
@@ -102,7 +169,12 @@
             [self.delegate onFinishUploadingImageWithErrorCode:error.code];
             return;
         }
-        [self.delegate onFinishUploadingImageWithErrorCode:0];
+        self->numberOfPhotosUploaded += 1;
+        if (self->numberOfPhotosUploaded == self->numberOfPhotosOnLastBatch) {
+            [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
+        } else {
+            [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
+        }
     }];
 }
 

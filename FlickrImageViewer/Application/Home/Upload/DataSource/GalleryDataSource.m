@@ -10,6 +10,7 @@
 #import "../Views/GalleryCollectionViewCell.h"
 
 #define kTargetSize CGSizeMake(200, 200)
+#define kReuseIdentifier @"GalleryPhotoCell"
 
 @interface GalleryDataSource ()
 
@@ -28,11 +29,11 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                            cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    GalleryCollectionViewCell *cell = [collectionView
-                                       dequeueReusableCellWithReuseIdentifier:GalleryCollectionViewCell.reuseIdentifier
-                                       forIndexPath:indexPath];
+    GalleryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier
+                                                                                forIndexPath:indexPath];
     cell.layer.shouldRasterize = YES;
     cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+//    [cell configureWithImage:[UIImage imageNamed:@"img_placeholder"]];
     PHAsset *photoAsset = [self.galleryManager.fetchResult objectAtIndex:indexPath.item];
     cell.photoAssetIdentifier = photoAsset.localIdentifier;
     [self.galleryManager.imageCacheManager requestImageForAsset:photoAsset
@@ -49,33 +50,33 @@
 }
 
 #pragma mark - UICollectionViewDataPrefetching
-- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
-    NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
-    for (NSIndexPath *indexPath in indexPaths) {
-//        NSLog(@"Prefetching for %@", indexPath);
-        [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.galleryManager.imageCacheManager startCachingImagesForAssets:assets
-                                                                targetSize:kTargetSize
-                                                               contentMode:PHImageContentModeAspectFill
-                                                                   options:nil];
-    });
-}
+//- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+//    NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
+//    for (NSIndexPath *indexPath in indexPaths) {
+////        NSLog(@"Prefetching for %@", indexPath);
+//        [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.galleryManager.imageCacheManager startCachingImagesForAssets:assets
+//                                                                targetSize:kTargetSize
+//                                                               contentMode:PHImageContentModeAspectFill
+//                                                                   options:nil];
+//    });
+//}
 
-- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
-     NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
-    for (NSIndexPath *indexPath in indexPaths) {
-//        NSLog(@"Stop Prefetching for %@", indexPath);
-        [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.galleryManager.imageCacheManager stopCachingImagesForAssets:assets
-                                                               targetSize:kTargetSize
-                                                              contentMode:PHImageContentModeAspectFill
-                                                                  options:nil];
-    });
-}
+//- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+//     NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
+//    for (NSIndexPath *indexPath in indexPaths) {
+////        NSLog(@"Stop Prefetching for %@", indexPath);
+//        [assets addObject:[self.galleryManager.fetchResult objectAtIndex:indexPath.item]];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.galleryManager.imageCacheManager stopCachingImagesForAssets:assets
+//                                                               targetSize:kTargetSize
+//                                                              contentMode:PHImageContentModeAspectFill
+//                                                                  options:nil];
+//    });
+//}
 
 #pragma mark - PHPhotoLibraryChangeObserver
 - (void)photoLibraryDidChange:(PHChange *)changeInstance {

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol UploadPhotoManagerDelegate <NSObject>
 
+- (void)onStartUploadingImage;
 - (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode;
 
 @end

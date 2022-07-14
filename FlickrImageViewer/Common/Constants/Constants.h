@@ -32,6 +32,8 @@
 #define kNetworkError 150900
 #define kServerError 150901
 #define kNoDataError 150902
+#define kNoError 0
+#define kLastPhotoUploaded 1615
 
 #define kIsFixedHeight YES
 #define kMaxRowHeight 200
