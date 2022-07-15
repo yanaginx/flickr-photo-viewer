@@ -33,6 +33,11 @@
     [self _setupViews];
 }
 
+#pragma mark - Public methods
+- (void)refreshProfile {
+    [self _refreshData];
+}
+
 #pragma mark - Operations
 - (void)_setupViews {
     [self _setupViewControllers];
@@ -64,6 +69,11 @@
         [self.userProfileViewController.albumViewController getAlbumsForFirstPage];
     }
     // refresh album infos instead
+}
+
+- (void)_refreshAllData {
+    [self.userProfileViewController.publicPhotoViewController getPhotosForFirstPage];
+    [self.userProfileViewController.albumViewController getAlbumsForFirstPage];
 }
 
 - (void)_setupSettingSection {
@@ -98,7 +108,6 @@
 - (void)cancelRefreshingAfterFetchingAlbums {
     [self.refreshController endRefreshing];
 }
-
 
 
 #pragma mark - Handlers

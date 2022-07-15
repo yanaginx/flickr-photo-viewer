@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ParallaxViewController : MXScrollViewController
 
+- (void)refreshProfile;
+
 @end
 
 NS_ASSUME_NONNULL_END
