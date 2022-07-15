@@ -19,19 +19,15 @@
 #define kMaxAsyncUploadTask 10
 
 @interface UploadPhotoManager () {
-    dispatch_queue_t serialUploadQueue;
     NSInteger numberOfPhotosUploaded;
     NSInteger numberOfPhotosOnLastBatch;
     dispatch_queue_t uploadQueue;
     dispatch_group_t uploadGroup;
     dispatch_semaphore_t uploadSemaphore;
     NSMutableArray *uploadTasks;
+    BOOL isNotified;
 }
 
-// A queue to hold the current requests
-// @property (strong) NSArray<PHAsset *> *imageAssetsExecuting;
-
-@property (nonatomic, strong) NSArray<PHAsset *> *imageAssetsForUpload;
 @property (nonatomic, strong) PHCachingImageManager *imageCacheManager;
 @property (nonatomic, strong) UploadNetworking *uploadNetworking;
 
@@ -42,13 +38,13 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        serialUploadQueue = dispatch_queue_create("serial_upload_queue", DISPATCH_QUEUE_SERIAL);
         uploadQueue = dispatch_queue_create("vng.duongvc.upload", DISPATCH_QUEUE_CONCURRENT);
         uploadGroup = dispatch_group_create();
         uploadSemaphore = dispatch_semaphore_create(10);
         uploadTasks = [NSMutableArray array];
         numberOfPhotosUploaded = 0;
         numberOfPhotosOnLastBatch = 0;
+        isNotified = NO;
     }
     return self;
 }
@@ -72,10 +68,6 @@
                                                  options:options
                                            resultHandler:^(UIImage * _Nullable result,
                                                            NSDictionary * _Nullable info) {
-                //            NSLog(@"[DEBUG] %s: image info: %@",
-                //                  __func__,
-                //                  result);
-                //
                 if (result) {
                     UploadInfo *uploadInfo = [[UploadInfo alloc] initWithImage:result
                                                                          title:title
@@ -97,24 +89,14 @@
                         });
                     }
                                                                              uploadInfo:uploadInfo];
-                    //                uploadTask.taskIdentifier = [[NSUUID alloc] init];
-                    //                uploadTask.uploadInfo = uploadInfo;
-                    //                uploadTask.stateUpdateHandler = ^(UploadTask * _Nonnull uploadTask) {
-                    //                };
                     [self->uploadTasks addObject:uploadTask];
                 }
             }];
         });
     }
-//        NSLog(@"[DEBUG] %s: title: %@\ndescription: %@\nalbumID: %@",
-//              __func__,
-//              title,
-//              description,
-//              albumID);
     
     // Start the upload tasks
     for (UploadTask *uploadTask in uploadTasks) {
-//        NSLog(@"[DEBUG] %s: upload task image: %@", __func__, uploadTask.uploadInfo.image);
         [uploadTask startUploadTaskWithQueue:self->uploadQueue
                                        group:self->uploadGroup
                                    semaphore:self->uploadSemaphore];
@@ -122,67 +104,17 @@
     [uploadTasks removeAllObjects];
     // This is being called everytime a new batch is started
     @weakify(self)
+    if (self->isNotified) return;
+    self->isNotified = YES;
     dispatch_group_notify(uploadGroup, dispatch_get_main_queue(), ^{
         @strongify(self)
         [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
         NSLog(@"[DEBUG] %s: all photos uploaded", __func__);
+        // reset the notified status
+        self->isNotified = NO;
     });
 }
 
-- (void)_uploadUserImage:(UIImage *)image
-               withTitle:(NSString *)title
-             description:(NSString *)description
-                 albumID:(NSString *)albumID {
-    @weakify(self)
-    [self.uploadNetworking uploadUserImage:image
-                                     title:title
-                               description:description
-                         completionHandler:^(NSString * _Nullable uploadedPhotoID,
-                                             NSError * _Nullable error) {
-        @strongify(self);
-        if (error) {
-            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
-            return;
-        }
-        // add the image to album if the albumID is
-        // TODO:
-        if (albumID != nil) {
-            [self _addImageWithID:uploadedPhotoID
-                        toAlbumID:albumID];
-        } else {
-            self->numberOfPhotosUploaded += 1;
-            if (self->numberOfPhotosUploaded == self.imageAssetsForUpload.count) {
-                [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
-            } else {
-                [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
-            }
-        }
-    }];
-}
-
-
-
-- (void)_addImageWithID:(NSString *)photoID
-              toAlbumID:(NSString *)albumID {
-    // TODO: Implement the func
-    @weakify(self)
-    [self.uploadNetworking addPhotoID:photoID
-                            toAlbumID:albumID
-                    completionHandler:^(NSString * _Nullable status,
-                                        NSError * _Nullable error) {
-        @strongify(self)
-        if (error) {
-            [self.delegate onFinishUploadingImageWithErrorCode:error.code];
-            return;
-        }
-        self->numberOfPhotosUploaded += 1;
-        if (self->numberOfPhotosUploaded == self->numberOfPhotosOnLastBatch) {
-            [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
-        } else {
-            [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
-        }
-    }];
-}
 
 #pragma mark - Custom Accessors
 - (PHCachingImageManager *)imageCacheManager {
