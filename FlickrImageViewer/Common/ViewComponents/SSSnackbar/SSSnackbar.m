@@ -17,6 +17,8 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
 @property (strong, nonatomic) UIButton *actionButton;
 @property (strong, nonatomic) UIView *separator;
 @property (strong, nonatomic) NSTimer *dismissalTimer;
+// The view that the bar will be the subview to
+@property (strong, nonatomic) UIView *contextView;
 
 @property (strong, nonatomic) NSArray *hiddenVerticalLayoutConstraints;
 @property (strong, nonatomic) NSArray *visibleVerticalLayoutConstraints;
@@ -26,6 +28,62 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
 @end
 
 @implementation SSSnackbar
+
+//
++ (instancetype)snackbarWithContextView:(UIView *)contextView
+                                message:(NSString *)message
+                             actionText:(NSString *)actionText
+                               duration:(SnackbarAppearDuration)duration
+                            actionBlock:(void (^)(SSSnackbar *))actionBlock {
+    SSSnackbar *snackbar = [[SSSnackbar alloc] initWithContextView:contextView
+                                                           message:message
+                                                        actionText:actionText
+                                                          duration:duration
+                                                       actionBlock:actionBlock];
+    return snackbar;
+}
+
+- (instancetype)initWithContextView:(UIView *)contextView
+                            message:(NSString *)message
+                         actionText:(NSString *)actionText
+                           duration:(SnackbarAppearDuration)duration
+                        actionBlock:(void (^)(SSSnackbar *))actionBlock {
+    if (self = [super initWithFrame:CGRectMake(0, 0, 0, 0)]) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.actionBlock = actionBlock;
+        NSTimeInterval appearDuration = duration;
+        self.duration = appearDuration;
+        self.contextView = contextView;
+        
+        self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        self.messageLabel.text = message;
+        self.messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        self.messageLabel.font = [UIFont systemFontOfSize:14.0];
+        self.messageLabel.textColor = [UIColor whiteColor];
+        [self.messageLabel sizeToFit];
+        
+        self.actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        self.actionButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.actionButton.titleLabel.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightBold];
+        [self.actionButton setTitle:actionText forState:UIControlStateNormal];
+        [self.actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.actionButton sizeToFit];
+        [self.actionButton addTarget:self
+                          action:@selector(executeAction:)
+                forControlEvents:UIControlEventTouchUpInside];
+        
+        self.separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        self.separator.backgroundColor = [UIColor colorWithWhite:0.99 alpha:.1];
+        self.separator.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self addSubview:self.messageLabel];
+        [self addSubview:self.actionButton];
+        [self addSubview:self.separator];
+        
+        self.opaque = NO;
+    }
+    return self;
+}
 
 + (instancetype)snackbarWithMessage:(NSString *)message
                          actionText:(NSString *)actionText
@@ -84,6 +142,7 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     
     return self;
 }
+
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
     }
@@ -99,6 +158,43 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     [clippath fill];
     
     CGContextRestoreGState(ctx);
+}
+
+- (void)display {
+    UIView *superview = self.contextView;
+    
+    BOOL shouldReplaceExistingSnackbar = currentlyVisibleSnackbar != nil;
+    if (shouldReplaceExistingSnackbar) {
+        [currentlyVisibleSnackbar invalidateTimer];
+        [currentlyVisibleSnackbar dismissAnimated:NO];
+    }
+    [superview addSubview:self];
+    [superview addConstraints:self.horizontalLayoutConstraints];
+    [superview addConstraints:shouldReplaceExistingSnackbar ? self.visibleVerticalLayoutConstraints : self.hiddenVerticalLayoutConstraints];
+    [superview layoutIfNeeded];
+    [self setupContentLayout];
+    
+    if (!shouldReplaceExistingSnackbar) {
+        [superview removeConstraints:self.hiddenVerticalLayoutConstraints];
+        [superview addConstraints:self.visibleVerticalLayoutConstraints];
+        
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             [superview layoutIfNeeded];
+                         }
+                         completion:nil];
+    }
+    NSInteger duration = (NSInteger)self.duration;
+    if (duration != SnackbarDurationInfinite) {
+        self.dismissalTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration
+                                                               target:self
+                                                             selector:@selector(timeoutForDismissal:)
+                                                             userInfo:nil
+                                                              repeats:NO];
+    }
+    currentlyVisibleSnackbar = self;
 }
 
 - (void)show {
@@ -255,7 +351,7 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     if (!_visibleVerticalLayoutConstraints) {
         
         _visibleVerticalLayoutConstraints =
-        [NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(44)]-(5)-|"
+        [NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(44)]-(90)-|"
                                                 options:0
                                                 metrics:nil
                                                   views:NSDictionaryOfVariableBindings(self)];

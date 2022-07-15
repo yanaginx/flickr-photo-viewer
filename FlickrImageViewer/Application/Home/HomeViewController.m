@@ -13,6 +13,7 @@
 #define kPopularTabIndex 0
 #define kUploadTabIndex 1
 #define kProfileTabIndex 2
+#define kUploadFinishSnackbarDuration 3
 
 @interface HomeViewController () <UploadPhotoManagerDelegate>
 //                                  UIPopoverPresentationControllerDelegate>
@@ -93,7 +94,7 @@
 
 #pragma mark - UploadPhotoManagerDelegate
 - (void)onStartUploadingImage {
-    [self _setupUploadSnackbar];
+    [self _displayUploadingSnackbar];
     NSLog(@"[DEBUG] %s: Start uploading!", __func__);
     self.selectedViewController = [self.viewControllers objectAtIndex:kProfileTabIndex];
 }
@@ -116,6 +117,7 @@
             NSLog(@"[DEBUG] %s: Upload finished for all images!", __func__);
             // refresh profile upon finish uploading all
             [self.profileVC refreshProfile];
+            [self _displayUploadFinishSnackbar];
             break;
     }
 }
@@ -148,16 +150,29 @@
 //    return tabBarItemFrame;
 //}
 
-- (void)_setupUploadSnackbar {
+- (void)_displayUploadingSnackbar {
     NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading..."];
-    SSSnackbar *snackbar = [SSSnackbar snackbarWithMessage:snackbarMessage
-                                                actionText:@"Close"
-                                                  duration:5
-                                               actionBlock:^(SSSnackbar *sender){}
-                                            dismissalBlock:nil];
-    [snackbar show];
+    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                       message:snackbarMessage
+                                                    actionText:@"CLOSE"
+                                                      duration:SnackbarDurationInfinite
+                                                   actionBlock:^(SSSnackbar *sender) {
+        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+    }];
+    [snackbar display];
 }
 
+- (void)_displayUploadFinishSnackbar {
+    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploaded!"];
+    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                       message:snackbarMessage
+                                                    actionText:@"CLOSE"
+                                                      duration:3
+                                                   actionBlock:^(SSSnackbar *sender) {
+        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+    }];
+    [snackbar display];
+}
 //#pragma mark - UIPopoverPresentationControllerDelegate
 //- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
 //    return UIModalPresentationNone;
