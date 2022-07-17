@@ -153,7 +153,6 @@
     BOOL enoughContentForTheRow = NO;
     CGFloat rowHeight = self.rowMaximumHeight;
     
-    // Calculations for variable height grid
     if (self.fixedHeight) {
         CGFloat totalWidth = 0;
         NSInteger index = 0;

@@ -13,8 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol UploadPhotoManagerDelegate <NSObject>
 
-- (void)onStartUploadingImage;
-- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode;
+- (void)onStartUploadingImageWithTotalTasksCount:(NSInteger)totalTasks
+                              finishedTasksCount:(NSInteger)finishedTasks;
+- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode
+                            totalTasksCount:(NSInteger)totalTasks
+                         finishedTasksCount:(NSInteger)finishedTasks;
 
 @end
 

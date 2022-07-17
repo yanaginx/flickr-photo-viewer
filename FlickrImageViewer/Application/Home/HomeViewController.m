@@ -93,32 +93,55 @@
 }
 
 #pragma mark - UploadPhotoManagerDelegate
-- (void)onStartUploadingImage {
-    [self _displayUploadingSnackbar];
+- (void)onStartUploadingImageWithTotalTasksCount:(NSInteger)totalTasks
+                              finishedTasksCount:(NSInteger)finishedTasks {
+    if (SSSnackbar.currentSnackbar == nil) {
+        NSString *statusString = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
+                                  finishedTasks,
+                                  totalTasks];
+        [self _displayUploadingSnackbarWithStatusString:statusString];
+    } else {
+//        SSSnackbar.currentSnackbar setLabelText:@""
+    }
     NSLog(@"[DEBUG] %s: Start uploading!", __func__);
     self.selectedViewController = [self.viewControllers objectAtIndex:kProfileTabIndex];
 }
 
-- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode {
+- (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode
+                            totalTasksCount:(NSInteger)totalTasks
+                         finishedTasksCount:(NSInteger)finishedTasks {
     switch (errorCode) {
-        case kNetworkError:
+        case kNetworkError: {
             NSLog(@"[DEBUG] %s: Network error!", __func__);
             break;
-        case kServerError:
+        }
+        case kServerError: {
             NSLog(@"[DEBUG] %s: Server error!", __func__);
             break;
-        case kNoDataError:
+        }
+        case kNoDataError: {
             NSLog(@"[DEBUG] %s: No data error!", __func__);
             break;
-        case kNoError:
+        }
+        case kNoError: {
             NSLog(@"[DEBUG] %s: Upload finished! Continuing...", __func__);
+            NSString *statusString = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
+                                     finishedTasks,
+                                     totalTasks];
+            [SSSnackbar.currentSnackbar setLabelText:statusString];
             break;
-        default:
+        }
+        default: {
             NSLog(@"[DEBUG] %s: Upload finished for all images!", __func__);
+            NSString *finishStatus = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
+                                     finishedTasks,
+                                     totalTasks];
+            [SSSnackbar.currentSnackbar setLabelText:finishStatus];
             // refresh profile upon finish uploading all
             [self.profileVC refreshProfile];
             [self _displayUploadFinishSnackbar];
             break;
+        }
     }
 }
 
@@ -150,10 +173,10 @@
 //    return tabBarItemFrame;
 //}
 
-- (void)_displayUploadingSnackbar {
-    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading..."];
+- (void)_displayUploadingSnackbarWithStatusString:(NSString *)statusString {
+//    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading... "];
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
-                                                       message:snackbarMessage
+                                                       message:statusString
                                                     actionText:@"CLOSE"
                                                       duration:SnackbarDurationInfinite
                                                    actionBlock:^(SSSnackbar *sender) {

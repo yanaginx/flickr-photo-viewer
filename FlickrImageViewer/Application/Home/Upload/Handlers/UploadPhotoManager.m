@@ -19,12 +19,12 @@
 #define kMaxAsyncUploadTask 10
 
 @interface UploadPhotoManager () {
-    NSInteger numberOfPhotosUploaded;
-    NSInteger numberOfPhotosOnLastBatch;
     dispatch_queue_t uploadQueue;
     dispatch_group_t uploadGroup;
     dispatch_semaphore_t uploadSemaphore;
     NSMutableArray *uploadTasks;
+    NSInteger uploadTasksCount;
+    NSInteger finishedTasksCount;
     BOOL isNotified;
 }
 
@@ -42,8 +42,8 @@
         uploadGroup = dispatch_group_create();
         uploadSemaphore = dispatch_semaphore_create(10);
         uploadTasks = [NSMutableArray array];
-        numberOfPhotosUploaded = 0;
-        numberOfPhotosOnLastBatch = 0;
+        uploadTasksCount = 0;
+        finishedTasksCount = 0;
         isNotified = NO;
     }
     return self;
@@ -56,8 +56,14 @@
                  description:(NSString *)description
                      albumID:(NSString *)albumID {
     // Call the delegate to start the pop over
-    [self.delegate onStartUploadingImage];
-    // Create upload tasks
+    if (uploadTasksCount == 0) {
+        [self.delegate onStartUploadingImageWithTotalTasksCount:imageAssets.count
+                                             finishedTasksCount:0];
+    } else {
+        [self.delegate onStartUploadingImageWithTotalTasksCount:uploadTasksCount
+                                             finishedTasksCount:finishedTasksCount];
+    }
+        // Create upload tasks
     for (PHAsset *imageAsset in imageAssets) {
         dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
@@ -78,10 +84,15 @@
                         dispatch_async(dispatch_get_main_queue(), ^{
                             switch (uploadTask.state) {
                                 case UploadTaskStateCompleted:
-                                    [self.delegate onFinishUploadingImageWithErrorCode:kNoError];
+                                    self->finishedTasksCount += 1;
+                                    [self.delegate onFinishUploadingImageWithErrorCode:kNoError
+                                                                       totalTasksCount:self->uploadTasksCount
+                                                                    finishedTasksCount:self->finishedTasksCount];
                                     break;
                                 case UploadTaskStateCompletedWithError:
-                                    [self.delegate onFinishUploadingImageWithErrorCode:kServerError];
+                                    [self.delegate onFinishUploadingImageWithErrorCode:kNoError
+                                                                       totalTasksCount:self->uploadTasksCount
+                                                                    finishedTasksCount:self->finishedTasksCount];
                                     break;
                                 default:
                                     break;
@@ -97,6 +108,7 @@
     
     // Start the upload tasks
     for (UploadTask *uploadTask in uploadTasks) {
+        uploadTasksCount += 1;
         [uploadTask startUploadTaskWithQueue:self->uploadQueue
                                        group:self->uploadGroup
                                    semaphore:self->uploadSemaphore];
@@ -108,10 +120,15 @@
     self->isNotified = YES;
     dispatch_group_notify(uploadGroup, dispatch_get_main_queue(), ^{
         @strongify(self)
-        [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded];
+        [self.delegate onFinishUploadingImageWithErrorCode:kLastPhotoUploaded
+                                           totalTasksCount:self->uploadTasksCount
+                                        finishedTasksCount:self->finishedTasksCount];
+
         NSLog(@"[DEBUG] %s: all photos uploaded", __func__);
         // reset the notified status
         self->isNotified = NO;
+        self->uploadTasksCount = 0;
+        self->finishedTasksCount = 0;
     });
 }
 

@@ -29,7 +29,8 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
 
 @implementation SSSnackbar
 
-//
+#pragma mark - Initialization
+
 + (instancetype)snackbarWithContextView:(UIView *)contextView
                                 message:(NSString *)message
                              actionText:(NSString *)actionText
@@ -84,64 +85,64 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     }
     return self;
 }
-
-+ (instancetype)snackbarWithMessage:(NSString *)message
-                         actionText:(NSString *)actionText
-                           duration:(NSTimeInterval)duration
-                        actionBlock:(void (^)(SSSnackbar *sender))actionBlock
-                     dismissalBlock:(void (^)(SSSnackbar *sender))dismissalBlock {
-    
-    SSSnackbar *snackbar = [[SSSnackbar alloc] initWithMessage:message
-                                                    actionText:actionText
-                                                      duration:duration
-                                                   actionBlock:actionBlock
-                                                dismissalBlock:dismissalBlock];
-    
-    return snackbar;
-}
-
-- (instancetype)initWithMessage:(NSString *)message
-                     actionText:(NSString *)actionText
-                       duration:(NSTimeInterval)duration
-                    actionBlock:(void (^)(SSSnackbar *sender))actionBlock
-                 dismissalBlock:(void (^)(SSSnackbar *sender))dismissalBlock {
-    
-    if (self = [super initWithFrame:CGRectMake(0, 0, 0, 0)]) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-        _actionBlock = actionBlock;
-        _dismissalBlock = dismissalBlock;
-        _duration = duration;
-        
-        _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        _messageLabel.text = message;
-        _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _messageLabel.font = [UIFont systemFontOfSize:14.0];
-        _messageLabel.textColor = [UIColor whiteColor];
-        [_messageLabel sizeToFit];
-        
-        _actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        _actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _actionButton.titleLabel.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightBold];
-        [_actionButton setTitle:actionText forState:UIControlStateNormal];
-        [_actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_actionButton sizeToFit];
-        [_actionButton addTarget:self
-                          action:@selector(executeAction:)
-                forControlEvents:UIControlEventTouchUpInside];
-        
-        _separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        _separator.backgroundColor = [UIColor colorWithWhite:0.99 alpha:.1];
-        _separator.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [self addSubview:_messageLabel];
-        [self addSubview:_actionButton];
-        [self addSubview:_separator];
-        
-        self.opaque = NO;
-    }
-    
-    return self;
-}
+//
+//+ (instancetype)snackbarWithMessage:(NSString *)message
+//                         actionText:(NSString *)actionText
+//                           duration:(NSTimeInterval)duration
+//                        actionBlock:(void (^)(SSSnackbar *sender))actionBlock
+//                     dismissalBlock:(void (^)(SSSnackbar *sender))dismissalBlock {
+//
+//    SSSnackbar *snackbar = [[SSSnackbar alloc] initWithMessage:message
+//                                                    actionText:actionText
+//                                                      duration:duration
+//                                                   actionBlock:actionBlock
+//                                                dismissalBlock:dismissalBlock];
+//
+//    return snackbar;
+//}
+//
+//- (instancetype)initWithMessage:(NSString *)message
+//                     actionText:(NSString *)actionText
+//                       duration:(NSTimeInterval)duration
+//                    actionBlock:(void (^)(SSSnackbar *sender))actionBlock
+//                 dismissalBlock:(void (^)(SSSnackbar *sender))dismissalBlock {
+//
+//    if (self = [super initWithFrame:CGRectMake(0, 0, 0, 0)]) {
+//        self.translatesAutoresizingMaskIntoConstraints = NO;
+//        _actionBlock = actionBlock;
+//        _dismissalBlock = dismissalBlock;
+//        _duration = duration;
+//
+//        _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+//        _messageLabel.text = message;
+//        _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+//        _messageLabel.font = [UIFont systemFontOfSize:14.0];
+//        _messageLabel.textColor = [UIColor whiteColor];
+//        [_messageLabel sizeToFit];
+//
+//        _actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+//        _actionButton.translatesAutoresizingMaskIntoConstraints = NO;
+//        _actionButton.titleLabel.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightBold];
+//        [_actionButton setTitle:actionText forState:UIControlStateNormal];
+//        [_actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        [_actionButton sizeToFit];
+//        [_actionButton addTarget:self
+//                          action:@selector(executeAction:)
+//                forControlEvents:UIControlEventTouchUpInside];
+//
+//        _separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+//        _separator.backgroundColor = [UIColor colorWithWhite:0.99 alpha:.1];
+//        _separator.translatesAutoresizingMaskIntoConstraints = NO;
+//
+//        [self addSubview:_messageLabel];
+//        [self addSubview:_actionButton];
+//        [self addSubview:_separator];
+//
+//        self.opaque = NO;
+//    }
+//
+//    return self;
+//}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -159,6 +160,8 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     
     CGContextRestoreGState(ctx);
 }
+
+#pragma mark - Public methods
 
 - (void)display {
     UIView *superview = self.contextView;
@@ -197,46 +200,56 @@ static SSSnackbar *currentlyVisibleSnackbar = nil;
     currentlyVisibleSnackbar = self;
 }
 
-- (void)show {
-    UIViewController *topController = UIApplication.sharedApplication.delegate.window.rootViewController;
-    while (topController.presentedViewController) {
-        topController = topController.presentedViewController;
-    }
-    
-    UIView *superview = topController.view;
-    
-    BOOL shouldReplaceExistingSnackbar = currentlyVisibleSnackbar != nil;
-    
-    if (shouldReplaceExistingSnackbar) {
-        [currentlyVisibleSnackbar invalidateTimer];
-        [currentlyVisibleSnackbar dismissAnimated:NO];
-    }
-    
-    [superview addSubview:self];
-    [superview addConstraints:self.horizontalLayoutConstraints];
-    [superview addConstraints:shouldReplaceExistingSnackbar ? self.visibleVerticalLayoutConstraints : self.hiddenVerticalLayoutConstraints];
-    [superview layoutIfNeeded];
-    [self setupContentLayout];
-    
-    if (!shouldReplaceExistingSnackbar) {
-        [superview removeConstraints:self.hiddenVerticalLayoutConstraints];
-        [superview addConstraints:self.visibleVerticalLayoutConstraints];
-        
-        [UIView animateWithDuration:0.2
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-                             [superview layoutIfNeeded];
-                         }
-                         completion:nil];
-    }
-    self.dismissalTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration
-                                                           target:self
-                                                         selector:@selector(timeoutForDismissal:)
-                                                         userInfo:nil
-                                                          repeats:NO];
-    currentlyVisibleSnackbar = self;
++ (instancetype)currentSnackbar {
+    return currentlyVisibleSnackbar;
 }
+//
+//- (void)show {
+//    UIViewController *topController = UIApplication.sharedApplication.delegate.window.rootViewController;
+//    while (topController.presentedViewController) {
+//        topController = topController.presentedViewController;
+//    }
+//
+//    UIView *superview = topController.view;
+//
+//    BOOL shouldReplaceExistingSnackbar = currentlyVisibleSnackbar != nil;
+//
+//    if (shouldReplaceExistingSnackbar) {
+//        [currentlyVisibleSnackbar invalidateTimer];
+//        [currentlyVisibleSnackbar dismissAnimated:NO];
+//    }
+//
+//    [superview addSubview:self];
+//    [superview addConstraints:self.horizontalLayoutConstraints];
+//    [superview addConstraints:shouldReplaceExistingSnackbar ? self.visibleVerticalLayoutConstraints : self.hiddenVerticalLayoutConstraints];
+//    [superview layoutIfNeeded];
+//    [self setupContentLayout];
+//
+//    if (!shouldReplaceExistingSnackbar) {
+//        [superview removeConstraints:self.hiddenVerticalLayoutConstraints];
+//        [superview addConstraints:self.visibleVerticalLayoutConstraints];
+//
+//        [UIView animateWithDuration:0.2
+//                              delay:0
+//                            options:UIViewAnimationOptionCurveEaseOut
+//                         animations:^{
+//                             [superview layoutIfNeeded];
+//                         }
+//                         completion:nil];
+//    }
+//    self.dismissalTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration
+//                                                           target:self
+//                                                         selector:@selector(timeoutForDismissal:)
+//                                                         userInfo:nil
+//                                                          repeats:NO];
+//    currentlyVisibleSnackbar = self;
+//}
+
+- (void)setLabelText:(NSString *)labelText {
+    self.messageLabel.text = labelText;
+}
+
+#pragma mark - Private methods
 
 - (void)replaceExistingSnackbar {
     UIView *superview = [UIApplication sharedApplication].delegate.window.rootViewController.view;
