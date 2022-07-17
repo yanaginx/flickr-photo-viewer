@@ -7,6 +7,7 @@
 
 #import "DynamicCollectionViewLayout.h"
 #import "DynamicSizeCalculator.h"
+#import "../../Constants/Constants.h"
 
 @interface DynamicCollectionViewLayout () <DynamicSizeCalculatorDataSource>
 
@@ -16,14 +17,12 @@
 
 @implementation DynamicCollectionViewLayout
 
-static CGFloat spacing = 6.0f;
-
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.minimumLineSpacing = spacing;
-        self.minimumInteritemSpacing = spacing;
-        self.sectionInset = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
+        self.minimumLineSpacing = 2 * kMargin;
+        self.minimumInteritemSpacing = 2 * kMargin;
+//        self.sectionInset = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
     }
     return self;
 }

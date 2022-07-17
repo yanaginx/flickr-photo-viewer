@@ -379,7 +379,7 @@
     if (_fixedFlowLayout) return _fixedFlowLayout;
     
     _fixedFlowLayout = [[FixedFlowLayout alloc] init];
-    _fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kMaxRowHeight);
+    _fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width, kMaxRowHeight);
     return _fixedFlowLayout;
 }
 

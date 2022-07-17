@@ -64,8 +64,8 @@
                                            self.view.bounds.origin.y,
                                            self.view.bounds.size.width,
                                            self.view.bounds.size.height);
-    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width / 2 - _fixedFlowLayout.minimumLineSpacing,
-                                               self.collectionView.bounds.size.width / 2 - _fixedFlowLayout.minimumLineSpacing);
+    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width / 2 -  _fixedFlowLayout.minimumInteritemSpacing,
+                                               self.collectionView.bounds.size.width / 2 - _fixedFlowLayout.minimumInteritemSpacing);
 }
 
 #pragma mark - Operations
@@ -242,7 +242,7 @@
     if (_fixedFlowLayout) return _fixedFlowLayout;
     
     _fixedFlowLayout = [[FixedFlowLayout alloc] init];
-    _fixedFlowLayout.sectionInset = UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin);
+//    _fixedFlowLayout.sectionInset = UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin);
 
     return _fixedFlowLayout;
 }

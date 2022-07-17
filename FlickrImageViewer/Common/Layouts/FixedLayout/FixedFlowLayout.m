@@ -6,15 +6,15 @@
 //
 
 #import "FixedFlowLayout.h"
+#import "../../Constants/Constants.h"
 
 @implementation FixedFlowLayout
-
-static CGFloat itemSpacing = 6.0f;
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.minimumInteritemSpacing = itemSpacing;
+        self.minimumInteritemSpacing = kMargin;
+        self.minimumLineSpacing = 2 * kMargin;
     }
     return self;
 }

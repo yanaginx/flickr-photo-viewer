@@ -122,16 +122,16 @@
 
 - (void)_setupCollectionView {
     self.collectionView.frame = self.view.bounds;
-    CGFloat cellWidth = (self.collectionView.frame.size.width - (2 * kMargin * ((CGFloat)rowCount - 1))) / (CGFloat)rowCount;
+    CGFloat cellWidth = (self.collectionView.frame.size.width - (kMargin * ((CGFloat)rowCount - 1))) / (CGFloat)rowCount;
     CGSize targetSize = CGSizeMake(cellWidth, cellWidth);
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.itemSize = targetSize;
     layout.minimumLineSpacing = kMargin;
     layout.minimumInteritemSpacing = kMargin;
-    layout.sectionInset = UIEdgeInsetsMake(kMargin,
-                                           kMargin,
-                                           kMargin,
-                                           kMargin);
+//    layout.sectionInset = UIEdgeInsetsMake(kMargin,
+//                                           kMargin,
+//                                           kMargin,
+//                                           kMargin);
     
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.prefetchDataSource = self.dataSource;

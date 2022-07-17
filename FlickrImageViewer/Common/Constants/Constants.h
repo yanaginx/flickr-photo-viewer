@@ -27,7 +27,7 @@
 
 #define kBigSizeSuffix @"b"
 #define kSmallSizeSuffix @"w"
-#define kMargin 6
+#define kMargin 3
 #define kCellHeight 200
 #define kNetworkError 150900
 #define kServerError 150901

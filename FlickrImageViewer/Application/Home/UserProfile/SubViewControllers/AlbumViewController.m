@@ -64,7 +64,11 @@
                                            self.view.bounds.origin.y,
                                            self.view.bounds.size.width,
                                            self.view.bounds.size.height);
-    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kCellHeight);
+//    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width - _fixedFlowLayout.minimumLineSpacing * 2, kCellHeight);
+    self.fixedFlowLayout.itemSize = CGSizeMake(self.collectionView.bounds.size.width -
+                                               _fixedFlowLayout.minimumLineSpacing * 2,
+                                               kMaxRowHeight - _fixedFlowLayout.minimumLineSpacing * 2);
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
