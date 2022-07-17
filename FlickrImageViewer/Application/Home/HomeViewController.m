@@ -133,13 +133,12 @@
         }
         default: {
             NSLog(@"[DEBUG] %s: Upload finished for all images!", __func__);
-            NSString *finishStatus = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
+            NSString *finishStatus = [NSString stringWithFormat:@"Uploading finished with %lu/%lu photos succeeded!",
                                      finishedTasks,
                                      totalTasks];
-            [SSSnackbar.currentSnackbar setLabelText:finishStatus];
             // refresh profile upon finish uploading all
             [self.profileVC refreshProfile];
-            [self _displayUploadFinishSnackbar];
+            [self _displayUploadFinishSnackbarWithStatusString:finishStatus];
             break;
         }
     }
@@ -185,10 +184,9 @@
     [snackbar display];
 }
 
-- (void)_displayUploadFinishSnackbar {
-    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploaded!"];
+- (void)_displayUploadFinishSnackbarWithStatusString:(NSString *)statusString {
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
-                                                       message:snackbarMessage
+                                                       message:statusString
                                                     actionText:@"CLOSE"
                                                       duration:3
                                                    actionBlock:^(SSSnackbar *sender) {
