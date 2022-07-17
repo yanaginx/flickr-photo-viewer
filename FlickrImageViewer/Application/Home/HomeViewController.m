@@ -93,6 +93,10 @@
 }
 
 #pragma mark - UploadPhotoManagerDelegate
+- (void)onUploadingWithNoInternet {
+    [self _displayNoInternetStatus];
+}
+
 - (void)onStartUploadingImageWithTotalTasksCount:(NSInteger)totalTasks
                               finishedTasksCount:(NSInteger)finishedTasks {
     if (SSSnackbar.currentSnackbar == nil) {
@@ -171,6 +175,17 @@
 //    CGRect tabBarItemFrame = tabBarItemView.frame;
 //    return tabBarItemFrame;
 //}
+
+- (void)_displayNoInternetStatus {
+    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                       message:@"No internet, please try again later"
+                                                    actionText:@"CLOSE"
+                                                      duration:2
+                                                   actionBlock:^(SSSnackbar *sender) {
+        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+    }];
+    [snackbar display];
+}
 
 - (void)_displayUploadingSnackbarWithStatusString:(NSString *)statusString {
 //    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading... "];

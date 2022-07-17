@@ -16,6 +16,7 @@
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../../Common/Utilities/DataController/DataController.h"
+#import "../../../../Common/Utilities/Reachability/Reachability.h"
 #import "../../../../Common/Constants/Constants.h"
 
 @interface UserProfileManager ()
@@ -42,14 +43,16 @@
                                                       NSString * _Nullable,
                                                       NSString * _Nullable,
                                                       NSError * _Nullable))completion {
-    // Fetching from core data when no internet test one for now:
-    UserInfo *userInfo = [self _fetchUserInfoFromLocal];
-    if (userInfo) {
-        NSURL *avatarURL = [NSURL URLWithString:userInfo.avatarURL];
-        NSString *photoCounts = [NSString stringWithFormat:@"%d",
-                                 userInfo.photosCount];
-        completion(avatarURL, userInfo.name, photoCounts, nil);
-        return;
+    // Fetching from core data when no internet
+    if (![self _isConnected]) {
+        UserInfo *userInfo = [self _fetchUserInfoFromLocal];
+        if (userInfo) {
+            NSURL *avatarURL = [NSURL URLWithString:userInfo.avatarURL];
+            NSString *photoCounts = [NSString stringWithFormat:@"%d",
+                                     userInfo.photosCount];
+            completion(avatarURL, userInfo.name, photoCounts, nil);
+            return;
+        }
     }
     
     NSURLRequest *request = [self _userProfileURLRequest];
@@ -118,6 +121,16 @@
 }
 
 #pragma mark - Private methods
+- (BOOL)_isConnected {
+    Reachability *reach = [Reachability reachabilityForInternetConnection];
+    if (reach.currentReachabilityStatus != NotReachable) {
+        NSLog(@"[DEBUG] %s: Is Connected", __func__);
+        return YES;
+    }
+    NSLog(@"[DEBUG] %s: Not connected", __func__);
+    return NO;
+}
+
 - (UserInfo *)_fetchUserInfoFromLocal {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"UserInfo"];
     NSError *error = nil;

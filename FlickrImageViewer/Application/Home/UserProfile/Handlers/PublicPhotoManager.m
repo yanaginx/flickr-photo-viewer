@@ -12,6 +12,7 @@
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/AccountManager/AccountManager.h"
+#import "../../../../Common/Utilities/Reachability/Reachability.h"
 #import "../../../../Common/Constants/Constants.h"
 
 @implementation PublicPhotoManager
@@ -21,6 +22,17 @@
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
                                           NSError * _Nullable))completion {
+    // Fetch from core data when there is no internet
+    if (![self _isConnected]) {
+        // TODO: Fetch from core data first
+        
+        // If there is no offline data then return the no internet error
+        NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                             code:kNetworkError
+                                         userInfo:nil];
+        completion(nil, error);
+        return;
+    }
     
     NSURLRequest *request = [self _publicPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
@@ -104,6 +116,17 @@
         completion(photos, nil);
         
     }] resume];
+}
+
+#pragma mark - Private methods
+- (BOOL)_isConnected {
+    Reachability *reach = [Reachability reachabilityForInternetConnection];
+    if (reach.currentReachabilityStatus != NotReachable) {
+        NSLog(@"[DEBUG] %s: Is Connected", __func__);
+        return YES;
+    }
+    NSLog(@"[DEBUG] %s: Not connected", __func__);
+    return NO;
 }
 
 #pragma mark - Network related

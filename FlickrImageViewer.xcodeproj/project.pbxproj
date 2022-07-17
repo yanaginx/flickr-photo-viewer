@@ -77,6 +77,7 @@
 		B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC68288400C40052C1D3 /* DataContext.m */; };
 		B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */; };
 		B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */; };
+		B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC78288440BB0052C1D3 /* Reachability.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -251,6 +252,8 @@
 		B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataClass.h"; sourceTree = "<group>"; };
 		B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataClass.m"; sourceTree = "<group>"; };
 		B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2CBAC77288440BB0052C1D3 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		B2CBAC78288440BB0052C1D3 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -500,6 +503,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2CBAC762884409E0052C1D3 /* Reachability */,
 				B2CBAC622883FD850052C1D3 /* DataController */,
 				B221556B287BFDF300F2A074 /* AsyncUploader */,
 				B2E6CD0E287AA748005F3F2D /* MXParallaxHeader */,
@@ -842,6 +846,15 @@
 			path = DataContext;
 			sourceTree = "<group>";
 		};
+		B2CBAC762884409E0052C1D3 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B2CBAC77288440BB0052C1D3 /* Reachability.h */,
+				B2CBAC78288440BB0052C1D3 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		B2CED18228635C5400606615 /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -1138,6 +1151,7 @@
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
 				B2891798287FBED800AE87B1 /* UploadTask.m in Sources */,
 				B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */,
+				B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
 				B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,

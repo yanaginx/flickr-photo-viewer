@@ -13,6 +13,7 @@
 
 #import "../../../../Common/Constants/Constants.h"
 #import "../../../../Common/Utilities/Scope/Scope.h"
+#import "../../../../Common/Utilities/Reachability/Reachability.h"
 
 #define kDefaultTitle @"Default title"
 #define kDefaultDescription @"Default description"
@@ -55,6 +56,13 @@
                    withTitle:(NSString *)title
                  description:(NSString *)description
                      albumID:(NSString *)albumID {
+    // Check for the internet connection also
+    // If no internet then abort the uploading
+    if (![self _isConnected]) {
+        [self.delegate onUploadingWithNoInternet];
+        return;
+    }
+    
     // Call the delegate to start the pop over
     if (uploadTasksCount == 0) {
         [self.delegate onStartUploadingImageWithTotalTasksCount:imageAssets.count
@@ -132,6 +140,16 @@
     });
 }
 
+#pragma mark - Private methods
+- (BOOL)_isConnected {
+    Reachability *reach = [Reachability reachabilityForInternetConnection];
+    if (reach.currentReachabilityStatus != NotReachable) {
+        NSLog(@"[DEBUG] %s: Is Connected", __func__);
+        return YES;
+    }
+    NSLog(@"[DEBUG] %s: Not connected", __func__);
+    return NO;
+}
 
 #pragma mark - Custom Accessors
 - (PHCachingImageManager *)imageCacheManager {
