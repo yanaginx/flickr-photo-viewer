@@ -9,18 +9,49 @@
 #import "../../../Login/Handlers/LoginHandler.h"
 
 #import "../../../../Models/Photo.h"
+#import "../../../../Models/CoreData/UserInfo+CoreDataClass.h"
+#import "../../../../Models/CoreData/UserInfo+CoreDataProperties.h"
+
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/AccountManager/AccountManager.h"
+#import "../../../../Common/Utilities/DataController/DataController.h"
 #import "../../../../Common/Constants/Constants.h"
 
+@interface UserProfileManager ()
+
+@property (nonatomic, strong) DataController *dataController;
+
+@end
+
 @implementation UserProfileManager
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.dataController = [[DataController alloc] initWithModelName:kModelName];
+        [self.dataController loadWithCompletionHandler:^{
+            NSLog(@"[INFO] %s: Container loaded!", __func__);
+        }];
+    }
+    return self;
+}
 
 #pragma mark - Make request
 - (void)getUserProfileWithCompletionHandler:(void (^)(NSURL * _Nullable,
                                                       NSString * _Nullable,
                                                       NSString * _Nullable,
                                                       NSError * _Nullable))completion {
+    // Fetching from core data when no internet test one for now:
+    UserInfo *userInfo = [self _fetchUserInfoFromLocal];
+    if (userInfo) {
+        NSURL *avatarURL = [NSURL URLWithString:userInfo.avatarURL];
+        NSString *photoCounts = [NSString stringWithFormat:@"%d",
+                                 userInfo.photosCount];
+        completion(avatarURL, userInfo.name, photoCounts, nil);
+        return;
+    }
+    
     NSURLRequest *request = [self _userProfileURLRequest];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
@@ -75,9 +106,55 @@
         NSString *photosCount = (NSString *)[[[personProfile objectForKey:@"photos"]
                                               objectForKey:@"count"]
                                               objectForKey:@"_content"];
-        
+        // Save to core data when finish fetching
+        BOOL isSaveToCoreDataSuccessful = [self _saveUserInfoWithAvatarURL:avatarURL.absoluteString
+                                                                      name:name
+                                                            numberOfPhotos:photosCount.integerValue];
+        if (isSaveToCoreDataSuccessful) {
+            NSLog(@"[DEBUG] %s: save to core data ok!", __func__);
+        }
         completion(avatarURL, name, photosCount, nil);
     }] resume];
+}
+
+#pragma mark - Private methods
+- (UserInfo *)_fetchUserInfoFromLocal {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"UserInfo"];
+    NSError *error = nil;
+    NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request error:&error];
+    if (!results && error) {
+        NSLog(@"[ERROR] Error fetching DogBreed objects: %@\n%@", [error localizedDescription], [error userInfo]);
+        abort();
+    }
+    for (UserInfo *userInfo in results) {
+        NSLog(@"[DEBUG] %s: fetched result with userinfo name: %@\nuserinfo avatar URL: %@\nuserinfo photosCount: %d",
+              __func__,
+              userInfo.name,
+              userInfo.avatarURL,
+              userInfo.photosCount);
+    }
+    if (results.count == 0) return nil;
+    return results[0];
+}
+
+- (BOOL)_saveUserInfoWithAvatarURL:(NSString *)avatarURL
+                              name:(NSString *)name
+                    numberOfPhotos:(NSInteger)numberOfPhotos {
+    UserInfo *userInfo = [NSEntityDescription
+                          insertNewObjectForEntityForName:@"UserInfo"
+                          inManagedObjectContext:self.dataController.backgroundContext];
+    userInfo.avatarURL = avatarURL;
+    userInfo.name = name;
+    userInfo.photosCount = numberOfPhotos;
+    // save the context
+    NSError *error = nil;
+    if ([self.dataController.backgroundContext save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@",
+                 error.localizedDescription,
+                 error.userInfo);
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - Network related
@@ -99,7 +176,6 @@
                                          accessToken:nil
                                          tokenSecret:nil];
     return request;
-
 }
 
 

@@ -72,6 +72,11 @@
 		B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58C28744867007AAE9B /* UISegmentedControl+Additions.m */; };
 		B2CAD59028744A04007AAE9B /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */; };
 		B2CAD5932875589D007AAE9B /* PhotoForUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD5922875589D007AAE9B /* PhotoForUpload.m */; };
+		B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC412883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld */; };
+		B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC642883FFEE0052C1D3 /* DataController.m */; };
+		B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC68288400C40052C1D3 /* DataContext.m */; };
+		B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */; };
+		B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -237,6 +242,15 @@
 		B2CAD58F28744A04007AAE9B /* UIImage+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		B2CAD5912875589D007AAE9B /* PhotoForUpload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoForUpload.h; sourceTree = "<group>"; };
 		B2CAD5922875589D007AAE9B /* PhotoForUpload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoForUpload.m; sourceTree = "<group>"; };
+		B2CBAC422883F3000052C1D3 /* FlickrImageViewer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlickrImageViewer.xcdatamodel; sourceTree = "<group>"; };
+		B2CBAC632883FFEE0052C1D3 /* DataController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
+		B2CBAC642883FFEE0052C1D3 /* DataController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
+		B2CBAC67288400C40052C1D3 /* DataContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataContext.h; sourceTree = "<group>"; };
+		B2CBAC68288400C40052C1D3 /* DataContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataContext.m; sourceTree = "<group>"; };
+		B2CBAC70288408CA0052C1D3 /* UserInfo+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -486,6 +500,7 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B2CBAC622883FD850052C1D3 /* DataController */,
 				B221556B287BFDF300F2A074 /* AsyncUploader */,
 				B2E6CD0E287AA748005F3F2D /* MXParallaxHeader */,
 				B2CAD58428742F3A007AAE9B /* XMLReader */,
@@ -631,6 +646,7 @@
 		B29CBB832859D3270058B382 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B2CBAC402883F2900052C1D3 /* CoreData */,
 				B2A10BFB286EA16D001189EE /* Photo.h */,
 				B2A10BFC286EA16D001189EE /* Photo.m */,
 				B2BF06DB28703AFF002F4B1B /* User.h */,
@@ -639,6 +655,7 @@
 				B277DAD42872929300EEEBCB /* AlbumInfo.m */,
 				B2CAD5912875589D007AAE9B /* PhotoForUpload.h */,
 				B2CAD5922875589D007AAE9B /* PhotoForUpload.m */,
+				B2CBAC412883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -668,6 +685,7 @@
 		B29CBB862859D33B0058B382 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				B2CBAC66288400B50052C1D3 /* DataContext */,
 				B23A30CB28604BB400E976C8 /* Error */,
 				B23A30CD28604F0700E976C8 /* Home */,
 				B241088928602120005B08BC /* Login */,
@@ -793,6 +811,35 @@
 				B2CAD58628742F4C007AAE9B /* XMLReader.m */,
 			);
 			path = XMLReader;
+			sourceTree = "<group>";
+		};
+		B2CBAC402883F2900052C1D3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				B2CBAC70288408CA0052C1D3 /* UserInfo+CoreDataProperties.h */,
+				B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */,
+				B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */,
+				B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		B2CBAC622883FD850052C1D3 /* DataController */ = {
+			isa = PBXGroup;
+			children = (
+				B2CBAC632883FFEE0052C1D3 /* DataController.h */,
+				B2CBAC642883FFEE0052C1D3 /* DataController.m */,
+			);
+			path = DataController;
+			sourceTree = "<group>";
+		};
+		B2CBAC66288400B50052C1D3 /* DataContext */ = {
+			isa = PBXGroup;
+			children = (
+				B2CBAC67288400C40052C1D3 /* DataContext.h */,
+				B2CBAC68288400C40052C1D3 /* DataContext.m */,
+			);
+			path = DataContext;
 			sourceTree = "<group>";
 		};
 		B2CED18228635C5400606615 /* ViewComponents */ = {
@@ -1078,6 +1125,7 @@
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B277DADB2872A57100EEEBCB /* AlbumDetailViewController.m in Sources */,
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
+				B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */,
 				B277DAEA2872C9C900EEEBCB /* NSDate+Additions.m in Sources */,
 				B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */,
 				B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */,
@@ -1089,10 +1137,12 @@
 				B277DAD82872A35900EEEBCB /* AlbumInfoDataSource.m in Sources */,
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
 				B2891798287FBED800AE87B1 /* UploadTask.m in Sources */,
+				B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
 				B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,
+				B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */,
 				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,
 				B277DADE2872A5D500EEEBCB /* AlbumDetailDataSource.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
@@ -1113,6 +1163,8 @@
 				B2E6CD0A287821C1005F3F2D /* DescriptionTextField.m in Sources */,
 				B2215570287C0E8B00F2A074 /* UploadNetworking.m in Sources */,
 				B2E6CD11287AA770005F3F2D /* MXParallaxHeader.m in Sources */,
+				B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */,
+				B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */,
 				B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1548,6 +1600,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B2CBAC412883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B2CBAC422883F3000052C1D3 /* FlickrImageViewer.xcdatamodel */,
+			);
+			currentVersion = B2CBAC422883F3000052C1D3 /* FlickrImageViewer.xcdatamodel */;
+			path = FlickrImageViewer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B29CBB432859D2B20058B382 /* Project object */;
 }

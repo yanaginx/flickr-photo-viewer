@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
+        <attribute name="albumID" optional="YES" attributeType="String"/>
+        <attribute name="albumImageURL" optional="YES" attributeType="String"/>
+        <attribute name="albumName" optional="YES" attributeType="String"/>
+        <attribute name="creatationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="albumPhoto" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AlbumPhoto" inverseName="album" inverseEntity="AlbumPhoto"/>
+    </entity>
+    <entity name="AlbumPhoto" representedClassName="AlbumPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="albumPhoto" inverseEntity="Album"/>
+    </entity>
+    <entity name="PopularPhoto" representedClassName="PopularPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="imageHeight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
+        <attribute name="imageWidth" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="PublicPhoto" representedClassName="PublicPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="imageHeight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
+        <attribute name="imageWidth" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="photosCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="PublicPhoto" positionX="-58.807373046875" positionY="-117.8274841308594" width="128" height="88"/>
+        <element name="PopularPhoto" positionX="-57.636962890625" positionY="-15.60018920898438" width="128" height="88"/>
+        <element name="UserInfo" positionX="-57.09429931640625" positionY="81.24679565429688" width="128" height="88"/>
+        <element name="Album" positionX="-56.455322265625" positionY="177.7501525878906" width="128" height="118"/>
+        <element name="AlbumPhoto" positionX="295.2669067382812" positionY="82.01080322265625" width="128" height="73"/>
+    </elements>
+</model>
