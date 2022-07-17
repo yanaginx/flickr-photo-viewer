@@ -164,7 +164,8 @@
             
             if ((totalWidth + scaledWidth) > self.contentWidth) {
                 enoughContentForTheRow = YES;
-                if (scaledWidth > VALID_RATIO * availableSpace) {
+                if (scaledWidth > VALID_RATIO * availableSpace ||
+                    availableSpace < 60) {
                     [self.leftOvers removeObjectAtIndex:index];
                 }
                 break;
