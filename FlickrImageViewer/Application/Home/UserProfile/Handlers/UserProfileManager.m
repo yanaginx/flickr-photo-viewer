@@ -53,6 +53,11 @@
             completion(avatarURL, userInfo.name, photoCounts, nil);
             return;
         }
+        // if no data then log the network error
+        NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                             code:kNetworkError
+                                         userInfo:nil];
+        completion(nil, nil, nil, error);
     }
     
     NSURLRequest *request = [self _userProfileURLRequest];
@@ -136,8 +141,10 @@
     NSError *error = nil;
     NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request error:&error];
     if (!results && error) {
-        NSLog(@"[ERROR] Error fetching DogBreed objects: %@\n%@", [error localizedDescription], [error userInfo]);
-        abort();
+        NSLog(@"[ERROR] Error fetching UserInfo objects: %@\n%@",
+              [error localizedDescription],
+              [error userInfo]);
+        return nil;
     }
     for (UserInfo *userInfo in results) {
         NSLog(@"[DEBUG] %s: fetched result with userinfo name: %@\nuserinfo avatar URL: %@\nuserinfo photosCount: %d",
@@ -162,9 +169,9 @@
     // save the context
     NSError *error = nil;
     if ([self.dataController.backgroundContext save:&error] == NO) {
-        NSAssert(NO, @"Error saving context: %@\n%@",
-                 error.localizedDescription,
-                 error.userInfo);
+        NSLog(@"Error saving context: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
         return NO;
     }
     return YES;

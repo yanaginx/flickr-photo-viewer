@@ -78,6 +78,10 @@
 		B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */; };
 		B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */; };
 		B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC78288440BB0052C1D3 /* Reachability.m */; };
+		B2CBAC82288516110052C1D3 /* PublicPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */; };
+		B2CBAC83288516110052C1D3 /* PublicPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */; };
+		B2CBAC84288516110052C1D3 /* PopularPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */; };
+		B2CBAC85288516110052C1D3 /* PopularPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -254,6 +258,14 @@
 		B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CBAC77288440BB0052C1D3 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B2CBAC78288440BB0052C1D3 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		B2CBAC7A288516110052C1D3 /* PublicPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2CBAC7B288516110052C1D3 /* PublicPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2CBAC7E288516110052C1D3 /* PopularPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2CBAC7F288516110052C1D3 /* PopularPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -820,6 +832,14 @@
 		B2CBAC402883F2900052C1D3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				B2CBAC7A288516110052C1D3 /* PublicPhoto+CoreDataProperties.h */,
+				B2CBAC7B288516110052C1D3 /* PublicPhoto+CoreDataClass.h */,
+				B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */,
+				B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */,
+				B2CBAC7E288516110052C1D3 /* PopularPhoto+CoreDataProperties.h */,
+				B2CBAC7F288516110052C1D3 /* PopularPhoto+CoreDataClass.h */,
+				B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */,
+				B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */,
 				B2CBAC70288408CA0052C1D3 /* UserInfo+CoreDataProperties.h */,
 				B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */,
 				B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */,
@@ -1144,11 +1164,14 @@
 				B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */,
+				B2CBAC82288516110052C1D3 /* PublicPhoto+CoreDataClass.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B20A5C662876C68200F692C7 /* PermissionErrorViewController.m in Sources */,
 				B277DAE12872A5F200EEEBCB /* AlbumDetailCollectionViewCell.m in Sources */,
 				B277DAD82872A35900EEEBCB /* AlbumInfoDataSource.m in Sources */,
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
+				B2CBAC83288516110052C1D3 /* PublicPhoto+CoreDataProperties.m in Sources */,
+				B2CBAC84288516110052C1D3 /* PopularPhoto+CoreDataClass.m in Sources */,
 				B2891798287FBED800AE87B1 /* UploadTask.m in Sources */,
 				B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */,
 				B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */,
@@ -1177,6 +1200,7 @@
 				B2E6CD0A287821C1005F3F2D /* DescriptionTextField.m in Sources */,
 				B2215570287C0E8B00F2A074 /* UploadNetworking.m in Sources */,
 				B2E6CD11287AA770005F3F2D /* MXParallaxHeader.m in Sources */,
+				B2CBAC85288516110052C1D3 /* PopularPhoto+CoreDataProperties.m in Sources */,
 				B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */,
 				B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */,
 				B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */,

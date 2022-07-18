@@ -7,12 +7,35 @@
 
 #import "PopularPhotoManager.h"
 #import "../../../../Models/Photo.h"
+#import "../../../../Models/CoreData/PopularPhoto+CoreDataClass.h"
+#import "../../../../Models/CoreData/PopularPhoto+CoreDataProperties.h"
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/Reachability/Reachability.h"
+#import "../../../../Common/Utilities/DataController/DataController.h"
 #import "../../../../Common/Constants/Constants.h"
 
+@interface PopularPhotoManager () {
+    BOOL isOfflineFetched;
+}
+
+@property (nonatomic, strong) DataController *dataController;
+
+@end
+
 @implementation PopularPhotoManager
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.dataController = [[DataController alloc] initWithModelName:kModelName];
+        [self.dataController loadWithCompletionHandler:^{
+            NSLog(@"[INFO] %s: Container loaded!", __func__);
+        }];
+        isOfflineFetched = NO;
+    }
+    return self;
+}
 
 #pragma mark - Make request
 
@@ -21,8 +44,27 @@
                                               NSError * _Nullable))completion {
     // Fetch from core data when there is no internet
     if (![self _isConnected]) {
+        // if fetched offline data then just return an empty array
+        if (isOfflineFetched) {
+            completion([NSMutableArray array], nil);
+            return;
+        }
         // TODO: Fetch from core data first
-        
+        NSArray *popularPhotos = [self _fetchPopularPhotoFromLocal];
+        // if there is data then transform it into the model then return
+        if (popularPhotos) {
+            NSMutableArray * photos = [self _extractPhotosFromPopularPhotos:popularPhotos];
+            // Printing all the photo fetched!
+            for (Photo *photo in photos) {
+                NSLog(@"[DEBUG] %s: photo fetched offline: %@",
+                      __func__,
+                      photo.imageURL.absoluteString);
+            }
+            // END - printing all the photo fetched!
+            isOfflineFetched = YES;
+            completion(photos, nil);
+            return;
+        }
         // If there is no offline data then return the no internet error
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                              code:kNetworkError
@@ -31,6 +73,8 @@
         return;
     }
     
+    // else make the request as usual
+    isOfflineFetched = NO;
     NSURLRequest *request = [self _popularPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -109,6 +153,11 @@
             Photo *photo = [[Photo alloc] initWithImageURL:photoURL
                                                  imageSize:imageSize];
             [photos addObject:photo];
+            // Save the photo info into the core data
+            BOOL isSaveToCoreDataSuccessful = [self _savePopularPhotosWithPhoto:photo];
+            if (!isSaveToCoreDataSuccessful) {
+                NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+            }
         }
         completion(photos, nil);
         
@@ -125,6 +174,52 @@
     NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
 }
+
+- (NSArray *)_fetchPopularPhotoFromLocal {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PublicPhoto"];
+    NSError *error = nil;
+    NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request
+                                                                            error:&error];
+    if (!results && error) {
+        NSLog(@"[ERROR] Error fetching public photos objects: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
+        return nil;
+    }
+    return results;
+}
+
+- (BOOL)_savePopularPhotosWithPhoto:(Photo *)photo {
+    PopularPhoto *popularPhoto = [NSEntityDescription
+                                  insertNewObjectForEntityForName:@"PopularPhoto"
+                                  inManagedObjectContext:self.dataController.backgroundContext];
+    popularPhoto.imageURL = photo.imageURL.absoluteString;
+    popularPhoto.imageWidth = photo.imageSize.width;
+    popularPhoto.imageHeight = photo.imageSize.height;
+    // save the context
+    NSError *error = nil;
+    if ([self.dataController.backgroundContext save:&error] == NO) {
+        NSLog(@"Error saving context: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
+        return NO;
+    }
+    return YES;
+}
+
+- (NSMutableArray *)_extractPhotosFromPopularPhotos:(NSArray *)popularPhotos {
+    NSMutableArray *photos = [NSMutableArray array];
+    // Convert core data data into model
+    for (PopularPhoto *popularPhoto in popularPhotos) {
+        NSURL *photoURL = [NSURL URLWithString:popularPhoto.imageURL];
+        CGSize photoSize = CGSizeMake(popularPhoto.imageWidth, popularPhoto.imageHeight);
+        Photo *photo = [[Photo alloc] initWithImageURL:photoURL
+                                             imageSize:photoSize];
+        [photos addObject:photo];
+    }
+    return photos;
+}
+
 
 #pragma mark - Network related
 - (NSURLRequest *)_popularPhotoURLRequestWithPageNum:(NSInteger)pageNum {

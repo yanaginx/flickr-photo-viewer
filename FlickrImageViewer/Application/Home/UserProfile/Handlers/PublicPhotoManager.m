@@ -7,25 +7,67 @@
 
 #import "PublicPhotoManager.h"
 #import "../../../../Models/Photo.h"
+#import "../../../../Models/CoreData/PublicPhoto+CoreDataClass.h"
+#import "../../../../Models/CoreData/PublicPhoto+CoreDataProperties.h"
 
 #import "../../../Login/Handlers/LoginHandler.h"
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../../Common/Utilities/Reachability/Reachability.h"
+#import "../../../../Common/Utilities/DataController/DataController.h"
 #import "../../../../Common/Constants/Constants.h"
 
+@interface PublicPhotoManager () {
+    BOOL isOfflineFetched;
+}
+
+@property (nonatomic, strong) DataController *dataController;
+
+@end
+
 @implementation PublicPhotoManager
+
+#pragma mark - Initialization
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.dataController = [[DataController alloc] initWithModelName:kModelName];
+        [self.dataController loadWithCompletionHandler:^{
+            NSLog(@"[INFO] %s: Container loaded!", __func__);
+        }];
+    }
+    return self;
+}
 
 #pragma mark - Make request
 
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
-                                          NSError * _Nullable))completion {
+                                             NSError * _Nullable))completion {
     // Fetch from core data when there is no internet
     if (![self _isConnected]) {
+        // if fetched offline data then just return an empty array
+        if (isOfflineFetched) {
+            completion([NSMutableArray array], nil);
+            return;
+        }
         // TODO: Fetch from core data first
-        
+        NSArray *publicPhotos = [self _fetchPublicPhotosFromLocal];
+        // if there is data then transform it into the model then return
+        if (publicPhotos) {
+            NSMutableArray * photos = [self _extractPhotosFromPublicPhotos:publicPhotos];
+             // Printing all the photo fetched!
+            for (Photo *photo in photos) {
+                NSLog(@"[DEBUG] %s: photo fetched offline: %@",
+                      __func__,
+                      photo.imageURL.absoluteString);
+            }
+            // END - printing all the photo fetched!
+            isOfflineFetched = YES;
+            completion(photos, nil);
+            return;
+        }
         // If there is no offline data then return the no internet error
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                              code:kNetworkError
@@ -34,6 +76,8 @@
         return;
     }
     
+    // else make the request as usual
+    isOfflineFetched = NO;
     NSURLRequest *request = [self _publicPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -112,6 +156,11 @@
             Photo *photo = [[Photo alloc] initWithImageURL:photoURL
                                                  imageSize:imageSize];
             [photos addObject:photo];
+            // Save the photo info into the core data
+            BOOL isSaveToCoreDataSuccessful = [self _savePublicPhotosWithPhoto:photo];
+            if (!isSaveToCoreDataSuccessful) {
+                NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+            }
         }
         completion(photos, nil);
         
@@ -128,6 +177,52 @@
     NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
 }
+
+- (NSArray *)_fetchPublicPhotosFromLocal {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PublicPhoto"];
+    NSError *error = nil;
+    NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request
+                                                                            error:&error];
+    if (!results && error) {
+        NSLog(@"[ERROR] Error fetching public photos objects: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
+        return nil;
+    }
+    return results;
+}
+
+- (BOOL)_savePublicPhotosWithPhoto:(Photo *)photo {
+    PublicPhoto *publicPhoto = [NSEntityDescription
+                                insertNewObjectForEntityForName:@"PublicPhoto"
+                                inManagedObjectContext:self.dataController.backgroundContext];
+    publicPhoto.imageURL = photo.imageURL.absoluteString;
+    publicPhoto.imageWidth = photo.imageSize.width;
+    publicPhoto.imageHeight = photo.imageSize.height;
+    // save the context
+    NSError *error = nil;
+    if ([self.dataController.backgroundContext save:&error] == NO) {
+        NSLog(@"Error saving context: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
+        return NO;
+    }
+    return YES;
+}
+
+- (NSMutableArray *)_extractPhotosFromPublicPhotos:(NSArray *)publicPhotos {
+    NSMutableArray *photos = [NSMutableArray array];
+    // Convert core data data into model
+    for (PublicPhoto *publicPhoto in publicPhotos) {
+        NSURL *photoURL = [NSURL URLWithString:publicPhoto.imageURL];
+        CGSize photoSize = CGSizeMake(publicPhoto.imageWidth, publicPhoto.imageHeight);
+        Photo *photo = [[Photo alloc] initWithImageURL:photoURL
+                                             imageSize:photoSize];
+        [photos addObject:photo];
+    }
+    return photos;
+}
+
 
 #pragma mark - Network related
 - (NSURLRequest *)_publicPhotoURLRequestWithPageNum:(NSInteger)pageNum {

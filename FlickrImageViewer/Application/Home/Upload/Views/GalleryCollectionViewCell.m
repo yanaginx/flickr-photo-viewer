@@ -35,8 +35,9 @@
 }
 
 - (void)dealloc {
-    [self.photoImageView removeFromSuperview];
-    self.photoImageView = nil;
+    for (UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
 }
 
 #pragma mark - Operations

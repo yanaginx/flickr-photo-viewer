@@ -343,7 +343,8 @@
 
 - (void)_switchToDynamicLayout {
     [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
-    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+//    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+    [self.collectionView reloadData];
 //    if (self.dataSource.photos.count > 0) {
 //        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
 //        [self.collectionView scrollToItemAtIndexPath:indexPath
@@ -353,7 +354,8 @@
 
 - (void)_switchToFixedLayout {
     [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
-    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+//    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+    [self.collectionView reloadData];
 //    if (self.dataSource.photos.count > 0) {
 //        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
 //        [self.collectionView scrollToItemAtIndexPath:indexPath

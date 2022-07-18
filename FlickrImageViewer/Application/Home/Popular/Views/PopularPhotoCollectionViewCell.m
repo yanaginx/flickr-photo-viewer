@@ -25,6 +25,7 @@
     self = [super initWithFrame:frame];
     
     if (self) {
+        self.backgroundColor = UIColor.redColor;
         [self addSubview:self.photoImageView];
     }
     return self;

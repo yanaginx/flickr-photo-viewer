@@ -11,12 +11,12 @@
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="albumPhoto" inverseEntity="Album"/>
     </entity>
-    <entity name="PopularPhoto" representedClassName="PopularPhoto" syncable="YES" codeGenerationType="class">
+    <entity name="PopularPhoto" representedClassName="PopularPhoto" syncable="YES">
         <attribute name="imageHeight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="imageWidth" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
-    <entity name="PublicPhoto" representedClassName="PublicPhoto" syncable="YES" codeGenerationType="class">
+    <entity name="PublicPhoto" representedClassName="PublicPhoto" syncable="YES">
         <attribute name="imageHeight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="imageWidth" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
