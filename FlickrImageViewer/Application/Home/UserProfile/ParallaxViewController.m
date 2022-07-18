@@ -14,6 +14,7 @@
 #import "../../Main/AppDelegate.h"
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../Common/Constants/Constants.h"
+#import "../../../Common/Utilities/Scope/Scope.h"
 
 @interface ParallaxViewController () <PublicPhotosRefreshDelegate, AlbumRefreshDelegate>
 
@@ -27,6 +28,10 @@
 @end
 
 @implementation ParallaxViewController
+
+- (void)dealloc {
+    NSLog(@"[DEBUG] %s: did run!", __func__);
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -86,9 +91,11 @@
 }
 
 - (void)_setupLogoutModal {
+    @weakify(self)
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"Log out"
                                                      style:UIAlertActionStyleDestructive
                                                    handler:^(UIAlertAction * _Nonnull action) {
+        @strongify(self)
         [self _logout];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
@@ -146,10 +153,12 @@
 
 - (UIBarButtonItem *)settingButton {
     if (_settingButton) return _settingButton;
+    @weakify(self)
     UIAction *logoutAction = [UIAction actionWithTitle:@"Logout"
                                                  image:nil
                                             identifier:nil
                                                handler:^(__kindof UIAction * _Nonnull action) {
+        @strongify(self)
         [self _onLogoutButtonClicked];
     }];
     UIMenu *settingMenu = [UIMenu menuWithChildren:@[logoutAction]];

@@ -68,6 +68,9 @@
     return self;
 }
 
+- (void)dealloc {
+    NSLog(@"[DEBUG] %s did run!", __func__);
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

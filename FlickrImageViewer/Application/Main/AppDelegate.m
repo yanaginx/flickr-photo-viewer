@@ -38,11 +38,17 @@
 
 #pragma mark - Operations
 - (void)switchToLoginView {
+    if (self.window.rootViewController != nil) {
+        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    }
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     self.window.rootViewController = loginViewController;
 }
 
 - (void)switchToHomeView {
+    if (self.window.rootViewController != nil) {
+        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    }
     HomeViewController *homeViewController = [[HomeViewController alloc] init];
     self.window.rootViewController = homeViewController;
 }

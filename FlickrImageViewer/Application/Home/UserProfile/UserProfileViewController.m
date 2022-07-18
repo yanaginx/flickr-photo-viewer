@@ -34,6 +34,11 @@
 
 @implementation UserProfileViewController
 
+- (void)dealloc {
+    NSLog(@"[DEBUG] %s: did run!", __func__);
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
