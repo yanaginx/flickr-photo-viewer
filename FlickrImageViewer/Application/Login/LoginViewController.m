@@ -52,6 +52,9 @@
 }
 
 - (void)dealloc {
+    for (UIView *view in [self.view subviews]) {
+        [view removeFromSuperview];
+    }
     NSLog(@"Login view controller did dealloc");
 }
 
