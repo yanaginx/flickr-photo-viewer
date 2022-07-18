@@ -14,8 +14,8 @@
 	return [NSFetchRequest fetchRequestWithEntityName:@"PopularPhoto"];
 }
 
-@dynamic imageURL;
 @dynamic imageHeight;
+@dynamic imageURL;
 @dynamic imageWidth;
 
 @end

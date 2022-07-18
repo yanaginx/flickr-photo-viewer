@@ -160,6 +160,12 @@
 - (BOOL)_saveUserInfoWithAvatarURL:(NSString *)avatarURL
                               name:(NSString *)name
                     numberOfPhotos:(NSInteger)numberOfPhotos {
+    // Check if there is any user info exists
+    UserInfo *currentUserInfo = [self _fetchUserInfoFromLocal];
+    if (currentUserInfo) {
+        // if there is then remove the current one
+        [self.dataController.backgroundContext deleteObject:currentUserInfo];
+    }
     UserInfo *userInfo = [NSEntityDescription
                           insertNewObjectForEntityForName:@"UserInfo"
                           inManagedObjectContext:self.dataController.backgroundContext];

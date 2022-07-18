@@ -75,13 +75,7 @@
 		B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC412883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld */; };
 		B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC642883FFEE0052C1D3 /* DataController.m */; };
 		B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC68288400C40052C1D3 /* DataContext.m */; };
-		B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */; };
-		B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */; };
 		B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC78288440BB0052C1D3 /* Reachability.m */; };
-		B2CBAC82288516110052C1D3 /* PublicPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */; };
-		B2CBAC83288516110052C1D3 /* PublicPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */; };
-		B2CBAC84288516110052C1D3 /* PopularPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */; };
-		B2CBAC85288516110052C1D3 /* PopularPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
@@ -98,10 +92,16 @@
 		B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */; };
 		B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */; };
 		B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */; };
-		B2FA0623288559B400024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */; };
-		B2FA0624288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */; };
-		B2FA062B28856A3300024DD2 /* Album+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */; };
-		B2FA062C28856A3300024DD2 /* Album+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */; };
+		B2FA064128859DDB00024DD2 /* Album+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA062F28859DDB00024DD2 /* Album+CoreDataClass.m */; };
+		B2FA064228859DDB00024DD2 /* Album+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063028859DDB00024DD2 /* Album+CoreDataProperties.m */; };
+		B2FA064328859DDB00024DD2 /* UserInfo+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063328859DDB00024DD2 /* UserInfo+CoreDataClass.m */; };
+		B2FA064428859DDB00024DD2 /* UserInfo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063428859DDB00024DD2 /* UserInfo+CoreDataProperties.m */; };
+		B2FA064528859DDB00024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063728859DDB00024DD2 /* AlbumPhoto+CoreDataClass.m */; };
+		B2FA064628859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063828859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.m */; };
+		B2FA064728859DDB00024DD2 /* PopularPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063B28859DDB00024DD2 /* PopularPhoto+CoreDataClass.m */; };
+		B2FA064828859DDB00024DD2 /* PopularPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063C28859DDB00024DD2 /* PopularPhoto+CoreDataProperties.m */; };
+		B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063F28859DDB00024DD2 /* PublicPhoto+CoreDataClass.m */; };
+		B2FA064A28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -256,20 +256,8 @@
 		B2CBAC642883FFEE0052C1D3 /* DataController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
 		B2CBAC67288400C40052C1D3 /* DataContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataContext.h; sourceTree = "<group>"; };
 		B2CBAC68288400C40052C1D3 /* DataContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataContext.m; sourceTree = "<group>"; };
-		B2CBAC70288408CA0052C1D3 /* UserInfo+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataClass.h"; sourceTree = "<group>"; };
-		B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataClass.m"; sourceTree = "<group>"; };
-		B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CBAC77288440BB0052C1D3 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B2CBAC78288440BB0052C1D3 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		B2CBAC7A288516110052C1D3 /* PublicPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B2CBAC7B288516110052C1D3 /* PublicPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
-		B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
-		B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
-		B2CBAC7E288516110052C1D3 /* PopularPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B2CBAC7F288516110052C1D3 /* PopularPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
-		B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
-		B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
 		B2CED18528635C7900606615 /* LoadingButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingButton.m; sourceTree = "<group>"; };
 		B2CED18D286460AE00606615 /* ImageURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLBuilder.h; sourceTree = "<group>"; };
@@ -305,14 +293,26 @@
 		B2F69897286C3B0F00CA596B /* ServerErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerErrorViewController.h; sourceTree = "<group>"; };
 		B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerErrorViewController.m; sourceTree = "<group>"; };
 		B2F6989A286C3B3100CA596B /* ErrorViewConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorViewConstants.h; sourceTree = "<group>"; };
-		B2FA061B288559B400024DD2 /* AlbumPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B2FA061C288559B400024DD2 /* AlbumPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
-		B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
-		B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
-		B2FA062728856A3300024DD2 /* Album+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B2FA062828856A3300024DD2 /* Album+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataClass.h"; sourceTree = "<group>"; };
-		B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataClass.m"; sourceTree = "<group>"; };
-		B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA062D28859DDB00024DD2 /* Album+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA062E28859DDB00024DD2 /* Album+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA062F28859DDB00024DD2 /* Album+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA063028859DDB00024DD2 /* Album+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA063128859DDB00024DD2 /* UserInfo+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA063228859DDB00024DD2 /* UserInfo+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserInfo+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA063328859DDB00024DD2 /* UserInfo+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA063428859DDB00024DD2 /* UserInfo+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UserInfo+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA063528859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA063628859DDB00024DD2 /* AlbumPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA063728859DDB00024DD2 /* AlbumPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA063828859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA063928859DDB00024DD2 /* PopularPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA063A28859DDB00024DD2 /* PopularPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PopularPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA063B28859DDB00024DD2 /* PopularPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA063C28859DDB00024DD2 /* PopularPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PopularPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA063D28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA063E28859DDB00024DD2 /* PublicPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublicPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA063F28859DDB00024DD2 /* PublicPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -844,26 +844,26 @@
 		B2CBAC402883F2900052C1D3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				B2FA062728856A3300024DD2 /* Album+CoreDataProperties.h */,
-				B2FA062828856A3300024DD2 /* Album+CoreDataClass.h */,
-				B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */,
-				B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */,
-				B2FA061B288559B400024DD2 /* AlbumPhoto+CoreDataProperties.h */,
-				B2FA061C288559B400024DD2 /* AlbumPhoto+CoreDataClass.h */,
-				B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */,
-				B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */,
-				B2CBAC7A288516110052C1D3 /* PublicPhoto+CoreDataProperties.h */,
-				B2CBAC7B288516110052C1D3 /* PublicPhoto+CoreDataClass.h */,
-				B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */,
-				B2CBAC7D288516110052C1D3 /* PublicPhoto+CoreDataProperties.m */,
-				B2CBAC7E288516110052C1D3 /* PopularPhoto+CoreDataProperties.h */,
-				B2CBAC7F288516110052C1D3 /* PopularPhoto+CoreDataClass.h */,
-				B2CBAC80288516110052C1D3 /* PopularPhoto+CoreDataClass.m */,
-				B2CBAC81288516110052C1D3 /* PopularPhoto+CoreDataProperties.m */,
-				B2CBAC70288408CA0052C1D3 /* UserInfo+CoreDataProperties.h */,
-				B2CBAC71288408CA0052C1D3 /* UserInfo+CoreDataClass.h */,
-				B2CBAC72288408CA0052C1D3 /* UserInfo+CoreDataClass.m */,
-				B2CBAC73288408CA0052C1D3 /* UserInfo+CoreDataProperties.m */,
+				B2FA062D28859DDB00024DD2 /* Album+CoreDataProperties.h */,
+				B2FA062E28859DDB00024DD2 /* Album+CoreDataClass.h */,
+				B2FA062F28859DDB00024DD2 /* Album+CoreDataClass.m */,
+				B2FA063028859DDB00024DD2 /* Album+CoreDataProperties.m */,
+				B2FA063128859DDB00024DD2 /* UserInfo+CoreDataProperties.h */,
+				B2FA063228859DDB00024DD2 /* UserInfo+CoreDataClass.h */,
+				B2FA063328859DDB00024DD2 /* UserInfo+CoreDataClass.m */,
+				B2FA063428859DDB00024DD2 /* UserInfo+CoreDataProperties.m */,
+				B2FA063528859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.h */,
+				B2FA063628859DDB00024DD2 /* AlbumPhoto+CoreDataClass.h */,
+				B2FA063728859DDB00024DD2 /* AlbumPhoto+CoreDataClass.m */,
+				B2FA063828859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.m */,
+				B2FA063928859DDB00024DD2 /* PopularPhoto+CoreDataProperties.h */,
+				B2FA063A28859DDB00024DD2 /* PopularPhoto+CoreDataClass.h */,
+				B2FA063B28859DDB00024DD2 /* PopularPhoto+CoreDataClass.m */,
+				B2FA063C28859DDB00024DD2 /* PopularPhoto+CoreDataProperties.m */,
+				B2FA063D28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.h */,
+				B2FA063E28859DDB00024DD2 /* PublicPhoto+CoreDataClass.h */,
+				B2FA063F28859DDB00024DD2 /* PublicPhoto+CoreDataClass.m */,
+				B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1144,7 +1144,9 @@
 				B20A5C632875970500F692C7 /* GalleryManager.m in Sources */,
 				B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */,
 				B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */,
-				B2FA062C28856A3300024DD2 /* Album+CoreDataProperties.m in Sources */,
+				B2FA064828859DDB00024DD2 /* PopularPhoto+CoreDataProperties.m in Sources */,
+				B2FA064628859DDB00024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */,
+				B2FA064128859DDB00024DD2 /* Album+CoreDataClass.m in Sources */,
 				B2B096BD28802661009A4E75 /* GalleryViewModel.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
@@ -1163,22 +1165,23 @@
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
 				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
+				B2FA064328859DDB00024DD2 /* UserInfo+CoreDataClass.m in Sources */,
 				B23A30CA28604B9D00E976C8 /* PopularViewController.m in Sources */,
 				B2E6CD14287AB1A5005F3F2D /* MXScrollView.m in Sources */,
 				B2CAD59028744A04007AAE9B /* UIImage+Additions.m in Sources */,
 				B2B096C828814EB5009A4E75 /* SSSnackbar.m in Sources */,
+				B2FA064728859DDB00024DD2 /* PopularPhoto+CoreDataClass.m in Sources */,
 				B2CAD5792873DADF007AAE9B /* ImageManager.m in Sources */,
 				B2BF06E128708DD6002F4B1B /* PopularPhotoDataSource.m in Sources */,
 				B2E6CD17287AB1D8005F3F2D /* MXScrollViewController.m in Sources */,
 				B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */,
 				B2CAD5832873E844007AAE9B /* UploadPhotoManager.m in Sources */,
-				B2FA0623288559B400024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */,
-				B2FA0624288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */,
 				B277DAD22872867E00EEEBCB /* AlbumInfoCollectionViewCell.m in Sources */,
 				B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
+				B2FA064428859DDB00024DD2 /* UserInfo+CoreDataProperties.m in Sources */,
 				B277DADB2872A57100EEEBCB /* AlbumDetailViewController.m in Sources */,
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */,
@@ -1187,14 +1190,13 @@
 				B2BF06D128702BA7002F4B1B /* AccountManager.m in Sources */,
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */,
-				B2CBAC82288516110052C1D3 /* PublicPhoto+CoreDataClass.m in Sources */,
+				B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B20A5C662876C68200F692C7 /* PermissionErrorViewController.m in Sources */,
 				B277DAE12872A5F200EEEBCB /* AlbumDetailCollectionViewCell.m in Sources */,
 				B277DAD82872A35900EEEBCB /* AlbumInfoDataSource.m in Sources */,
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
-				B2CBAC83288516110052C1D3 /* PublicPhoto+CoreDataProperties.m in Sources */,
-				B2CBAC84288516110052C1D3 /* PopularPhoto+CoreDataClass.m in Sources */,
+				B2FA064A28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m in Sources */,
 				B2891798287FBED800AE87B1 /* UploadTask.m in Sources */,
 				B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */,
 				B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */,
@@ -1202,14 +1204,13 @@
 				B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,
-				B2CBAC74288408CA0052C1D3 /* UserInfo+CoreDataClass.m in Sources */,
 				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,
+				B2FA064228859DDB00024DD2 /* Album+CoreDataProperties.m in Sources */,
 				B277DADE2872A5D500EEEBCB /* AlbumDetailDataSource.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B20A5C692877D4B100F692C7 /* TitleTextField.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
-				B2FA062B28856A3300024DD2 /* Album+CoreDataClass.m in Sources */,
 				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
 				B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
@@ -1219,14 +1220,13 @@
 				B23A30C1286047EF00E976C8 /* LoginViewController.m in Sources */,
 				B2BF06CA286ED052002F4B1B /* PublicPhotoManager.m in Sources */,
 				B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */,
+				B2FA064528859DDB00024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */,
 				B2E6CD1A287AB928005F3F2D /* ParallaxViewController.m in Sources */,
 				B289179B287FC64800AE87B1 /* UploadInfo.m in Sources */,
 				B2E6CD0A287821C1005F3F2D /* DescriptionTextField.m in Sources */,
 				B2215570287C0E8B00F2A074 /* UploadNetworking.m in Sources */,
 				B2E6CD11287AA770005F3F2D /* MXParallaxHeader.m in Sources */,
-				B2CBAC85288516110052C1D3 /* PopularPhoto+CoreDataProperties.m in Sources */,
 				B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */,
-				B2CBAC75288408CA0052C1D3 /* UserInfo+CoreDataProperties.m in Sources */,
 				B20A5C5C2875918400F692C7 /* GalleryCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

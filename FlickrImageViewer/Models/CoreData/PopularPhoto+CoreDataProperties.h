@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<PopularPhoto *> *)fetchRequest NS_SWIFT_NAME(fetchRequest());
 
-@property (nullable, nonatomic, copy) NSString *imageURL;
 @property (nonatomic) float imageHeight;
+@property (nullable, nonatomic, copy) NSString *imageURL;
 @property (nonatomic) float imageWidth;
 
 @end

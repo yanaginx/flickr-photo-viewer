@@ -2,7 +2,7 @@
 //  UserInfo+CoreDataProperties.m
 //  FlickrImageViewer
 //
-//  Created by LAP14121 on 17/07/2022.
+//  Created by LAP14121 on 18/07/2022.
 //
 //
 
