@@ -34,7 +34,7 @@
                                nsid:(NSString *)nsid {
     NSString *iconURLString = ([iconServer isEqualToString:@"0"]) ?
                                 @"https://www.flickr.com/images/buddyicon.gif" :
-                                [NSString stringWithFormat:@"http://farm%lu.staticflickr.com/%@/buddyicons/%@.jpg",
+                                [NSString stringWithFormat:@"https://farm%lu.staticflickr.com/%@/buddyicons/%@.jpg",
                                  (long)iconFarm,
                                  iconServer,
                                  nsid];

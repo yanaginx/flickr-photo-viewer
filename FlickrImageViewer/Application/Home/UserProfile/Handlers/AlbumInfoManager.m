@@ -7,20 +7,62 @@
 
 #import "AlbumInfoManager.h"
 #import "../../../../Models/AlbumInfo.h"
+#import "../../../../Models/CoreData/Album+CoreDataClass.h"
+#import "../../../../Models/CoreData/Album+CoreDataProperties.h"
+
 #import "../../../../Common/Utilities/OAuth1.0/OAuth.h"
 #import "../../../../Common/Utilities/ImageURLBuilder/ImageURLBuilder.h"
 #import "../../../../Common/Utilities/AccountManager/AccountManager.h"
 #import "../../../../Common/Utilities/Reachability/Reachability.h"
+#import "../../../../Common/Utilities/DataController/DataController.h"
 #import "../../../../Common/Constants/Constants.h"
 
+@interface AlbumInfoManager () {
+    BOOL isOfflineFetched;
+}
+
+@property (nonatomic, strong) DataController *dataController;
+
+@end
+
 @implementation AlbumInfoManager
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.dataController = [[DataController alloc] initWithModelName:kModelName];
+        [self.dataController loadWithCompletionHandler:^{
+            NSLog(@"[INFO] %s: Container loaded!", __func__);
+        }];
+    }
+    return self;
+}
+
 - (void)getUserAlbumInfosWithPage:(NSInteger)pageNum
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable,
                                             NSError * _Nullable))completion {
-     // Fetch from core data when there is no internet
     if (![self _isConnected]) {
+        // if fetched offline data then just return an empty array
+        if (isOfflineFetched) {
+            completion([NSMutableArray array], nil);
+            return;
+        }
         // TODO: Fetch from core data first
-        
+        NSArray *albums = [self _fetchAlbumInfoFromLocal];
+        // if there is data then transform it into the model then return
+        if (albums) {
+            NSMutableArray *albumInfos = [self _extractAlbumInfosFromAlbums:albums];
+             // Printing all the photo fetched!
+            for (AlbumInfo *albumInfo in albumInfos) {
+                NSLog(@"[DEBUG] %s: albumID fetched offline: %@",
+                      __func__,
+                      albumInfo.albumID);
+            }
+            // END - printing all the photo fetched!
+            isOfflineFetched = YES;
+            completion(albumInfos, nil);
+            return;
+        }
         // If there is no offline data then return the no internet error
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                              code:kNetworkError
@@ -28,7 +70,9 @@
         completion(nil, error);
         return;
     }
-    
+
+    // else make the request as usual
+    isOfflineFetched = NO;
     NSURLRequest *request = [self _albumInfoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData *data,
@@ -101,6 +145,11 @@
                                                           dateCreated:dateCreated
                                                        numberOfPhotos:numberOfPhotos];
             [photoSets addObject:albumInfo];
+            // Save the album info into the core data
+            BOOL isSaveToCoreDataSuccessful = [self _saveAlbumInfoWithAlbumInfo:albumInfo];
+            if (!isSaveToCoreDataSuccessful) {
+                NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+            }
         }
         completion(photoSets, nil);
     }] resume];
@@ -116,6 +165,60 @@
     }
     NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
+}
+
+- (NSArray *)_fetchAlbumInfoFromLocal {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Album"];
+    NSError *error = nil;
+    NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request
+                                                                            error:&error];
+    if (!results && error) {
+        NSLog(@"[ERROR] Error fetching AlbumInfo objects: %@\n%@",
+              [error localizedDescription],
+              [error userInfo]);
+        return nil;
+    }
+    for (Album *albumInfo in results) {
+        NSLog(@"[DEBUG] %s: fetched result with album ID: %@",
+              __func__,
+              albumInfo.albumID);
+    }
+    return results;
+}
+
+- (BOOL)_saveAlbumInfoWithAlbumInfo:(AlbumInfo *)albumInfo {
+    Album *album = [NSEntityDescription
+                   insertNewObjectForEntityForName:@"Album"
+                   inManagedObjectContext:self.dataController.backgroundContext];
+    album.albumID = albumInfo.albumID;
+    album.creatationDate = albumInfo.dateCreated;
+    album.albumImageURL = albumInfo.albumImageURL.absoluteString;
+    album.numbersOfPhoto = albumInfo.numberOfPhotos;
+    album.albumName = albumInfo.albumName;
+    // save the context
+    NSError *error = nil;
+    if ([self.dataController.backgroundContext save:&error] == NO) {
+        NSLog(@"Error saving context: %@\n%@",
+              error.localizedDescription,
+              error.userInfo);
+        return NO;
+    }
+    return YES;
+}
+
+- (NSMutableArray *)_extractAlbumInfosFromAlbums:(NSArray *)albums {
+    NSMutableArray *albumInfos = [NSMutableArray array];
+    // Convert core data data into model
+    for (Album *album in albums) {
+        NSURL *albumImageURL = [NSURL URLWithString:album.albumImageURL];
+        AlbumInfo *albumInfo = [[AlbumInfo alloc] initWithAlbumID:album.albumID
+                                                         imageURL:albumImageURL
+                                                        albumName:album.albumName
+                                                      dateCreated:album.creatationDate
+                                                   numberOfPhotos:album.numbersOfPhoto];
+        [albumInfos addObject:albumInfo];
+    }
+    return albumInfos;
 }
 
 #pragma mark - Network related

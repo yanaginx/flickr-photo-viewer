@@ -47,7 +47,9 @@
                                                   resultHandler:^(UIImage * _Nullable result,
                                                                   NSDictionary * _Nullable info) {
         if ([cell.photoAssetIdentifier isEqualToString:photoAsset.localIdentifier]) {
-            [cell configureWithImage:result];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell configureWithImage:result];
+            });
         }
     }];
     return cell;

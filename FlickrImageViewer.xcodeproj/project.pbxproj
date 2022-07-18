@@ -98,6 +98,10 @@
 		B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */; };
 		B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */; };
 		B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */; };
+		B2FA0623288559B400024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */; };
+		B2FA0624288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */; };
+		B2FA062B28856A3300024DD2 /* Album+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */; };
+		B2FA062C28856A3300024DD2 /* Album+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -301,6 +305,14 @@
 		B2F69897286C3B0F00CA596B /* ServerErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerErrorViewController.h; sourceTree = "<group>"; };
 		B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerErrorViewController.m; sourceTree = "<group>"; };
 		B2F6989A286C3B3100CA596B /* ErrorViewConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorViewConstants.h; sourceTree = "<group>"; };
+		B2FA061B288559B400024DD2 /* AlbumPhoto+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA061C288559B400024DD2 /* AlbumPhoto+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlbumPhoto+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlbumPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B2FA062728856A3300024DD2 /* Album+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B2FA062828856A3300024DD2 /* Album+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Album+CoreDataClass.h"; sourceTree = "<group>"; };
+		B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataClass.m"; sourceTree = "<group>"; };
+		B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Album+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -832,6 +844,14 @@
 		B2CBAC402883F2900052C1D3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				B2FA062728856A3300024DD2 /* Album+CoreDataProperties.h */,
+				B2FA062828856A3300024DD2 /* Album+CoreDataClass.h */,
+				B2FA062928856A3300024DD2 /* Album+CoreDataClass.m */,
+				B2FA062A28856A3300024DD2 /* Album+CoreDataProperties.m */,
+				B2FA061B288559B400024DD2 /* AlbumPhoto+CoreDataProperties.h */,
+				B2FA061C288559B400024DD2 /* AlbumPhoto+CoreDataClass.h */,
+				B2FA061D288559B400024DD2 /* AlbumPhoto+CoreDataClass.m */,
+				B2FA061E288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m */,
 				B2CBAC7A288516110052C1D3 /* PublicPhoto+CoreDataProperties.h */,
 				B2CBAC7B288516110052C1D3 /* PublicPhoto+CoreDataClass.h */,
 				B2CBAC7C288516110052C1D3 /* PublicPhoto+CoreDataClass.m */,
@@ -1124,6 +1144,7 @@
 				B20A5C632875970500F692C7 /* GalleryManager.m in Sources */,
 				B2CAD57F2873DBFC007AAE9B /* UIImageView+Additions.m in Sources */,
 				B2BF06CD286ED968002F4B1B /* PublicPhotoCollectionViewCell.m in Sources */,
+				B2FA062C28856A3300024DD2 /* Album+CoreDataProperties.m in Sources */,
 				B2B096BD28802661009A4E75 /* GalleryViewModel.m in Sources */,
 				B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */,
 				B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */,
@@ -1151,8 +1172,10 @@
 				B2E6CD17287AB1D8005F3F2D /* MXScrollViewController.m in Sources */,
 				B2BF06E52870980E002F4B1B /* PublicPhotoDataSource.m in Sources */,
 				B2CAD5832873E844007AAE9B /* UploadPhotoManager.m in Sources */,
+				B2FA0623288559B400024DD2 /* AlbumPhoto+CoreDataClass.m in Sources */,
 				B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */,
 				B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */,
+				B2FA0624288559B400024DD2 /* AlbumPhoto+CoreDataProperties.m in Sources */,
 				B277DAD22872867E00EEEBCB /* AlbumInfoCollectionViewCell.m in Sources */,
 				B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
@@ -1186,6 +1209,7 @@
 				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B20A5C692877D4B100F692C7 /* TitleTextField.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
+				B2FA062B28856A3300024DD2 /* Album+CoreDataClass.m in Sources */,
 				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
 				B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */,
 				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
