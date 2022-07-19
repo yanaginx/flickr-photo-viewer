@@ -7,6 +7,7 @@
 
 #import "PopularPhotoCollectionViewCell.h"
 #import "../../../../Common/Extensions/UIView+Additions.h"
+#import "../../../../Common/Extensions/UIImageView+Additions.h"
 #import "../ViewModels/PopularPhotoViewModel.h"
 
 @interface PopularPhotoCollectionViewCell ()
@@ -25,7 +26,7 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        self.backgroundColor = UIColor.redColor;
+//        self.backgroundColor = UIColor.redColor;
         [self addSubview:self.photoImageView];
     }
     return self;
@@ -36,6 +37,9 @@
 }
 
 #pragma mark - Operations
+- (void)configureWithImageURL:(NSURL *)imageURL {
+    [self.photoImageView setImageUsingURL:imageURL];
+}
 
 - (void)configureWithImage:(UIImage *)image {
     self.photoImageView.image = image;

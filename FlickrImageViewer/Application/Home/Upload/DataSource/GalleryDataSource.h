@@ -14,7 +14,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GalleryDataSource : NSObject <UICollectionViewDataSource,
-                                         UICollectionViewDataSourcePrefetching,
                                          PHPhotoLibraryChangeObserver>
 
 @property (nonatomic, weak) UICollectionView *collectionView;

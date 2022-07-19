@@ -44,6 +44,13 @@
 #pragma mark - Operations
 
 - (void)getPhotosForPage:(NSInteger)page {
+    // If offline and there are already some data then not calling this
+    if (!self.popularPhotoManager.isConnected &&
+        self.photos.count > 0) {
+        return;
+    }
+    
+    // Else call as usual
     [self.popularPhotoManager getPopularPhotoURLsWithPage:page
                                         completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                             NSError * _Nullable error) {

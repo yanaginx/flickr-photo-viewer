@@ -133,6 +133,7 @@
 - (void)_getPhotosForCurrentPage {
     if (!isRefreshing) {
         isRefreshing = YES;
+        currentPage = 1;
         [self.popularPhotoViewModel removeAllPhotos];
         [self.popularPhotoViewModel getPhotosForPage:currentPage];
     } else {

@@ -109,6 +109,10 @@
 }
 
 - (void)_getAlbumInfosForPage:(NSInteger)pageNum {
+    if (!self.albumInfoManager.isConnected &&
+        self.dataSource.albumInfos.count > 0) {
+        return;
+    }
    [self.albumInfoManager getUserAlbumInfosWithPage:pageNum
                                   completionHandler:^(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
                                                                                 NSError * _Nullable error) {

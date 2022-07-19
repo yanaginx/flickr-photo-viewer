@@ -78,7 +78,7 @@
     [self.view addSubview:self.collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.prefetchDataSource = self.dataSource;
+//    self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
 }
 
@@ -104,6 +104,10 @@
 #pragma mark - Private methods
 - (void)_getAlbumDetailForAlbumID:(NSString *)albumID
                           pageNum:(NSInteger)pageNum {
+    if (!self.albumDetailPhotoManager.isConnected &&
+        self.dataSource.photos.count > 0) {
+        return;
+    }
     [self.albumDetailPhotoManager getAlbumDetailPhotosForAlbumID:albumID
                                                            page:pageNum
                                               completionHandler:^(NSMutableArray<Photo *> * _Nullable photos,

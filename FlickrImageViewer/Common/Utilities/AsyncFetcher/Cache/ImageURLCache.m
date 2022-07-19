@@ -34,4 +34,11 @@
     return cachedResponse;
 }
 
+//- (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse
+//                 forRequest:(NSURLRequest *)request {
+//    if (request.cachePolicy != NSURLRequestReloadIgnoringLocalCacheData) {
+//        [super storeCachedResponse:cachedResponse forRequest:request];
+//    }
+//}
+
 @end

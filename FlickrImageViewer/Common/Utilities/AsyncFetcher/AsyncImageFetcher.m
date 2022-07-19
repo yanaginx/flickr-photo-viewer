@@ -29,7 +29,16 @@
 
 #pragma mark - Initialization
 
-- (instancetype)init {
++ (instancetype)sharedImageFetcher {
+    static dispatch_once_t onceToken;
+    static AsyncImageFetcher *shared;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] initPrivate];
+    });
+    return shared;
+}
+
+- (instancetype)initPrivate {
     self = [super init];
     if (self) {
         self.serialAccessQueue.maxConcurrentOperationCount = 1;
@@ -37,6 +46,13 @@
     }
     return self;
 }
+
+//- (instancetype)init {
+//    self = [super init];
+//    if (self) {
+//        }
+//    return self;
+//}
 
 #pragma mark - Object fetching
 /**
@@ -76,6 +92,20 @@
     return [self.cache objectForKey:identifier];
 }
 
+- (UIImage *)fetchedDiskDataForIdentifier:(NSString *)identifier {
+    NSURLRequest *requestWithURL = [[NSURLRequest alloc]
+                                    initWithURL:[NSURL URLWithString:identifier]];
+    NSCachedURLResponse *cachedResponse = [self.imageURLCache cachedResponseForRequest:requestWithURL];
+    if (cachedResponse.data) {
+        UIImage *image = [UIImage imageWithData:cachedResponse.data];
+//        NSLog(@"[DEBUG] %s: FOUND: %@",
+//              __func__,
+//              image);
+        return image;
+    }
+    return nil;
+}
+
 /**
  Cancels any enqueued asychronous fetches for a specified `UUID`. Completion
  handlers are not called if a fetch is canceled.
@@ -113,12 +143,11 @@
                                     withFetchedData:data];
     } else {
         // Enqueue a request for the object
-//        AsyncImageFetcherOperation *operation = [[AsyncImageFetcherOperation alloc] initWithIdentifier:identifier
-//                                                                                              imageURL:imageURL];
         ImageDownloadOperation *operation = [[ImageDownloadOperation alloc]
                                              initWithIdentifier:identifier
                                              imageURL:imageURL
-                                             URLSession:self.downloadSession];
+                                             URLSession:self.downloadSession
+                                             imageURLCache:self.imageURLCache];
 
         // Set the operation's completion block to cache the fetched object and call the associated completion blocks
         @weakify(operation)
@@ -128,8 +157,7 @@
             NSError *error = operation.error;
             if (error) NSLog(@"[DEBUG] %s : error : %@", __func__, error);
             if (fetchedData == nil) return;
-//            [self.cache setObject:fetchedData forKey:identifier];
-            
+            [self.cache setObject:fetchedData forKey:identifier];
             [self.serialAccessQueue addOperationWithBlock:^{
                 [self invokeCompletionHandlersForIdentifier:identifier
                                             withFetchedData:fetchedData];
@@ -145,15 +173,6 @@
  - Parameter identifier: The `UUID` of the operation to return.
  - Returns: The enqueued `ObjectFetcherOperation` or nil.
  */
-//- (AsyncImageFetcherOperation *)operationForIdentifier:(NSString *)identifier {
-//    for (AsyncImageFetcherOperation *operation in self.fetchQueue.operations) {
-//        if (!operation.isCancelled && operation.identifier == identifier) {
-//            return operation;
-//        }
-//    }
-//    return nil;
-//}
-
 - (ImageDownloadOperation *)operationForIdentifier:(NSString *)identifier {
     for (ImageDownloadOperation *operation in self.fetchQueue.operations) {
         if (!operation.isCancelled && operation.identifier == identifier) {
@@ -206,8 +225,7 @@
 - (NSCache<NSString *, UIImage *> *)cache {
     if (_cache) return _cache;
     _cache = [[NSCache alloc] init];
-    [_cache setTotalCostLimit:500 * 1024 * 1024];
-    [_cache setCountLimit:500];
+    [_cache setTotalCostLimit:kMemoryCapacity];
     return _cache;
 }
 
@@ -234,7 +252,7 @@
                                                      appropriateForURL:nil
                                                                 create:YES
                                                                  error:nil]
-                       URLByAppendingPathComponent:@"vn.com.vng.flickrz"];
+                       URLByAppendingPathComponent:@"DOWNLOAD_CACHE"];
     return [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
                                             diskCapacity:diskCapacity
                                                 diskPath:[cacheURL path]];

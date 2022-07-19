@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)reuseIdentifier;
 - (void)configureWithImage:(UIImage * _Nullable)image;
+- (void)configureWithImageURL:(NSURL * _Nullable)imageURL;
 
 @end
 

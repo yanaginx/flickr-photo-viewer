@@ -138,7 +138,7 @@
 //                                           kMargin);
     
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.prefetchDataSource = self.dataSource;
+//    self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
     self.collectionView.allowsMultipleSelection = YES;
     

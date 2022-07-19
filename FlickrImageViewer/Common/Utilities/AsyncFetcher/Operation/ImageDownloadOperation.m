@@ -7,6 +7,7 @@
 
 #import "ImageDownloadOperation.h"
 #import "../../../Constants/Constants.h"
+#import "../Cache/ImageURLCache.h"
 
 @interface ImageDownloadOperation ()
 
@@ -14,6 +15,7 @@
 @property (readwrite) BOOL finished;
 
 @property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) ImageURLCache *imageURLCache;
 
 @end
 
@@ -22,12 +24,14 @@
 #pragma mark - Initialization
 - (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL
-                        URLSession:(NSURLSession *)urlSession {
+                        URLSession:(NSURLSession *)urlSession
+                     imageURLCache:(ImageURLCache *)imageURLCache{
     self = [super init];
     if (self) {
         self.identifier = identifier;
         self.imageURL = imageURL;
         self.session = urlSession;
+        self.imageURLCache = imageURLCache;
     }
     return self;
 }
@@ -37,15 +41,12 @@
         self.finished = YES;
         return;
     }
-    NSLog(@"Starting %@", self);
     self.executing = YES;
     [self _fetchImageWithURL:self.imageURL
                   completion:^(UIImage *image,
                                NSError *error) {
         self.fetchedData = image;
         self.error = error;
-        
-        NSLog(@"Finished %@", self);
         self.executing = NO;
         self.finished = YES;
     }];
@@ -112,16 +113,7 @@
                                              completionHandler:^(NSData * _Nullable data,
                                                                  NSURLResponse * _Nullable response,
                                                                  NSError * _Nullable error) {
-//    }];
-//    NSURLSessionTask *task = [self.session dataTaskWithURL:url
-//                                           completionHandler:^(NSData * _Nullable data,
-//                                                               NSURLResponse * _Nullable response,
-//                                                               NSError * _Nullable error) {
-        // if there is data offline
         if (error) {
-            NSLog(@"[DEBUG] %s: Current Data: %@",
-                  __func__,
-                  data);
             completion(nil, error);
             return;
         }

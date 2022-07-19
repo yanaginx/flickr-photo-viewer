@@ -15,6 +15,13 @@ typedef void (^handlerBlock)(UIImage * _Nullable);
 
 @interface AsyncImageFetcher : NSObject
 
++ (instancetype)alloc __attribute__((unavailable("alloc not available, call sharedImageManager instead")));
+- (instancetype)init __attribute__((unavailable("init not available, call sharedImageManager instead")));
++ (instancetype)new __attribute__((unavailable("new not available, call sharedImageManager instead")));
+- (instancetype)copy __attribute__((unavailable("copy not available, call sharedImageManager instead")));
+
+@property (class, nonnull, readonly, strong) AsyncImageFetcher *sharedImageFetcher;
+
 @property (nonatomic, strong) NSCache<NSString *, UIImage *> *cache;
 
 - (void)fetchAsyncForIdentifier:(NSString *)identifier

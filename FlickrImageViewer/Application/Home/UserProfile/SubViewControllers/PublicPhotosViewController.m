@@ -120,6 +120,10 @@
 
 #pragma mark - Private methods
 - (void)_getPhotoURLsForPage:(NSInteger)pageNum {
+    if (!self.publicPhotoManager.isConnected &&
+        self.dataSource.photos.count > 0) {
+        return;
+    }
     [self.publicPhotoManager getPublicPhotoURLsWithPage:pageNum
                                       completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
                                                                                  NSError * _Nullable error) {
@@ -314,7 +318,7 @@
     [self.view addSubview:self.collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.prefetchDataSource = self.dataSource;
+//    self.collectionView.prefetchDataSource = self.dataSource;
     self.collectionView.delegate = self;
 }
 

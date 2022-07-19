@@ -42,26 +42,9 @@
     PopularPhotoCollectionViewCell *cell = [collectionView
                                             dequeueReusableCellWithReuseIdentifier:[PopularPhotoCollectionViewCell reuseIdentifier]
                                             forIndexPath:indexPath];
-    NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
-    NSURL *url = [self.popularPhotoViewModel itemAtIndexPath:indexPath];;
-    if (identifier == nil || url == nil) return cell;
-    
-    cell.representedIdentifier = identifier;
-    UIImage *fetchedData = [self.asyncFetcher fetchedDataForIdentifier:identifier];
-    if (fetchedData != nil) {
-        [cell configureWithImage:fetchedData];
-    } else {
-        [cell configureWithImage:nil];
-        [self.asyncFetcher fetchAsyncForIdentifier:identifier
-                                          imageURL:url
-                                        completion:^(UIImage * _Nullable data) {
-            dispatch_queue_t mainQueue = dispatch_get_main_queue();
-            dispatch_async(mainQueue, ^{
-                if (cell.representedIdentifier != identifier) return;
-                [cell configureWithImage:data];
-            });
-        }];
-    }
+    NSURL *imageURL = [self.popularPhotoViewModel itemAtIndexPath:indexPath];
+    if (imageURL == nil) return cell;
+    [cell configureWithImageURL:imageURL];
     return cell;
 }
 
@@ -83,14 +66,6 @@
         NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
         [self.asyncFetcher cancelFetchForIdentifier:identifier];
     }
-}
-
-#pragma mark - Custom Accessors
-- (AsyncImageFetcher *)asyncFetcher {
-    if (_asyncFetcher) return _asyncFetcher;
-    
-    _asyncFetcher = [[AsyncImageFetcher alloc] init];
-    return _asyncFetcher;
 }
 
 @end

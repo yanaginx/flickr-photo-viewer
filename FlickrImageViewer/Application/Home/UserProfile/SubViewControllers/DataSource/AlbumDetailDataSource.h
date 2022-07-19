@@ -12,8 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AlbumDetailDataSource : NSObject <UICollectionViewDataSource,
-                                             UICollectionViewDataSourcePrefetching>
+@interface AlbumDetailDataSource : NSObject <UICollectionViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray<Photo *> *photos;
 

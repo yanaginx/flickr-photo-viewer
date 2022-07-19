@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class ImageURLCache;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ImageDownloadOperation : NSOperation
@@ -23,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL
-                        URLSession:(NSURLSession *)urlSession;
+                        URLSession:(NSURLSession *)urlSession
+                     imageURLCache:(ImageURLCache *)imageURLCache;
 
 @end
 
