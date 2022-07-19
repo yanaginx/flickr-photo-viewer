@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
                                             NSError * _Nullable error))completion;
 
+- (BOOL)isConnected;
+
 @end
 
 NS_ASSUME_NONNULL_END

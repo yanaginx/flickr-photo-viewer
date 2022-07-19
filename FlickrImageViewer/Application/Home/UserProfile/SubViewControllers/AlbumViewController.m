@@ -46,7 +46,7 @@
         currentPage = 1;
         isLastPage = NO;
         isRefreshing = NO;
-        numOfPhotosBeforeNewFetch = 2;
+        numOfPhotosBeforeNewFetch = 1;
     }
     return self;
 }
@@ -89,7 +89,9 @@
         [self.delegate cancelRefreshingAfterFetchingAlbums];
     }
     isRefreshing = YES;
-    [self.dataSource.albumInfos removeAllObjects];
+    if (self.albumInfoManager.isConnected) {
+        [self.dataSource.albumInfos removeAllObjects];
+    }
     [self _getAlbumInfosForPage:currentPage];
 }
 
@@ -209,11 +211,11 @@
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger indexForFetching = self.dataSource.albumInfos.count == 20 ?
-    self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch :
-    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
+//    NSInteger indexForFetching = self.dataSource.albumInfos.count == kResultsPerPage.integerValue ?
+//    self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch :
+//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
     
-    if (indexPath.row == indexForFetching && !isLastPage) {
+    if (indexPath.row == self.dataSource.albumInfos.count - 1 && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
         [self _getAlbumInfosForPage:currentPage];

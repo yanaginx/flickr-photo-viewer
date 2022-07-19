@@ -38,6 +38,11 @@
     return self;
 }
 
+#pragma mark - Public methods
+- (BOOL)isConnected {
+    return [self _isConnected];
+}
+
 - (void)getUserAlbumInfosWithPage:(NSInteger)pageNum
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable,
                                             NSError * _Nullable))completion {

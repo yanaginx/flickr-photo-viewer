@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, PopularPhotoManagerError) {
                   completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
                                           NSError * _Nullable error))completion;
 
+- (BOOL)isConnected;
+
 @end
 
 NS_ASSUME_NONNULL_END

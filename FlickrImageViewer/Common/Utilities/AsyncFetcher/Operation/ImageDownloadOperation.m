@@ -10,8 +10,10 @@
 
 @interface ImageDownloadOperation ()
 
-@property(readwrite) BOOL executing;
-@property(readwrite) BOOL finished;
+@property (readwrite) BOOL executing;
+@property (readwrite) BOOL finished;
+
+@property (nonatomic, strong) NSURLSession *session;
 
 @end
 
@@ -19,11 +21,13 @@
 
 #pragma mark - Initialization
 - (instancetype)initWithIdentifier:(NSString *)identifier
-                          imageURL:(NSURL *)imageURL {
+                          imageURL:(NSURL *)imageURL
+                        URLSession:(NSURLSession *)urlSession {
     self = [super init];
     if (self) {
         self.identifier = identifier;
         self.imageURL = imageURL;
+        self.session = urlSession;
     }
     return self;
 }
@@ -102,12 +106,22 @@
         completion(nil, error);
         return;
     }
-
-    NSURLSessionTask *task = [NSURLSession.sharedSession dataTaskWithURL:url
-                                                       completionHandler:^(NSData * _Nullable data,
-                                                                           NSURLResponse * _Nullable response,
-                                                                           NSError * _Nullable error) {
+    NSURLRequest *downloadRequest = [[NSURLRequest alloc] initWithURL:url];
+    
+    NSURLSessionTask *task = [self.session dataTaskWithRequest:downloadRequest
+                                             completionHandler:^(NSData * _Nullable data,
+                                                                 NSURLResponse * _Nullable response,
+                                                                 NSError * _Nullable error) {
+//    }];
+//    NSURLSessionTask *task = [self.session dataTaskWithURL:url
+//                                           completionHandler:^(NSData * _Nullable data,
+//                                                               NSURLResponse * _Nullable response,
+//                                                               NSError * _Nullable error) {
+        // if there is data offline
         if (error) {
+            NSLog(@"[DEBUG] %s: Current Data: %@",
+                  __func__,
+                  data);
             completion(nil, error);
             return;
         }

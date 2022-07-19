@@ -253,7 +253,10 @@
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
+//    NSInteger indexForFetching = self.dataSource.albumInfos.count == kResultsPerPage.integerValue ?
+//    self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch :
+//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
+    if (indexPath.row == self.dataSource.albumInfos.count - 1 && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
         [self _getAlbumInfosForPage:currentPage];

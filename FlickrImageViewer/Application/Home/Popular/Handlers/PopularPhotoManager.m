@@ -37,6 +37,11 @@
     return self;
 }
 
+#pragma mark - Public methods
+- (BOOL)isConnected {
+    return [self _isConnected];
+}
+
 #pragma mark - Make request
 
 - (void)getPopularPhotoURLsWithPage:(NSInteger)pageNum
@@ -176,7 +181,7 @@
 }
 
 - (NSArray *)_fetchPopularPhotoFromLocal {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PublicPhoto"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PopularPhoto"];
     NSError *error = nil;
     NSArray *results = [self.dataController.backgroundContext executeFetchRequest:request
                                                                             error:&error];
@@ -226,8 +231,8 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
     [params setObject:kConsumerKey forKey:@"api_key"];
-    [params setObject:kRecentPhotosMethod forKey:@"method"];
-//    [params setObject:kPopularUserID forKey:@"user_id"];
+    [params setObject:kPopularPhotosMethod forKey:@"method"];
+    [params setObject:kPopularUserID forKey:@"user_id"];
     [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:kResponseFormat forKey:@"format"];
     [params setObject:kResultsPerPage forKey:@"per_page"];

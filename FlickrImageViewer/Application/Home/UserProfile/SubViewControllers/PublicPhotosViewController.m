@@ -59,7 +59,7 @@
     self = [super init];
     if (self) {
         currentPage = 1;
-        numOfPhotosBeforeNewFetch = 5;
+        numOfPhotosBeforeNewFetch = 1;
         isLastPage = NO;
         isRefreshing = NO;
         dynamicLayoutIdx = 0;
@@ -111,8 +111,10 @@
         [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
     }
     isRefreshing = YES;
-    [self.dataSource.photos removeAllObjects];
-    [self.dynamicLayout clearCache];
+    if (self.publicPhotoManager.isConnected)  {
+        [self.dataSource.photos removeAllObjects];
+        [self.dynamicLayout clearCache];
+    }
     [self _getPhotoURLsForPage:currentPage];
 }
 
@@ -183,7 +185,10 @@
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
 //    if (indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
-    if (indexPath.row == self.dataSource.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
+//    NSInteger indexForFetching = self.dataSource.photos.count == kResultsPerPage.integerValue ?
+//    self.dataSource.photos.count - numOfPhotosBeforeNewFetch :
+//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
+    if (indexPath.row == self.dataSource.photos.count - 1 && !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);
         [self _getPhotoURLsForPage:currentPage];

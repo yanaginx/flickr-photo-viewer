@@ -8,16 +8,20 @@
 #import "AsyncImageFetcher.h"
 #import "../Defer/Defer.h"
 #import "../Scope/Scope.h"
-#import "Operation/AsyncImageFetcherOperation.h"
-#import "../AsyncImageManager/Operation/ImageDownloadOperation.h"
+#import "Operation/ImageDownloadOperation.h"
+#import "Cache/ImageURLCache.h"
 
 #define kMaxAsyncOperations 4
+#define kMemoryCapacity 100 * 1024 * 1024
+#define kDiskCapacity 200 * 1024 * 1024
 
 @interface AsyncImageFetcher ()
 
 @property (nonatomic, strong) NSOperationQueue *serialAccessQueue;
 @property (nonatomic, strong) NSOperationQueue *fetchQueue;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<handlerBlock> *> *completionHandlers;
+@property (nonatomic, strong) NSURLSession *downloadSession;
+@property (nonatomic, strong) ImageURLCache *imageURLCache;
 
 @end
 
@@ -113,7 +117,8 @@
 //                                                                                              imageURL:imageURL];
         ImageDownloadOperation *operation = [[ImageDownloadOperation alloc]
                                              initWithIdentifier:identifier
-                                             imageURL:imageURL];
+                                             imageURL:imageURL
+                                             URLSession:self.downloadSession];
 
         // Set the operation's completion block to cache the fetched object and call the associated completion blocks
         @weakify(operation)
@@ -126,7 +131,8 @@
 //            [self.cache setObject:fetchedData forKey:identifier];
             
             [self.serialAccessQueue addOperationWithBlock:^{
-                [self invokeCompletionHandlersForIdentifier:identifier withFetchedData:fetchedData];
+                [self invokeCompletionHandlersForIdentifier:identifier
+                                            withFetchedData:fetchedData];
             }];
         };
         [self.fetchQueue addOperation:operation];
@@ -203,6 +209,35 @@
     [_cache setTotalCostLimit:500 * 1024 * 1024];
     [_cache setCountLimit:500];
     return _cache;
+}
+
+- (NSURLSession *)downloadSession {
+    if (_downloadSession) return _downloadSession;
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.HTTPShouldSetCookies = YES;
+    configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+    configuration.allowsCellularAccess = YES;
+    configuration.timeoutIntervalForRequest = 60.0;
+    configuration.URLCache = self.imageURLCache;
+    
+    _downloadSession = [NSURLSession sessionWithConfiguration:configuration];
+    
+    return _downloadSession;
+}
+
+- (ImageURLCache *)imageURLCache {
+    NSUInteger memoryCapacity = kMemoryCapacity;
+    NSUInteger diskCapacity = kDiskCapacity;
+    NSURL *cacheURL = [[[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory
+                                                              inDomain:NSUserDomainMask
+                                                     appropriateForURL:nil
+                                                                create:YES
+                                                                 error:nil]
+                       URLByAppendingPathComponent:@"vn.com.vng.flickrz"];
+    return [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
+                                            diskCapacity:diskCapacity
+                                                diskPath:[cacheURL path]];
 }
 
 @end

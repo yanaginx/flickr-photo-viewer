@@ -40,6 +40,11 @@
     return self;
 }
 
+#pragma mark - Public methods
+- (BOOL)isConnected {
+    return [self _isConnected];
+}
+
 #pragma mark - Make request
 
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum

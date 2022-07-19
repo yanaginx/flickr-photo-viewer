@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
                                   page:(NSInteger)pageNum
                      completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
                                                  NSError * _Nullable error))completion;
+
+- (BOOL)isConnected;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ImageDownloadOperation : NSOperation
 
-@property(readonly, getter=isAsynchronous) BOOL asynchronous;
-@property(readonly, getter=isExecuting) BOOL executing;
-@property(readonly, getter=isFinished) BOOL finished;
+@property (readonly, getter=isAsynchronous) BOOL asynchronous;
+@property (readonly, getter=isExecuting) BOOL executing;
+@property (readonly, getter=isFinished) BOOL finished;
 
 @property NSString *identifier;
 @property NSURL *imageURL;
@@ -22,7 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSError *error;
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
-                          imageURL:(NSURL *)imageURL;
+                          imageURL:(NSURL *)imageURL
+                        URLSession:(NSURLSession *)urlSession;
 
 @end
 

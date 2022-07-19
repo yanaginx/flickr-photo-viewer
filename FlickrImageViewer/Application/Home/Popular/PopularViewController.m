@@ -51,7 +51,7 @@
     self = [super init];
     if (self) {
         currentPage = 1;
-        numOfPhotosBeforeNewFetch = 5;
+        numOfPhotosBeforeNewFetch = 1;
         isLastPage = NO;
         isRefreshing = NO;
         
@@ -152,7 +152,11 @@
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
+//    NSInteger indexForFetching = self.popularPhotoViewModel.numberOfItems == kResultsPerPage.integerValue ?
+//    self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch :
+//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
+    
+    if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
         !isLastPage) {
         currentPage += 1;
         NSLog(@"[DEBUG] %s : API called!", __func__);

@@ -39,6 +39,11 @@
     return self;
 }
 
+#pragma mark - Public methods
+- (BOOL)isConnected {
+    return [self _isConnected];
+}
+
 #pragma mark - Make request
 
 - (void)getAlbumDetailPhotosForAlbumID:(NSString *)albumID

@@ -103,6 +103,7 @@
 		B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063F28859DDB00024DD2 /* PublicPhoto+CoreDataClass.m */; };
 		B2FA064A28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */; };
 		B2FA064F28865BAB00024DD2 /* ImageDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */; };
+		B2FA0653288683EE00024DD2 /* ImageURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA0652288683EE00024DD2 /* ImageURLCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +317,8 @@
 		B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2FA064D28865BAB00024DD2 /* ImageDownloadOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloadOperation.h; sourceTree = "<group>"; };
 		B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadOperation.m; sourceTree = "<group>"; };
+		B2FA0651288683EE00024DD2 /* ImageURLCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLCache.h; sourceTree = "<group>"; };
+		B2FA0652288683EE00024DD2 /* ImageURLCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageURLCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -997,6 +1000,7 @@
 		B2F6987A286B247100CA596B /* AsyncFetcher */ = {
 			isa = PBXGroup;
 			children = (
+				B2FA0650288683D600024DD2 /* Cache */,
 				B2F6987E286B25C300CA596B /* Operation */,
 				B2F6987B286B24D200CA596B /* AsyncImageFetcher.h */,
 				B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */,
@@ -1007,6 +1011,8 @@
 		B2F6987E286B25C300CA596B /* Operation */ = {
 			isa = PBXGroup;
 			children = (
+				B2FA064D28865BAB00024DD2 /* ImageDownloadOperation.h */,
+				B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */,
 				B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */,
 				B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */,
 			);
@@ -1024,10 +1030,17 @@
 		B2FA064C28865A8500024DD2 /* Operation */ = {
 			isa = PBXGroup;
 			children = (
-				B2FA064D28865BAB00024DD2 /* ImageDownloadOperation.h */,
-				B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */,
 			);
 			path = Operation;
+			sourceTree = "<group>";
+		};
+		B2FA0650288683D600024DD2 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				B2FA0651288683EE00024DD2 /* ImageURLCache.h */,
+				B2FA0652288683EE00024DD2 /* ImageURLCache.m */,
+			);
+			path = Cache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1213,6 +1226,7 @@
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */,
 				B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */,
+				B2FA0653288683EE00024DD2 /* ImageURLCache.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B20A5C662876C68200F692C7 /* PermissionErrorViewController.m in Sources */,
 				B277DAE12872A5F200EEEBCB /* AlbumDetailCollectionViewCell.m in Sources */,

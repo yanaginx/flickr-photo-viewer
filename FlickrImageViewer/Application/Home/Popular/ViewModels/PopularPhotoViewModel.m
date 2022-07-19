@@ -66,8 +66,11 @@
 }
 
 - (void)removeAllPhotos {
-    [self.dynamicCellSizeCalculator clearCache];
-    [self.photos removeAllObjects];
+    // check if its offline call to refresh
+    if (self.popularPhotoManager.isConnected) {
+        [self.dynamicCellSizeCalculator clearCache];
+        [self.photos removeAllObjects];
+    }
 }
 
 - (NSUInteger)numberOfItems {
