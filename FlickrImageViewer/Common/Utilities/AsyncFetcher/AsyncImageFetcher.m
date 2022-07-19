@@ -9,6 +9,9 @@
 #import "../Defer/Defer.h"
 #import "../Scope/Scope.h"
 #import "Operation/AsyncImageFetcherOperation.h"
+#import "../AsyncImageManager/Operation/ImageDownloadOperation.h"
+
+#define kMaxAsyncOperations 4
 
 @interface AsyncImageFetcher ()
 
@@ -26,6 +29,7 @@
     self = [super init];
     if (self) {
         self.serialAccessQueue.maxConcurrentOperationCount = 1;
+        self.fetchQueue.maxConcurrentOperationCount = kMaxAsyncOperations;
     }
     return self;
 }
@@ -105,9 +109,12 @@
                                     withFetchedData:data];
     } else {
         // Enqueue a request for the object
-        AsyncImageFetcherOperation *operation = [[AsyncImageFetcherOperation alloc] initWithIdentifier:identifier
-                                                                                              imageURL:imageURL];
-        
+//        AsyncImageFetcherOperation *operation = [[AsyncImageFetcherOperation alloc] initWithIdentifier:identifier
+//                                                                                              imageURL:imageURL];
+        ImageDownloadOperation *operation = [[ImageDownloadOperation alloc]
+                                             initWithIdentifier:identifier
+                                             imageURL:imageURL];
+
         // Set the operation's completion block to cache the fetched object and call the associated completion blocks
         @weakify(operation)
         operation.completionBlock = ^{
@@ -116,7 +123,7 @@
             NSError *error = operation.error;
             if (error) NSLog(@"[DEBUG] %s : error : %@", __func__, error);
             if (fetchedData == nil) return;
-            [self.cache setObject:fetchedData forKey:identifier];
+//            [self.cache setObject:fetchedData forKey:identifier];
             
             [self.serialAccessQueue addOperationWithBlock:^{
                 [self invokeCompletionHandlersForIdentifier:identifier withFetchedData:fetchedData];
@@ -132,8 +139,17 @@
  - Parameter identifier: The `UUID` of the operation to return.
  - Returns: The enqueued `ObjectFetcherOperation` or nil.
  */
-- (AsyncImageFetcherOperation *)operationForIdentifier:(NSString *)identifier {
-    for (AsyncImageFetcherOperation *operation in self.fetchQueue.operations) {
+//- (AsyncImageFetcherOperation *)operationForIdentifier:(NSString *)identifier {
+//    for (AsyncImageFetcherOperation *operation in self.fetchQueue.operations) {
+//        if (!operation.isCancelled && operation.identifier == identifier) {
+//            return operation;
+//        }
+//    }
+//    return nil;
+//}
+
+- (ImageDownloadOperation *)operationForIdentifier:(NSString *)identifier {
+    for (ImageDownloadOperation *operation in self.fetchQueue.operations) {
         if (!operation.isCancelled && operation.identifier == identifier) {
             return operation;
         }
