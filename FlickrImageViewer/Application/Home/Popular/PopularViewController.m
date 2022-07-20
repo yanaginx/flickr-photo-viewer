@@ -153,15 +153,16 @@
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSInteger indexForFetching = self.popularPhotoViewModel.numberOfItems == kResultsPerPage.integerValue ?
-//    self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch :
-//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
-    
-    if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
-        !isLastPage) {
-        currentPage += 1;
-        NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self.popularPhotoViewModel getPhotosForPage:currentPage];
+    // Only call this when in online mode
+    if (self.popularPhotoManager.isConnected) {
+        if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
+            !isLastPage) {
+            NSInteger totalPages = self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue;
+            NSInteger pagesToIncrease = totalPages - currentPage + 1;
+            currentPage += pagesToIncrease;
+            NSLog(@"[DEBUG] %s : API called!", __func__);
+            [self.popularPhotoViewModel getPhotosForPage:currentPage];
+        }
     }
 }
 

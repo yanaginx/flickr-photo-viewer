@@ -111,6 +111,8 @@
 - (void)_getAlbumInfosForPage:(NSInteger)pageNum {
     if (!self.albumInfoManager.isConnected &&
         self.dataSource.albumInfos.count > 0) {
+        isRefreshing = NO;
+        [self.delegate cancelRefreshingAfterFetchingAlbums];
         return;
     }
    [self.albumInfoManager getUserAlbumInfosWithPage:pageNum

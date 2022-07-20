@@ -10,6 +10,7 @@
 #import "../Scope/Scope.h"
 #import "Operation/ImageDownloadOperation.h"
 #import "Cache/ImageURLCache.h"
+#import "Cache/ImageCache.h"
 
 #define kMaxAsyncOperations 4
 #define kMemoryCapacity 100 * 1024 * 1024
@@ -22,6 +23,7 @@
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<handlerBlock> *> *completionHandlers;
 @property (nonatomic, strong) NSURLSession *downloadSession;
 @property (nonatomic, strong) ImageURLCache *imageURLCache;
+@property (nonatomic, strong) ImageCache *imageCache;
 
 @end
 
@@ -136,9 +138,12 @@
     // If a request has already been made for the object, do nothing more.
     if ([self operationForIdentifier:identifier] != nil) return;
     
-    UIImage *data = [self fetchedDataForIdentifier:identifier];
-    if (data) {
+//    UIImage *data = [self fetchedDataForIdentifier:identifier];
+    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
+    NSCachedURLResponse *cachedResponse = [self.imageURLCache cachedResponseForRequest:request];
+    if (cachedResponse.data) {
         // The object has been cached; call the completion handler with that object
+        UIImage *data = [UIImage imageWithData:cachedResponse.data];
         [self invokeCompletionHandlersForIdentifier:identifier
                                     withFetchedData:data];
     } else {
@@ -245,6 +250,8 @@
 }
 
 - (ImageURLCache *)imageURLCache {
+    if (_imageURLCache) return _imageURLCache;
+    
     NSUInteger memoryCapacity = kMemoryCapacity;
     NSUInteger diskCapacity = kDiskCapacity;
     NSURL *cacheURL = [[[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory
@@ -253,9 +260,18 @@
                                                                 create:YES
                                                                  error:nil]
                        URLByAppendingPathComponent:@"DOWNLOAD_CACHE"];
-    return [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
-                                            diskCapacity:diskCapacity
-                                                diskPath:[cacheURL path]];
+    _imageURLCache =  [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
+                                                       diskCapacity:diskCapacity
+                                                           diskPath:[cacheURL path]];
+    return _imageURLCache;
+}
+
+- (ImageCache *)imageCache {
+    if (_imageCache) return _imageCache;
+    
+    _imageCache = [[ImageCache alloc] init];
+    [_imageCache setTotalCostLimit:kMemoryCapacity];
+    return _imageCache;
 }
 
 @end

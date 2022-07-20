@@ -122,6 +122,8 @@
 - (void)_getPhotoURLsForPage:(NSInteger)pageNum {
     if (!self.publicPhotoManager.isConnected &&
         self.dataSource.photos.count > 0) {
+        isRefreshing = NO;
+        [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
         return;
     }
     [self.publicPhotoManager getPublicPhotoURLsWithPage:pageNum

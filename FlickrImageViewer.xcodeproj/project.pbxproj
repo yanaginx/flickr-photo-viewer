@@ -41,6 +41,7 @@
 		B277DAE42872B6B000EEEBCB /* AlbumDetailPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE32872B6AF00EEEBCB /* AlbumDetailPhotoManager.m */; };
 		B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE62872B6C000EEEBCB /* AlbumInfoManager.m */; };
 		B277DAEA2872C9C900EEEBCB /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */; };
+		B28290242886F46C00B61291 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B28290232886F46C00B61291 /* ImageCache.m */; };
 		B2891798287FBED800AE87B1 /* UploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = B2891797287FBED800AE87B1 /* UploadTask.m */; };
 		B289179B287FC64800AE87B1 /* UploadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B289179A287FC64800AE87B1 /* UploadInfo.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
@@ -193,6 +194,8 @@
 		B277DAE62872B6C000EEEBCB /* AlbumInfoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumInfoManager.m; sourceTree = "<group>"; };
 		B277DAE82872C9C900EEEBCB /* NSDate+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
 		B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
+		B28290222886F46C00B61291 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		B28290232886F46C00B61291 /* ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		B2891796287FBED800AE87B1 /* UploadTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadTask.h; sourceTree = "<group>"; };
 		B2891797287FBED800AE87B1 /* UploadTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadTask.m; sourceTree = "<group>"; };
 		B2891799287FC64800AE87B1 /* UploadInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadInfo.h; sourceTree = "<group>"; };
@@ -1039,6 +1042,8 @@
 			children = (
 				B2FA0651288683EE00024DD2 /* ImageURLCache.h */,
 				B2FA0652288683EE00024DD2 /* ImageURLCache.m */,
+				B28290222886F46C00B61291 /* ImageCache.h */,
+				B28290232886F46C00B61291 /* ImageCache.m */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -1215,6 +1220,7 @@
 				B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */,
 				B277DAD22872867E00EEEBCB /* AlbumInfoCollectionViewCell.m in Sources */,
 				B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */,
+				B28290242886F46C00B61291 /* ImageCache.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B2FA064428859DDB00024DD2 /* UserInfo+CoreDataProperties.m in Sources */,
 				B277DADB2872A57100EEEBCB /* AlbumDetailViewController.m in Sources */,

@@ -169,14 +169,16 @@
     }] resume];
 }
 
+- (void)clearLocalPopularPhotos {
+    [self _clearLocalPopularPhotos];
+}
+
 #pragma mark - Private methods
 - (BOOL)_isConnected {
     Reachability *reach = [Reachability reachabilityForInternetConnection];
     if (reach.currentReachabilityStatus != NotReachable) {
-        NSLog(@"[DEBUG] %s: Is Connected", __func__);
         return YES;
     }
-    NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
 }
 
@@ -195,6 +197,9 @@
 }
 
 - (BOOL)_savePopularPhotosWithPhoto:(Photo *)photo {
+    if (photo == nil) {
+        return NO;
+    }
     PopularPhoto *popularPhoto = [NSEntityDescription
                                   insertNewObjectForEntityForName:@"PopularPhoto"
                                   inManagedObjectContext:self.dataController.backgroundContext];
@@ -210,6 +215,21 @@
         return NO;
     }
     return YES;
+}
+
+// Delete all records so far when refreshing
+- (void)_clearLocalPopularPhotos {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PopularPhoto"];
+    NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:request];
+    NSError *deleteError = nil;
+    [self.dataController.backgroundContext executeRequest:delete
+                                                    error:&deleteError];
+    if (deleteError) {
+        // Something went wrong
+        NSLog(@"[DEBUG] %s: delete not good: %@",
+              __func__,
+              deleteError.localizedDescription);
+    }
 }
 
 - (NSMutableArray *)_extractPhotosFromPopularPhotos:(NSArray *)popularPhotos {

@@ -47,6 +47,10 @@
     // If offline and there are already some data then not calling this
     if (!self.popularPhotoManager.isConnected &&
         self.photos.count > 0) {
+        NSNumber *noErrorCodeNumber = [NSNumber numberWithInteger:0];
+        NSNumber *isLastPageNumber = [NSNumber numberWithBool:NO];
+        [self.photoFetcherdelegate onFinishGettingPhotosWithErrorCode:noErrorCodeNumber
+                                                       lastPageStatus:isLastPageNumber];
         return;
     }
     
@@ -77,6 +81,8 @@
     if (self.popularPhotoManager.isConnected) {
         [self.dynamicCellSizeCalculator clearCache];
         [self.photos removeAllObjects];
+        // remove inside the core data also
+        [self.popularPhotoManager clearLocalPopularPhotos];
     }
 }
 
