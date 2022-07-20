@@ -42,6 +42,19 @@
     }];
 }
 
+#pragma mark - Private methods
+- (void)_setupDismissButton {
+    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_cancel"]
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(_dismiss)];
+    [self.navigationItem setLeftBarButtonItem:dismissButton];
+}
+
+- (void)_dismiss {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Custom Accessors
 
 - (UILabel *)permissionErrorCaption {
@@ -58,22 +71,22 @@
 - (UIButton *)retryButton {
     if (_retryButton) return _retryButton;
     
-    UIButtonConfiguration *buttonConfiguration = [UIButtonConfiguration tintedButtonConfiguration];
-    buttonConfiguration.title = @"GRANT ACCESS";
-    UIAction *retryAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
-        [self onRetryButtonClicked];
-    }];
-    _retryButton = [UIButton buttonWithConfiguration:buttonConfiguration
-                                       primaryAction:retryAction];
+//    UIButtonConfiguration *buttonConfiguration = [UIButtonConfiguration tintedButtonConfiguration];
+//    buttonConfiguration.title = @"GRANT ACCESS";
+//    UIAction *retryAction = [UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+//        [self onRetryButtonClicked];
+//    }];
+//    _retryButton = [UIButton buttonWithConfiguration:buttonConfiguration
+//                                       primaryAction:retryAction];
     
-//    _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    _retryButton.layer.borderWidth = 1.0f;
-//    _retryButton.layer.cornerRadius = kButtonWidth / 8;
-//    _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
-//    [_retryButton setTitle:@"GRANT ACCESS" forState:UIControlStateNormal];
-//    [_retryButton addTarget:self
-//                     action:@selector(onRetryButtonClicked)
-//           forControlEvents:UIControlEventTouchUpInside];
+    _retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _retryButton.layer.borderWidth = 1.0f;
+    _retryButton.layer.cornerRadius = kCornerRadius;
+    _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
+    [_retryButton setTitle:@"GRANT ACCESS" forState:UIControlStateNormal];
+    [_retryButton addTarget:self
+                     action:@selector(onRetryButtonClicked)
+           forControlEvents:UIControlEventTouchUpInside];
     return _retryButton;
 }
 

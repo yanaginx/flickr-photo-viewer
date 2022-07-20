@@ -172,7 +172,7 @@
     bottomLine.backgroundColor = UIColor.grayColor.CGColor;
     [self.albumSelectorButton.layer addSublayer:bottomLine];
     self.albumSelectorButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.albumSelectorButton.configuration.contentInsets = NSDirectionalEdgeInsetsMake(0, 10, 0, 0);
+//    self.albumSelectorButton.configuration.contentInsets = NSDirectionalEdgeInsetsMake(0, 10, 0, 0);
     [self.albumSelectorButton setTitleColor:UIColor.grayColor
                                    forState:UIControlStateNormal];
     [self.albumSelectorButton addTarget:self

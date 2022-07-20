@@ -59,13 +59,14 @@
     
 //    NSLog(@"[DEBUG] %s : buttonX: %f, buttonY: %f, width: %f, height: %f", __func__, kButtonX, kButtonY, kButtonWidth, kButtonHeight);
     _retryButton.layer.borderWidth = 1.0f;
-    _retryButton.layer.cornerRadius = kButtonWidth / 8;
+    _retryButton.layer.cornerRadius = kCornerRadius;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
     [_retryButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
     [_retryButton addTarget:self
                      action:@selector(onRetryButtonClicked)
            forControlEvents:UIControlEventTouchUpInside];
-    return _retryButton;}
+    return _retryButton;
+}
 
 - (UIImageView *)networkErrorImageView {
     if (_networkErrorImageView) return _networkErrorImageView;

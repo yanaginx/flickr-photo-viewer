@@ -8,6 +8,8 @@
 #ifndef ErrorViewConstants_h
 #define ErrorViewConstants_h
 
+#define kCornerRadius 10
+
 #define kOneTenthOfViewHeight (self.view.frame.size.height / 10)
 #define kOneFifthOfViewHeight (self.view.frame.size.height / 5)
 
