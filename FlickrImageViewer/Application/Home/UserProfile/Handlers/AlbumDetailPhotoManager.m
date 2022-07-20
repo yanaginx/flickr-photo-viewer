@@ -174,6 +174,10 @@
     }] resume];
 }
 
+- (void)clearLocalAlbumPhotosForAlbumID:(NSString *)albumID {
+    [self _clearLocalAlbumPhotosForAlbumID:albumID];
+}
+
 #pragma mark - Private methods
 - (BOOL)_isConnected {
     Reachability *reach = [Reachability reachabilityForInternetConnection];
@@ -230,6 +234,23 @@
         [photos addObject:photo];
     }
     return photos;
+}
+
+// Delete all records so far when refreshing
+- (void)_clearLocalAlbumPhotosForAlbumID:(NSString *)albumID {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"AlbumPhoto"];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"albumID == %@", albumID];
+    request.predicate = requestPredicate;
+    NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:request];
+    NSError *deleteError = nil;
+    [self.dataController.backgroundContext executeRequest:delete
+                                                    error:&deleteError];
+    if (deleteError) {
+        // Something went wrong
+        NSLog(@"[DEBUG] %s: delete not good: %@",
+              __func__,
+              deleteError.localizedDescription);
+    }
 }
 
 

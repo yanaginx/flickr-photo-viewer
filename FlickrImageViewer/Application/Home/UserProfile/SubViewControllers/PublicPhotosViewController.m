@@ -114,6 +114,7 @@
     if (self.publicPhotoManager.isConnected)  {
         [self.dataSource.photos removeAllObjects];
         [self.dynamicLayout clearCache];
+        [self.publicPhotoManager clearLocalPublicPhotos];
     }
     [self _getPhotoURLsForPage:currentPage];
 }
@@ -190,14 +191,15 @@
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.row == self.photos.count - numOfPhotosBeforeNewFetch && !isLastPage) {
-//    NSInteger indexForFetching = self.dataSource.photos.count == kResultsPerPage.integerValue ?
-//    self.dataSource.photos.count - numOfPhotosBeforeNewFetch :
-//    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
-    if (indexPath.row == self.dataSource.photos.count - 1 && !isLastPage) {
-        currentPage += 1;
-        NSLog(@"[DEBUG] %s : API called!", __func__);
-        [self _getPhotoURLsForPage:currentPage];
+    // Only call this when in online mode
+    if (self.publicPhotoManager.isConnected) {
+        if (indexPath.row == self.dataSource.photos.count - 1 && !isLastPage) {
+            NSInteger totalPages = self.dataSource.photos.count/kResultsPerPage.integerValue + 1;
+            NSInteger pagesToIncrease = totalPages - currentPage;
+            currentPage += pagesToIncrease;
+            NSLog(@"[DEBUG] current PAGE: %d", currentPage);
+            [self _getPhotoURLsForPage:currentPage];
+        }
     }
 }
 
@@ -354,24 +356,12 @@
 
 - (void)_switchToDynamicLayout {
     [self.collectionView setCollectionViewLayout:self.dynamicLayout animated:YES];
-//    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
     [self.collectionView reloadData];
-//    if (self.dataSource.photos.count > 0) {
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-//        [self.collectionView scrollToItemAtIndexPath:indexPath
-//                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-//    }
 }
 
 - (void)_switchToFixedLayout {
     [self.collectionView setCollectionViewLayout:self.fixedFlowLayout animated:YES];
-//    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
     [self.collectionView reloadData];
-//    if (self.dataSource.photos.count > 0) {
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-//        [self.collectionView scrollToItemAtIndexPath:indexPath
-//                                    atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-//    }
 }
 
 #pragma mark - Custom Accessors

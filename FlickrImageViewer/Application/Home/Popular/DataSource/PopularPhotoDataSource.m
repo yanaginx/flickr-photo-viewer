@@ -48,24 +48,25 @@
     return cell;
 }
 
-#pragma mark - <UICollectionViewDataSourcePrefetching>
-/// Tag: Prefetching
-- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
-    for (NSIndexPath *indexPath in indexPaths) {
-        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
-        NSURL *url = [self.popularPhotoViewModel itemAtIndexPath:indexPath];
-        [self.asyncFetcher fetchAsyncForIdentifier:identifier
-                                          imageURL:url
-                                        completion:nil];
-    }
-}
 
-/// Tag: Cancel Prefetching
-- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
-    for (NSIndexPath *indexPath in indexPaths) {
-        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
-        [self.asyncFetcher cancelFetchForIdentifier:identifier];
-    }
-}
+//#pragma mark - <UICollectionViewDataSourcePrefetching>
+///// Tag: Prefetching
+//- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+//    for (NSIndexPath *indexPath in indexPaths) {
+//        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
+//        NSURL *url = [self.popularPhotoViewModel itemAtIndexPath:indexPath];
+//        [self.asyncFetcher fetchAsyncForIdentifier:identifier
+//                                          imageURL:url
+//                                        completion:nil];
+//    }
+//}
+//
+///// Tag: Cancel Prefetching
+//- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+//    for (NSIndexPath *indexPath in indexPaths) {
+//        NSString *identifier = [self.popularPhotoViewModel identifierAtIndexPath:indexPath];
+//        [self.asyncFetcher cancelFetchForIdentifier:identifier];
+//    }
+//}
 
 @end

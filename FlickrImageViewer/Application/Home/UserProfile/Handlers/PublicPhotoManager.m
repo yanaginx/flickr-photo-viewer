@@ -172,6 +172,10 @@
     }] resume];
 }
 
+- (void)clearLocalPublicPhotos {
+    [self _clearLocalPublicPhotos];
+}
+
 #pragma mark - Private methods
 - (BOOL)_isConnected {
     Reachability *reach = [Reachability reachabilityForInternetConnection];
@@ -228,6 +232,20 @@
     return photos;
 }
 
+// Delete all records so far when refreshing
+- (void)_clearLocalPublicPhotos {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"PublicPhoto"];
+    NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:request];
+    NSError *deleteError = nil;
+    [self.dataController.backgroundContext executeRequest:delete
+                                                    error:&deleteError];
+    if (deleteError) {
+        // Something went wrong
+        NSLog(@"[DEBUG] %s: delete not good: %@",
+              __func__,
+              deleteError.localizedDescription);
+    }
+}
 
 #pragma mark - Network related
 - (NSURLRequest *)_publicPhotoURLRequestWithPageNum:(NSInteger)pageNum {

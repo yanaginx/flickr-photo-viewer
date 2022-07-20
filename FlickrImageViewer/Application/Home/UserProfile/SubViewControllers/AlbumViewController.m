@@ -91,6 +91,7 @@
     isRefreshing = YES;
     if (self.albumInfoManager.isConnected) {
         [self.dataSource.albumInfos removeAllObjects];
+        [self.albumInfoManager clearLocalAlbumInfos];
     }
     [self _getAlbumInfosForPage:currentPage];
 }
@@ -232,13 +233,17 @@
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.albumInfoManager clearLocalAlbumInfos];
+    [self.dataSource.albumInfos removeAllObjects];
     [self _getAlbumInfosForPage:currentPage];
 }
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
-     currentPage = 1;
+    currentPage = 1;
+    [self.albumInfoManager clearLocalAlbumInfos];
+    [self.dataSource.albumInfos removeAllObjects];
     [self _getAlbumInfosForPage:currentPage];
 }
 
@@ -246,6 +251,8 @@
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.albumInfoManager clearLocalAlbumInfos];
+    [self.dataSource.albumInfos removeAllObjects];
     [self _getAlbumInfosForPage:currentPage];
 }
 

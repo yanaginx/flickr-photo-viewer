@@ -13,12 +13,13 @@
 @implementation UIImageView (Additions)
 
 - (void)setImageUsingURL:(NSURL *)url {
-    self.backgroundColor = kAppleBlueAlpha;
     [[AsyncImageFetcher sharedImageFetcher] fetchAsyncForIdentifier:url.absoluteString
                                                            imageURL:url
                                                          completion:^(UIImage * _Nullable image) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.image = image;
+            if (image) {
+                self.image = image;
+            }
         });
     }];
 }

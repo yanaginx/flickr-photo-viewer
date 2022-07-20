@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isConnected;
 
+- (void)clearLocalAlbumInfos;
+
 @end
 
 NS_ASSUME_NONNULL_END

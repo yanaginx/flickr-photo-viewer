@@ -27,6 +27,7 @@
                                          NoDataErrorViewDelegate> {
     NSInteger currentPage;
     BOOL isLastPage;
+    BOOL isRefreshing;
     NSInteger numOfPhotosBeforeNewFetch;
 }
 
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) FixedFlowLayout *fixedFlowLayout;
 @property (nonatomic, strong) AlbumDetailDataSource *dataSource;
 @property (nonatomic, strong) AlbumDetailPhotoManager *albumDetailPhotoManager;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -44,7 +46,9 @@
     if (self) {
         currentPage = 1;
         isLastPage = NO;
+        isRefreshing = NO;
         numOfPhotosBeforeNewFetch = 1;
+        self.refreshControl = [[UIRefreshControl alloc] init];
     }
     return self;
 }
@@ -72,6 +76,7 @@
 - (void)_setupViews {
     [self _setupCollectionView];
     [self _setupTitleView];
+    [self _setupRefreshControl];
 }
 
 - (void)_setupCollectionView {
@@ -101,11 +106,37 @@
     self.navigationController.navigationBar.tintColor = UIColor.blackColor;
 }
 
+- (void)_setupRefreshControl {
+    currentPage = 1;
+    [self.refreshControl addTarget:self
+                            action:@selector(_getPhotosForCurrentPage)
+                  forControlEvents:UIControlEventValueChanged];
+    self.collectionView.refreshControl = self.refreshControl;
+}
+
+- (void)_getPhotosForCurrentPage {
+    if (!isRefreshing) {
+        isRefreshing = YES;
+        currentPage = 1;
+        [self.dataSource.photos removeAllObjects];
+        [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
+        [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
+                                pageNum:currentPage];
+    } else {
+        [self.refreshControl endRefreshing];
+    }
+}
+
+
 #pragma mark - Private methods
 - (void)_getAlbumDetailForAlbumID:(NSString *)albumID
                           pageNum:(NSInteger)pageNum {
     if (!self.albumDetailPhotoManager.isConnected &&
         self.dataSource.photos.count > 0) {
+        if (self->isRefreshing) {
+            self->isRefreshing = NO;
+            [self.refreshControl endRefreshing];
+        }
         return;
     }
     [self.albumDetailPhotoManager getAlbumDetailPhotosForAlbumID:albumID
@@ -139,6 +170,10 @@
        }
        [self.dataSource.photos addObjectsFromArray:photos];
        dispatch_async(dispatch_get_main_queue(), ^{
+           if (self->isRefreshing) {
+               self->isRefreshing = NO;
+               [self.refreshControl endRefreshing];
+           }
            [self.collectionView reloadData];
        });
     }];
@@ -222,6 +257,8 @@
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
+    [self.dataSource.photos removeAllObjects];
     [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
                             pageNum:currentPage];
 }
@@ -230,6 +267,8 @@
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
+    [self.dataSource.photos removeAllObjects];
     [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
                             pageNum:currentPage];
 }
@@ -238,6 +277,8 @@
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
+    [self.dataSource.photos removeAllObjects];
     [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
                             pageNum:currentPage];
 }

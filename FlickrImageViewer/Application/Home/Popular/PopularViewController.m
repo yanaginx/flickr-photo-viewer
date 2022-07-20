@@ -157,10 +157,10 @@
     if (self.popularPhotoManager.isConnected) {
         if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
             !isLastPage) {
-            NSInteger totalPages = self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue;
+            NSInteger totalPages = self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue + 1;
             NSInteger pagesToIncrease = totalPages - currentPage + 1;
             currentPage += pagesToIncrease;
-            NSLog(@"[DEBUG] %s : API called!", __func__);
+            NSLog(@"[DEBUG] %s : current page: %d", __func__, currentPage);
             [self.popularPhotoViewModel getPhotosForPage:currentPage];
         }
     }
@@ -208,6 +208,7 @@
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.popularPhotoViewModel removeAllPhotos];
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
@@ -215,6 +216,7 @@
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.popularPhotoViewModel removeAllPhotos];
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
@@ -222,8 +224,8 @@
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.popularPhotoViewModel removeAllPhotos];
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
-
 }
 
 #pragma mark - Private methods
