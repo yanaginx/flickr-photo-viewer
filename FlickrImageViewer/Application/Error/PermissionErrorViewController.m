@@ -26,7 +26,7 @@
     [self.view addSubview:self.retryButton];
     [self.view addSubview:self.permissionErrorCaption];
     [self.view addSubview:self.permissionErrorImageView];
-    self.navigationItem.hidesBackButton = YES;
+    [self _setupDismissButton];
 }
 
 - (void)viewWillLayoutSubviews {
