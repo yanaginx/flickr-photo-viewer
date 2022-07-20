@@ -11,6 +11,7 @@
 #import "Operation/ImageDownloadOperation.h"
 #import "Cache/ImageURLCache.h"
 #import "Cache/ImageCache.h"
+#import "Cache/MDImageCache.h"
 
 #define kMaxAsyncOperations 4
 #define kMemoryCapacity 100 * 1024 * 1024
@@ -24,6 +25,7 @@
 @property (nonatomic, strong) NSURLSession *downloadSession;
 @property (nonatomic, strong) ImageURLCache *imageURLCache;
 @property (nonatomic, strong) ImageCache *imageCache;
+@property (nonatomic, strong) MDImageCache *mdImageCache;
 
 @end
 
@@ -138,14 +140,10 @@
     // If a request has already been made for the object, do nothing more.
     if ([self operationForIdentifier:identifier] != nil) return;
     
-//    UIImage *data = [self fetchedDataForIdentifier:identifier];
-    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-    NSCachedURLResponse *cachedResponse = [self.imageURLCache cachedResponseForRequest:request];
-    if (cachedResponse.data) {
-        // The object has been cached; call the completion handler with that object
-        UIImage *data = [UIImage imageWithData:cachedResponse.data];
+    UIImage *cachedImage = [self.mdImageCache imageForKey:imageURL.absoluteString];
+    if (cachedImage) {
         [self invokeCompletionHandlersForIdentifier:identifier
-                                    withFetchedData:data];
+                                    withFetchedData:cachedImage];
     } else {
         // Enqueue a request for the object
         ImageDownloadOperation *operation = [[ImageDownloadOperation alloc]
@@ -162,7 +160,8 @@
             NSError *error = operation.error;
             if (error) NSLog(@"[DEBUG] %s : error : %@", __func__, error);
             if (fetchedData == nil) return;
-            [self.cache setObject:fetchedData forKey:identifier];
+            [self.mdImageCache setImage:fetchedData
+                                 forKey:imageURL.absoluteString];
             [self.serialAccessQueue addOperationWithBlock:^{
                 [self invokeCompletionHandlersForIdentifier:identifier
                                             withFetchedData:fetchedData];
@@ -238,11 +237,8 @@
     if (_downloadSession) return _downloadSession;
     
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    configuration.HTTPShouldSetCookies = YES;
-    configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
     configuration.allowsCellularAccess = YES;
     configuration.timeoutIntervalForRequest = 60.0;
-    configuration.URLCache = self.imageURLCache;
     
     _downloadSession = [NSURLSession sessionWithConfiguration:configuration];
     
@@ -272,6 +268,13 @@
     _imageCache = [[ImageCache alloc] init];
     [_imageCache setTotalCostLimit:kMemoryCapacity];
     return _imageCache;
+}
+
+- (MDImageCache *)mdImageCache {
+    if (_mdImageCache) return _mdImageCache;
+    
+    _mdImageCache = [[MDImageCache alloc] init];
+    return _mdImageCache;
 }
 
 @end

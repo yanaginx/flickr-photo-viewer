@@ -25,14 +25,6 @@
 
 @implementation HomeViewController
 
-//- (instancetype)init {
-//    self = [super init];
-//    if (self) {
-//        self.uploadManager = [[UploadPhotoManager alloc] init];
-//    }
-//    return self;
-//}
-
 - (void)dealloc {
     NSLog(@"[DEBUG] %s: did run!", __func__);
 }
@@ -153,33 +145,6 @@
 }
 
 #pragma mark - Private methods
-//- (void)_setupUploadPopover {
-//    UploadStatusViewController *uploadStatusVC = [[UploadStatusViewController alloc] init];
-//    uploadStatusVC.modalPresentationStyle = UIModalPresentationPopover;
-//
-//    uploadStatusVC.popoverPresentationController.delegate = self;
-//    uploadStatusVC.popoverPresentationController.sourceView = self.tabBar;
-//    uploadStatusVC.popoverPresentationController.sourceRect = [self _frameForTabWithIndex:kProfileTabIndex];
-//    uploadStatusVC.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionDown;
-//    NSMutableArray *passthroughViews = [NSMutableArray array];
-//    [passthroughViews addObject:self.tabBar];
-//    for (UIViewController *viewController in self.viewControllers) {
-//        [passthroughViews addObject:viewController.view];
-//    }
-//    for (UITabBarItem *tabBarItem in self.tabBar.items) {
-//        [passthroughViews addObject:[tabBarItem valueForKey:@"view"]];
-//    }
-//    uploadStatusVC.popoverPresentationController.passthroughViews = passthroughViews;
-//    [self presentViewController:uploadStatusVC animated:YES completion:nil];
-//}
-//
-//- (CGRect)_frameForTabWithIndex:(NSUInteger)index {
-//    UIView *tabBarItemView = [self.tabBar.items[index] valueForKey:@"view"];
-//    if (tabBarItemView == nil) return CGRectZero;
-//    CGRect tabBarItemFrame = tabBarItemView.frame;
-//    return tabBarItemFrame;
-//}
-
 - (void)_displayNoInternetStatus {
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
                                                        message:@"No internet, please try again later"
@@ -213,10 +178,6 @@
     }];
     [snackbar display];
 }
-//#pragma mark - UIPopoverPresentationControllerDelegate
-//- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
-//    return UIModalPresentationNone;
-//}
 
 #pragma mark - Private methods
 - (UIViewController *)topViewController{

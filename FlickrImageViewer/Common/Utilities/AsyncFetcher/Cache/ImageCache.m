@@ -21,83 +21,32 @@
     self = [super init];
     if (self) {
         self.diskOperationQueue = [[NSOperationQueue alloc] init];
-        [[NSFileManager defaultManager] createDirectoryAtPath:[self _imageCachePath]
-                                  withIntermediateDirectories:YES
-                                                   attributes:nil
-                                                        error:nil];
+//        [[NSFileManager defaultManager] createDirectoryAtPath:[self _imageCachePath]
+//                                  withIntermediateDirectories:YES
+//                                                   attributes:nil
+//                                                        error:nil];
     }
     return self;
 }
 
-#pragma mark - Operations
-
-- (UIImage *)cachedImageForURL:(NSURL *)url {
-    NSString *key = [self _keyForURL:url];
-    id objectToReturn = [super objectForKey:key];
-    if (objectToReturn) {
-        return (UIImage *)objectToReturn;
-    } else {
-        UIImage *image = [self _imageFromDiskForURL:url];
-        // Set the image to mem cache
-        if (image) {
-            [self setToMemCacheImage:image
-                              forURL:url];
-        }
-        return image;
-    }
-    return nil;
-}
-
+#pragma mark - Public methods
 - (UIImage *)imageForURL:(NSURL *)url {
-    return [self cachedImageForURL:url];
+    return [self _cachedImageForURL:url];
 }
 
-
-// Set image to mem cache
-- (void)setToMemCacheImage:(UIImage *)image
-                    forURL:(NSURL *)url {
-    NSString *key = [self _keyForURL:url];
-    [self _setImage:image
-             forKey:key];
-}
-
-- (void)removeImageFromMemCacheForURL:(NSURL *)url {
-    NSString *key = [self _keyForURL:url];
-    [self _removeImageForKey:key];
-}
-
-// Set image to disk cache
-- (void)setToDiskCacheImage:(UIImage *)image
-                     forURL:(NSURL *)url {
-    NSString *key = [self _keyForURL:url];
-    NSString *cachePath = [self _cachePathForKey:key];
-    NSMethodSignature *methodSignature =  [self methodSignatureForSelector:@selector(_writeData:toPath:)];
-    NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    
-    [writeInvocation setTarget:self];
-    [writeInvocation setArgument:&imageData atIndex:2];
-    [writeInvocation setArgument:&cachePath atIndex:3];
-    
-    [self _performDiskWriteOperation:writeInvocation];
-}
-
-- (void)removeImageFromDiskCacheForURL:(NSURL *)url {
+- (void)setToCacheImage:(UIImage *)image
+                 forURL:(NSURL *)url {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSFileManager *fileMgr = [NSFileManager defaultManager];
-        NSString *key = [self _keyForURL:url];
-        NSString *cachePath = [self _cachePathForKey:key];
-        NSError *error = nil;
-        BOOL removeSuccess = [fileMgr removeItemAtPath:cachePath error:&error];
-        if (!removeSuccess) {
-            //Error Occured
-        }
+        [self _setToMemCacheImage:image
+                           forURL:url];
+        [self _setToDiskCacheImage:image
+                            forURL:url];
     });
 }
 
 - (void)removeImageForURL:(NSURL *)url {
-    [self removeImageFromMemCacheForURL:url];
-    [self removeImageFromDiskCacheForURL:url];
+    [self _removeImageFromMemCacheForURL:url];
+    [self _removeImageFromDiskCacheForURL:url];
 }
 
 - (void)clearCache {
@@ -125,14 +74,75 @@
     });
 }
 
+
 #pragma mark - Private methods
 
+- (UIImage *)_cachedImageForURL:(NSURL *)url {
+    NSString *key = [self _keyForURL:url];
+    id objectToReturn = [super objectForKey:key];
+    if (objectToReturn) {
+        return (UIImage *)objectToReturn;
+    } else {
+        UIImage *image = [self _imageFromDiskForURL:url];
+        // Set the image to mem cache
+        if (image) {
+            [self _setToMemCacheImage:image
+                               forURL:url];
+        }
+        return image;
+    }
+    return nil;
+}
+
+// Set image to mem cache
+- (void)_setToMemCacheImage:(UIImage *)image
+                     forURL:(NSURL *)url {
+    NSString *key = [self _keyForURL:url];
+    [self _setImage:image
+             forKey:key];
+}
+
+- (void)_removeImageFromMemCacheForURL:(NSURL *)url {
+    NSString *key = [self _keyForURL:url];
+    [self _removeImageForKey:key];
+}
+
+// Set image to disk cache
+- (void)_setToDiskCacheImage:(UIImage *)image
+                      forURL:(NSURL *)url {
+    NSString *key = [self _keyForURL:url];
+    NSString *cachePath = [self _cachePathForKey:key];
+    NSMethodSignature *methodSignature =  [self methodSignatureForSelector:@selector(_writeData:toPath:)];
+    NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    [writeInvocation setTarget:self];
+    [writeInvocation setArgument:&imageData atIndex:2];
+    [writeInvocation setArgument:&cachePath atIndex:3];
+    
+    [self _performDiskWriteOperation:writeInvocation];
+}
+
+- (void)_removeImageFromDiskCacheForURL:(NSURL *)url {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        NSString *key = [self _keyForURL:url];
+        NSString *cachePath = [self _cachePathForKey:key];
+        NSError *error = nil;
+        BOOL removeSuccess = [fileMgr removeItemAtPath:cachePath error:&error];
+        if (!removeSuccess) {
+            //Error Occured
+        }
+    });
+}
+
 - (void)_writeData:(NSData *)data
-           toPath:(NSString *)path {
+            toPath:(NSString *)path {
     [data writeToFile:path atomically:YES];
 }
-- (void)_performDiskWriteOperation:(NSInvocation *)invoction {
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invoction];
+
+- (void)_performDiskWriteOperation:(NSInvocation *)invocation {
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     
     [self.diskOperationQueue addOperation:operation];
 }

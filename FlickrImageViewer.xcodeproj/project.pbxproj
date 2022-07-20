@@ -42,6 +42,7 @@
 		B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE62872B6C000EEEBCB /* AlbumInfoManager.m */; };
 		B277DAEA2872C9C900EEEBCB /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */; };
 		B28290242886F46C00B61291 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B28290232886F46C00B61291 /* ImageCache.m */; };
+		B282902A2887AB8100B61291 /* MDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B28290292887AB8100B61291 /* MDImageCache.m */; };
 		B2891798287FBED800AE87B1 /* UploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = B2891797287FBED800AE87B1 /* UploadTask.m */; };
 		B289179B287FC64800AE87B1 /* UploadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B289179A287FC64800AE87B1 /* UploadInfo.m */; };
 		B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B29CBB4F2859D2B20058B382 /* AppDelegate.m */; };
@@ -196,6 +197,8 @@
 		B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
 		B28290222886F46C00B61291 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		B28290232886F46C00B61291 /* ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
+		B28290282887AB8000B61291 /* MDImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MDImageCache.h; sourceTree = "<group>"; };
+		B28290292887AB8100B61291 /* MDImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MDImageCache.m; sourceTree = "<group>"; };
 		B2891796287FBED800AE87B1 /* UploadTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadTask.h; sourceTree = "<group>"; };
 		B2891797287FBED800AE87B1 /* UploadTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadTask.m; sourceTree = "<group>"; };
 		B2891799287FC64800AE87B1 /* UploadInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadInfo.h; sourceTree = "<group>"; };
@@ -1044,6 +1047,8 @@
 				B2FA0652288683EE00024DD2 /* ImageURLCache.m */,
 				B28290222886F46C00B61291 /* ImageCache.h */,
 				B28290232886F46C00B61291 /* ImageCache.m */,
+				B28290282887AB8000B61291 /* MDImageCache.h */,
+				B28290292887AB8100B61291 /* MDImageCache.m */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -1223,6 +1228,7 @@
 				B28290242886F46C00B61291 /* ImageCache.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B2FA064428859DDB00024DD2 /* UserInfo+CoreDataProperties.m in Sources */,
+				B282902A2887AB8100B61291 /* MDImageCache.m in Sources */,
 				B277DADB2872A57100EEEBCB /* AlbumDetailViewController.m in Sources */,
 				B2CED18628635C7900606615 /* LoadingButton.m in Sources */,
 				B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */,
@@ -1448,6 +1454,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1473,6 +1480,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1616,6 +1624,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -18,13 +18,15 @@ NS_ASSUME_NONNULL_BEGIN
 // When disk cache miss -> return nil
 - (UIImage * _Nullable)imageForURL:(NSURL *)url;
 
-// Set image to mem cache
-- (void)setToMemCacheImage:(UIImage *)image
-                    forURL:(NSURL *)url;
-
-// Set image to disk cache
-- (void)setToDiskCacheImage:(UIImage *)image
-                     forURL:(NSURL *)url;
+/**
+ Set to mem cache then disk cache the image
+ 
+ - Parameter
+    - image: The `UIImage` to put in the cache.
+    - url: The `NSURL` identifying the image.
+ */
+- (void)setToCacheImage:(UIImage *)image
+                 forURL:(NSURL *)url;
 
 // Remove all objects in cache
 - (void)clearCache;
