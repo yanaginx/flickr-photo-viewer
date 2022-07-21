@@ -42,6 +42,9 @@
     PopularPhotoCollectionViewCell *cell = [collectionView
                                             dequeueReusableCellWithReuseIdentifier:[PopularPhotoCollectionViewCell reuseIdentifier]
                                             forIndexPath:indexPath];
+    if (indexPath.row >= self.popularPhotoViewModel.numberOfItems) {
+        return cell;
+    }
     NSURL *imageURL = [self.popularPhotoViewModel itemAtIndexPath:indexPath];
     if (imageURL == nil) return cell;
     [cell configureWithImageURL:imageURL];

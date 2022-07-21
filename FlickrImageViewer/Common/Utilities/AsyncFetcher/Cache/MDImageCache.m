@@ -297,7 +297,7 @@ withTimeoutInterval:(NSTimeInterval)timeoutInterval {
     
     // If not then check the disk
     UIImage *diskImage = nil;
-    @try {
+//    @try {
         NSData *diskImageData = [self dataForKey:key];
         if (diskImageData != nil) {
             diskImage = [UIImage imageWithData:diskImageData];
@@ -305,9 +305,9 @@ withTimeoutInterval:(NSTimeInterval)timeoutInterval {
             [self->_memCache setObject:diskImageData
                                 forKey:key];
         }
-    } @catch (NSException* e) {
-        // Surpress any unarchiving exceptions and continue with nil
-    }
+//    } @catch (NSException* e) {
+//        // Surpress any unarchiving exceptions and continue with nil
+//    }
     return diskImage;
 }
 
@@ -326,15 +326,15 @@ withTimeoutInterval:(NSTimeInterval)timeoutInterval {
     // Put in the mem cache first
     [self->_memCache setObject:imageData
                         forKey:key];
-    @try {
-        // Using NSKeyedArchiver preserves all information such as scale, orientation, and the proper image format instead of saving everything as pngs
-//        [self setData:[NSKeyedArchiver archivedDataWithRootObject:anImage]
+//    @try {
+//        // Using NSKeyedArchiver preserves all information such as scale, orientation, and the proper image format instead of saving everything as pngs
+////        [self setData:[NSKeyedArchiver archivedDataWithRootObject:anImage]
         [self setData:imageData
                forKey:key
   withTimeoutInterval:timeoutInterval];
-    } @catch (NSException* e) {
-        // Something went wrong, but we'll fail silently.
-    }
+//    } @catch (NSException* e) {
+//        // Something went wrong, but we'll fail silently.
+//    }
 }
 
 

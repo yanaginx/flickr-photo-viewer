@@ -123,6 +123,7 @@
                                                  code:kServerError
                                              userInfo:nil];
             completion(nil, error);
+            return;
         }
 
         UIImage *image = [UIImage imageWithData:data];
@@ -135,6 +136,7 @@
                                                  code:kNoDataError
                                              userInfo:userInfo];
             completion(nil, error);
+            return;
         }
         completion(image, nil);
     }];

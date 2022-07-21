@@ -13,15 +13,21 @@
 @implementation UIImageView (Additions)
 
 - (void)setImageUsingURL:(NSURL *)url {
-    [[AsyncImageFetcher sharedImageFetcher] fetchAsyncForIdentifier:url.absoluteString
-                                                           imageURL:url
-                                                         completion:^(UIImage * _Nullable image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (image) {
-                self.image = image;
-            }
-        });
-    }];
+    UIImage *fetchedData = [AsyncImageFetcher.sharedImageFetcher fetchedDataForIdentifier:url.absoluteString];
+    if (fetchedData) {
+        self.image = fetchedData;
+    } else {
+        [[AsyncImageFetcher sharedImageFetcher] fetchAsyncForIdentifier:url.absoluteString
+                                                               imageURL:url
+                                                             completion:^(UIImage * _Nullable image) {
+            self.image = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (image) {
+                    self.image = image;
+                }
+            });
+        }];
+    }
 }
 
 @end

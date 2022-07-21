@@ -49,12 +49,13 @@
 
 - (void)getPublicPhotoURLsWithPage:(NSInteger)pageNum
                  completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable,
-                                             NSError * _Nullable))completion {
+                                             NSError * _Nullable,
+                                             NSNumber *))completion {
     // Fetch from core data when there is no internet
     if (![self _isConnected]) {
         // if fetched offline data then just return an empty array
         if (isOfflineFetched) {
-            completion([NSMutableArray array], nil);
+            completion([NSMutableArray array], nil, nil);
             return;
         }
         // TODO: Fetch from core data first
@@ -70,14 +71,14 @@
             }
             // END - printing all the photo fetched!
             isOfflineFetched = YES;
-            completion(photos, nil);
+            completion(photos, nil, nil);
             return;
         }
         // If there is no offline data then return the no internet error
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                              code:kNetworkError
                                          userInfo:nil];
-        completion(nil, error);
+        completion(nil, error, nil);
         return;
     }
     
@@ -94,7 +95,7 @@
                                             code:kNetworkError
                                         userInfo:nil];
             }
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
@@ -102,14 +103,14 @@
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNetworkError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
         NSError *localError = nil;
         NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
         if (localError) {
-            completion(nil, localError);
+            completion(nil, localError, nil);
             return;
         }
         if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"] ||
@@ -117,16 +118,18 @@
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kServerError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
+        
+        NSNumber *totalPhotosNumber = [[parsedObject objectForKey:@"photos"] objectForKey:@"total"];
         
         NSArray *photoObjects = [[parsedObject objectForKey:@"photos"] objectForKey:@"photo"];
         if (photoObjects.count == 0 && pageNum == 1) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNoDataError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
@@ -167,7 +170,7 @@
                 NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
             }
         }
-        completion(photos, nil);
+        completion(photos, nil, totalPhotosNumber);
         
     }] resume];
 }
@@ -180,10 +183,10 @@
 - (BOOL)_isConnected {
     Reachability *reach = [Reachability reachabilityForInternetConnection];
     if (reach.currentReachabilityStatus != NotReachable) {
-        NSLog(@"[DEBUG] %s: Is Connected", __func__);
+//        NSLog(@"[DEBUG] %s: Is Connected", __func__);
         return YES;
     }
-    NSLog(@"[DEBUG] %s: Not connected", __func__);
+//    NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
 }
 

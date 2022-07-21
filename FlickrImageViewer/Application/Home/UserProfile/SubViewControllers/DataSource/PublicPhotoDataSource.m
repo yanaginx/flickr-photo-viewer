@@ -31,6 +31,9 @@
     PublicPhotoCollectionViewCell *cell = [collectionView
                                            dequeueReusableCellWithReuseIdentifier:[PublicPhotoCollectionViewCell reuseIdentifier]
                                            forIndexPath:indexPath];
+    if (indexPath.row >= self.photos.count) {
+        return cell;
+    }
     Photo *photo = self.photos[indexPath.row];
     NSURL *url = photo.imageURL;
     if (url == nil) return cell;

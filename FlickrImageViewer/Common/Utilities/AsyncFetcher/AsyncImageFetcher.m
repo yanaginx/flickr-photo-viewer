@@ -93,7 +93,8 @@
  - Returns: The 'UIImage ' that has previously been fetched or nil.
  */
 - (UIImage *)fetchedDataForIdentifier:(NSString *)identifier {
-    return [self.cache objectForKey:identifier];
+//    return [self.cache objectForKey:identifier];
+    return [self.mdImageCache imageForKey:identifier];
 }
 
 - (UIImage *)fetchedDiskDataForIdentifier:(NSString *)identifier {
@@ -140,7 +141,7 @@
     // If a request has already been made for the object, do nothing more.
     if ([self operationForIdentifier:identifier] != nil) return;
     
-    UIImage *cachedImage = [self.mdImageCache imageForKey:imageURL.absoluteString];
+    UIImage *cachedImage = [self fetchedDataForIdentifier:identifier];
     if (cachedImage) {
         [self invokeCompletionHandlersForIdentifier:identifier
                                     withFetchedData:cachedImage];

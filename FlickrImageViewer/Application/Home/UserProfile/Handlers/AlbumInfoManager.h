@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)getUserAlbumInfosWithPage:(NSInteger)pageNum
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
-                                            NSError * _Nullable error))completion;
+                                            NSError * _Nullable error,
+                                            NSNumber *totalInfosNumber))completion;
 
 - (BOOL)isConnected;
 

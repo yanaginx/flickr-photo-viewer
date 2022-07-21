@@ -115,7 +115,8 @@
 - (void)_getAlbumInfosForPage:(NSInteger)pageNum {
    [self.albumInfoManager getUserAlbumInfosWithPage:pageNum
                                   completionHandler:^(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
-                                                                                NSError * _Nullable error) {
+                                                      NSError * _Nullable error,
+                                                      NSNumber * totalAlbumInfosNumber) {
         
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {

@@ -82,7 +82,9 @@
     isOfflineFetched = NO;
     NSURLRequest *request = [self _popularPhotoURLRequestWithPageNum:pageNum];
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
-                                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                     completionHandler:^(NSData *data,
+                                                         NSURLResponse *response,
+                                                         NSError *error) {
         if (error) {
             NSLog(@"[DEBUG] error: %@", error.localizedDescription);
             if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."] ||

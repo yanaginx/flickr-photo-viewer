@@ -29,6 +29,8 @@
     BOOL isLastPage;
     BOOL isRefreshing;
     NSInteger numOfPhotosBeforeNewFetch;
+    NSUInteger totalNumberOfAlbumInfos;
+    NSInteger numberOfPages;
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -46,7 +48,8 @@
         currentPage = 1;
         isLastPage = NO;
         isRefreshing = NO;
-        numOfPhotosBeforeNewFetch = 1;
+        numOfPhotosBeforeNewFetch = 2;
+        numberOfPages = LONG_MAX;
     }
     return self;
 }
@@ -78,6 +81,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    if (isRefreshing) {
+        [self.delegate cancelRefreshingAfterFetchingAlbums];
+    }
 }
 
 
@@ -118,7 +127,8 @@
     }
    [self.albumInfoManager getUserAlbumInfosWithPage:pageNum
                                   completionHandler:^(NSMutableArray<AlbumInfo *> * _Nullable albumInfos,
-                                                                                NSError * _Nullable error) {
+                                                      NSError * _Nullable error,
+                                                      NSNumber *totalAlbumInfosNumber) {
         
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
@@ -144,6 +154,12 @@
        if (albumInfos.count == 0) {
            self->isLastPage = YES;
        }
+       
+       self->totalNumberOfAlbumInfos = (totalAlbumInfosNumber != nil)? totalAlbumInfosNumber.integerValue : 0;
+       self->numberOfPages = self->totalNumberOfAlbumInfos == 0 ?
+                             self->numberOfPages :
+                             ceil((float)self->totalNumberOfAlbumInfos / kResultsPerPage.floatValue);
+
        [self.dataSource.albumInfos addObjectsFromArray:albumInfos];
        dispatch_async(dispatch_get_main_queue(), ^{
            if (self->isRefreshing) {
@@ -221,10 +237,14 @@
 //    NSInteger indexForFetching = self.dataSource.albumInfos.count == kResultsPerPage.integerValue ?
 //    self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch :
 //    kResultsPerPage.integerValue - numOfPhotosBeforeNewFetch;
-    
-    if (indexPath.row == self.dataSource.albumInfos.count - 1 && !isLastPage) {
+    if (indexPath.row == self.dataSource.albumInfos.count - numOfPhotosBeforeNewFetch &&
+        (currentPage < numberOfPages || !isLastPage)) {
+        NSInteger expectedCurrentPage = ceil((float)self.dataSource.albumInfos.count / kResultsPerPage.floatValue);
+        if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
         currentPage += 1;
-        NSLog(@"[DEBUG] %s : API called!", __func__);
+//    if (indexPath.row == self.dataSource.albumInfos.count - 1 && !isLastPage) {
+//        currentPage += 1;
+//        NSLog(@"[DEBUG] %s : API called!", __func__);
         [self _getAlbumInfosForPage:currentPage];
     }
 }

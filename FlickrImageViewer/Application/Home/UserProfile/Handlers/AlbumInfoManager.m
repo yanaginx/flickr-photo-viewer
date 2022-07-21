@@ -45,11 +45,12 @@
 
 - (void)getUserAlbumInfosWithPage:(NSInteger)pageNum
                 completionHandler:(void (^)(NSMutableArray<AlbumInfo *> * _Nullable,
-                                            NSError * _Nullable))completion {
+                                            NSError * _Nullable,
+                                            NSNumber *))completion {
     if (![self _isConnected]) {
         // if fetched offline data then just return an empty array
         if (isOfflineFetched) {
-            completion([NSMutableArray array], nil);
+            completion([NSMutableArray array], nil, nil);
             return;
         }
         // TODO: Fetch from core data first
@@ -65,14 +66,14 @@
             }
             // END - printing all the photo fetched!
             isOfflineFetched = YES;
-            completion(albumInfos, nil);
+            completion(albumInfos, nil, nil);
             return;
         }
         // If there is no offline data then return the no internet error
         NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                              code:kNetworkError
                                          userInfo:nil];
-        completion(nil, error);
+        completion(nil, error, nil);
         return;
     }
 
@@ -90,7 +91,7 @@
                                             code:kNetworkError
                                         userInfo:nil];
             }
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
@@ -98,23 +99,25 @@
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNetworkError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
         NSError *localError = nil;
         NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
         if (localError) {
-            completion(nil, localError);
+            completion(nil, localError, nil);
             return;
         }
         if (![(NSString *)[parsedObject objectForKey:@"stat"] isEqualToString:@"ok"]) {
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kServerError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
+        
+        NSNumber *totalAlbumInfosNumber = [[parsedObject objectForKey:@"photoset"] objectForKey:@"total"];
         
         NSArray *photoSetObjects = [[parsedObject objectForKey:@"photosets"] objectForKey:@"photoset"];
         if (photoSetObjects.count == 0 &&
@@ -122,7 +125,7 @@
             NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                                  code:kNoDataError
                                              userInfo:nil];
-            completion(nil, error);
+            completion(nil, error, nil);
             return;
         }
         
@@ -156,7 +159,7 @@
                 NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
             }
         }
-        completion(photoSets, nil);
+        completion(photoSets, nil, totalAlbumInfosNumber);
     }] resume];
    
 }

@@ -41,8 +41,14 @@
     return self;
 }
 
-- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    return layoutAttributes;
+//- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+//    return layoutAttributes;
+//}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+//    [self.albumImageView removeFromSuperview];
+//    self.albumImageView = nil;
 }
 
 #pragma mark - Operations
@@ -72,7 +78,7 @@
                                            kAlbumInfoAlbumImageSize,
                                            kAlbumInfoAlbumImageSize);
         _albumImageView = [[UIImageView alloc] initWithFrame:imageViewFrame];
-        _albumImageView.image = [UIImage imageNamed:@"ic_no_data"];
+//        _albumImageView.image = [UIImage imageNamed:@"ic_no_data"];
         _albumImageView.contentMode = UIViewContentModeScaleAspectFill;
         _albumImageView.clipsToBounds = YES;
     }

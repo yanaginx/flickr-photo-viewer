@@ -21,6 +21,9 @@
     AlbumInfoCollectionViewCell *cell = [collectionView
                                          dequeueReusableCellWithReuseIdentifier:[AlbumInfoCollectionViewCell reuseIdentifier]
                                          forIndexPath:indexPath];
+    if (indexPath.row >= self.albumInfos.count) {
+        return cell;
+    }
     AlbumInfo *albumInfo = self.albumInfos[indexPath.row];
     [cell configureAlbumInfoCellWithImageURL:albumInfo.albumImageURL];
     [cell configureAlbumInfoCellWithName:albumInfo.albumName];

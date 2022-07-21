@@ -36,6 +36,9 @@
     NSInteger currentPage;
     NSInteger numOfPhotosBeforeNewFetch;
     BOOL isLastPage;
+    NSInteger numberOfPhotosOfLastPage;
+    NSInteger totalNumberOfPhotos;
+    NSUInteger numberOfPages;
     BOOL isRefreshing;
     NSInteger dynamicLayoutIdx;
     NSInteger fixedLayoutIdx;
@@ -59,7 +62,9 @@
     self = [super init];
     if (self) {
         currentPage = 1;
-        numOfPhotosBeforeNewFetch = 1;
+        numOfPhotosBeforeNewFetch = 2;
+        numberOfPhotosOfLastPage = 0;
+        numberOfPages = LONG_MAX;
         isLastPage = NO;
         isRefreshing = NO;
         dynamicLayoutIdx = 0;
@@ -129,7 +134,8 @@
     }
     [self.publicPhotoManager getPublicPhotoURLsWithPage:pageNum
                                       completionHandler:^(NSMutableArray<Photo *> * _Nullable photosFetched,
-                                                                                 NSError * _Nullable error) {
+                                                          NSError * _Nullable error,
+                                                          NSNumber *totalPhotosNumber) {
         NSLog(@"[DEBUG] %s : API called!", __func__);
         if (error) {
             switch (error.code) {
@@ -155,6 +161,12 @@
         if (photosFetched.count == 0) {
             self->isLastPage = YES;
         }
+        
+        self->totalNumberOfPhotos = (totalPhotosNumber != nil)? totalPhotosNumber.integerValue : 0;
+        self->numberOfPages = self->totalNumberOfPhotos == 0 ?
+                              self->numberOfPages :
+                              ceil((float)self->totalNumberOfPhotos / kResultsPerPage.floatValue);
+        
         [self.dataSource.photos addObjectsFromArray:photosFetched];
         dispatch_async(dispatch_get_main_queue(), ^{
             // Delegate calling to stop refreshing when finish fetching data
@@ -193,11 +205,11 @@
     forItemAtIndexPath:(NSIndexPath *)indexPath {
     // Only call this when in online mode
     if (self.publicPhotoManager.isConnected) {
-        if (indexPath.row == self.dataSource.photos.count - 1 && !isLastPage) {
-            NSInteger totalPages = self.dataSource.photos.count/kResultsPerPage.integerValue + 1;
-            NSInteger pagesToIncrease = totalPages - currentPage;
-            currentPage += pagesToIncrease;
-            NSLog(@"[DEBUG] current PAGE: %d", currentPage);
+        if (indexPath.row == self.dataSource.photos.count - numOfPhotosBeforeNewFetch &&
+            (currentPage < numberOfPages || !isLastPage)) {
+            NSInteger expectedCurrentPage = ceil((float)self.dataSource.photos.count / kResultsPerPage.floatValue);
+            if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
+            currentPage += 1;
             [self _getPhotoURLsForPage:currentPage];
         }
     }
@@ -207,6 +219,9 @@
 - (void)onRetryForNetworkErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.dataSource.photos removeAllObjects];
+    [self.dynamicLayout clearCache];
+    [self.publicPhotoManager clearLocalPublicPhotos];
     [self _getPhotoURLsForPage:currentPage];
 }
 
@@ -214,6 +229,9 @@
 - (void)onRetryForServerErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.dataSource.photos removeAllObjects];
+    [self.dynamicLayout clearCache];
+    [self.publicPhotoManager clearLocalPublicPhotos];
     [self _getPhotoURLsForPage:currentPage];
 }
 
@@ -221,6 +239,9 @@
 - (void)onRetryForNoDataErrorClicked {
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
+    [self.dataSource.photos removeAllObjects];
+    [self.dynamicLayout clearCache];
+    [self.publicPhotoManager clearLocalPublicPhotos];
     [self _getPhotoURLsForPage:currentPage];
 }
 

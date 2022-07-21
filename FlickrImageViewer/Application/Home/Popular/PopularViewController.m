@@ -157,10 +157,9 @@
     if (self.popularPhotoManager.isConnected) {
         if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
             !isLastPage) {
-            NSInteger totalPages = self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue + 1;
-            NSInteger pagesToIncrease = totalPages - currentPage + 1;
-            currentPage += pagesToIncrease;
-            NSLog(@"[DEBUG] %s : current page: %d", __func__, currentPage);
+            NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
+            if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
+            currentPage += 1;
             [self.popularPhotoViewModel getPhotosForPage:currentPage];
         }
     }

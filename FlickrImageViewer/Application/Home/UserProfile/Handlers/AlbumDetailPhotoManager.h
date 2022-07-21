@@ -17,7 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getAlbumDetailPhotosForAlbumID:(NSString *)albumID
                                   page:(NSInteger)pageNum
                      completionHandler:(void (^)(NSMutableArray<Photo *> * _Nullable photos,
-                                                 NSError * _Nullable error))completion;
+                                                 NSError * _Nullable error,
+                                                 NSNumber *totalPhotosNumber))completion;
 
 - (BOOL)isConnected;
 
