@@ -209,10 +209,21 @@
     album.albumName = albumInfo.albumName;
     // save the context
     NSError *error = nil;
-    if ([self.dataController.backgroundContext save:&error] == NO) {
-        NSLog(@"Error saving context: %@\n%@",
-              error.localizedDescription,
-              error.userInfo);
+//    if ([self.dataController.backgroundContext save:&error] == NO) {
+//        NSLog(@"Error saving context: %@\n%@",
+//              error.localizedDescription,
+//              error.userInfo);
+//        return NO;
+//    }
+    @try {
+        if ([self.dataController.backgroundContext save:&error] == NO) {
+            NSLog(@"Error saving context: %@\n%@",
+                  error.localizedDescription,
+                  error.userInfo);
+            return NO;
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"[DEBUG] Error while saving context");
         return NO;
     }
     return YES;
@@ -244,6 +255,15 @@
         NSLog(@"[DEBUG] %s: delete not good: %@",
               __func__,
               deleteError.localizedDescription);
+    }
+    @try {
+        if ([self.dataController.backgroundContext save:&deleteError] == NO) {
+            NSLog(@"Error saving context: %@\n%@",
+                  deleteError.localizedDescription,
+                  deleteError.userInfo);
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"[DEBUG] Error while saving context");
     }
 }
 

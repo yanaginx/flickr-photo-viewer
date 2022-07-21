@@ -174,12 +174,23 @@
     userInfo.photosCount = numberOfPhotos;
     // save the context
     NSError *error = nil;
-    if ([self.dataController.backgroundContext save:&error] == NO) {
-        NSLog(@"Error saving context: %@\n%@",
-              error.localizedDescription,
-              error.userInfo);
+    @try {
+        if ([self.dataController.backgroundContext save:&error] == NO) {
+            NSLog(@"Error saving context: %@\n%@",
+                  error.localizedDescription,
+                  error.userInfo);
+            return NO;
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"[DEBUG] Error while saving context");
         return NO;
     }
+//    if ([self.dataController.backgroundContext save:&error] == NO) {
+//        NSLog(@"Error saving context: %@\n%@",
+//              error.localizedDescription,
+//              error.userInfo);
+//        return NO;
+//    }
     return YES;
 }
 
