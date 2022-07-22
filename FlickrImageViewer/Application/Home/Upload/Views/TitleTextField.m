@@ -22,7 +22,7 @@
     if (self) {
         NSDictionary *attributes = [NSDictionary dictionaryWithObject:UIColor.grayColor
                                                                forKey:NSForegroundColorAttributeName];
-        self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Title"
+        self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Title placeholder", nil)
                                                                      attributes:attributes];
     }
     return self;

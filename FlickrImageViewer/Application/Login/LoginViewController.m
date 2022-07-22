@@ -40,7 +40,7 @@
     [self.view addSubview:self.captionLabel];
     [self.view addSubview:self.beginButton];
     
-    [self.beginButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
+    [self.beginButton setTitle:NSLocalizedString(@"Get started button text", nil) forState:UIControlStateNormal];
     [self.beginButton addTarget:self action:@selector(_onClickGetStarted) forControlEvents:UIControlEventTouchUpInside];
     
     self.loginHandler.delegate = self;

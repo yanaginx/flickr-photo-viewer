@@ -92,10 +92,12 @@ static void * const UploadTaskContext = (void*)&UploadTaskContext;
                             completionHandler:^(NSString * _Nullable status, NSError * _Nullable error) {
                 @strongify(self)
                 if (error) {
+                    // this is the local self now
                     self.state = UploadTaskStateCompletedWithError;
                     dispatch_group_leave(dispatchGroup);
                     dispatch_semaphore_signal(dispatchSemaphore);
                 }
+                // this is the local self now
                 self.state = UploadTaskStateCompleted;
                 dispatch_group_leave(dispatchGroup);
                 dispatch_semaphore_signal(dispatchSemaphore);

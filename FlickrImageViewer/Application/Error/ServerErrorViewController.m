@@ -47,7 +47,7 @@
     
     _serverErrorCaption = [[UILabel alloc] init];
     [_serverErrorCaption setFont:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]];
-    _serverErrorCaption.text = @"Something went wrong!\nPlease try again";
+    _serverErrorCaption.text = NSLocalizedString(@"Server error label", nil);
     _serverErrorCaption.textAlignment = NSTextAlignmentCenter;
     _serverErrorCaption.numberOfLines = 0;
     return _serverErrorCaption;
@@ -62,7 +62,7 @@
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kCornerRadius;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
-    [_retryButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
+    [_retryButton setTitle:NSLocalizedString(@"Try again button text", nil) forState:UIControlStateNormal];
     [_retryButton addTarget:self
                      action:@selector(onRetryButtonClicked)
            forControlEvents:UIControlEventTouchUpInside];

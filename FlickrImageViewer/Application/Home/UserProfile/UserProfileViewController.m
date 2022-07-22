@@ -93,8 +93,8 @@
 
 - (void)_setupSegmentedControls {
     [self.segmentedControl removeAllSegments];
-    [self.segmentedControl insertSegmentWithTitle:@"Public photos" atIndex:0 animated:NO];
-    [self.segmentedControl insertSegmentWithTitle:@"Album" atIndex:1 animated:NO];
+    [self.segmentedControl insertSegmentWithTitle:NSLocalizedString(@"Profile public photo label", nil) atIndex:0 animated:NO];
+    [self.segmentedControl insertSegmentWithTitle:NSLocalizedString(@"Profile album label", nil) atIndex:1 animated:NO];
     [self.segmentedControl addTarget:self
                               action:@selector(onSegmentedSelectionChanged:)
                     forControlEvents:UIControlEventValueChanged];

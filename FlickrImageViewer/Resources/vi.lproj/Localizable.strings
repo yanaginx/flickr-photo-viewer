@@ -1,0 +1,50 @@
+/* 
+  Localizable.strings
+  FlickrImageViewer
+
+  Created by LAP14121 on 22/07/2022.
+  
+*/
+
+// Button text
+"Try again button text" = "THỬ LẠI";
+"Grant access button text" = "CẤP QUYỀN";
+"Get started button text" = "BẮT ĐẦU";
+
+// Label text
+"Network error label" = "Có vấn đề về kết nối mạng!\nVui lòng thử lại";
+"Server error label" = "Có lỗi xảy ra!\nVui lòng thử lại";
+"No data error label" = "Chưa có dữ liệu!\nVui lòng thử lại sau";
+"Permission error label" = "Ứng dụng cần quyền truy cập ảnh\nđể có thể tải ảnh lên";
+
+// Upload related
+"Gallery title" = "Thư viện ảnh";
+"Next button label" = "Tiếp theo";
+
+// Upload post related
+"Upload Post title" = "Bài đăng mới";
+"Post button label" = "Đăng";
+"Browse album placeholder" = "Truy cập danh sách Album";
+"Title placeholder" = "Tiêu đề";
+"Description placeholder" = "Mô tả";
+
+// Upload status related
+"Upload status ongoing with successful/total" = "Đang tải lên... Tình trạng: %lu/%lu";
+"Upload status finished with successful/total" = "Đã tải lên! Tình trạng: %lu/%lu";
+"Upload status no internet" = "Không có kết nối mạng, vui lòng thử lại sau!";
+"Upload status close" = "ĐÓNG";
+
+// Logout modal related
+"Logout button menu" = "Đăng xuất";
+"Logout cancel button menu" = "Hủy";
+"Logout modal title" = "Hi vọng được gặp lại bạn sớm";
+"Logout modal message" = "Bạn có chắc là bạn muốn đăng xuất?";
+
+// Profile screen related
+"Profile public photo label" = "Hình công khai";
+"Profile album label" = "Album";
+
+// Tabbar item label
+"Dashboard label" = "Phổ biến";
+"Upload label" = "Tải ảnh";
+"Profile label" = "Hồ sơ";

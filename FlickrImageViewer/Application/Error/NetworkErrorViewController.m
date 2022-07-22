@@ -46,7 +46,7 @@
     
     _networkErrorCaption = [[UILabel alloc] init];
     [_networkErrorCaption setFont:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]];
-    _networkErrorCaption.text = @"Network problem occured!\nPlease try again";
+    _networkErrorCaption.text = NSLocalizedString(@"Network error label", nil);
     _networkErrorCaption.textAlignment = NSTextAlignmentCenter;
     _networkErrorCaption.numberOfLines = 0;
     return _networkErrorCaption;
@@ -61,7 +61,7 @@
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kCornerRadius;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
-    [_retryButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
+    [_retryButton setTitle:NSLocalizedString(@"Try again button text", nil) forState:UIControlStateNormal];
     [_retryButton addTarget:self
                      action:@selector(onRetryButtonClicked)
            forControlEvents:UIControlEventTouchUpInside];

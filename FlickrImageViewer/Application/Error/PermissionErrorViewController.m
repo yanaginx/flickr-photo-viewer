@@ -62,7 +62,7 @@
     
     _permissionErrorCaption = [[UILabel alloc] init];
     [_permissionErrorCaption setFont:[UIFont systemFontOfSize:16 weight:UIFontWeightBold]];
-    _permissionErrorCaption.text = @"We will need your photo permission\nto be able to upload photos";
+    _permissionErrorCaption.text = NSLocalizedString(@"Permission error label", nil);
     _permissionErrorCaption.textAlignment = NSTextAlignmentCenter;
     _permissionErrorCaption.numberOfLines = 0;
     return _permissionErrorCaption;
@@ -83,7 +83,7 @@
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kCornerRadius;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
-    [_retryButton setTitle:@"GRANT ACCESS" forState:UIControlStateNormal];
+    [_retryButton setTitle:NSLocalizedString(@"Grant access button text", nil) forState:UIControlStateNormal];
     [_retryButton addTarget:self
                      action:@selector(onRetryButtonClicked)
            forControlEvents:UIControlEventTouchUpInside];

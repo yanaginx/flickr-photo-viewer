@@ -100,15 +100,15 @@
 }
 
 - (void)_setupTitle {
-    self.navigationItem.title = @"Photo library";
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:nil
-                                                                            action:nil];
+    self.navigationItem.title = NSLocalizedString(@"Gallery title", nil);
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+//                                                                             style:UIBarButtonItemStylePlain
+//                                                                            target:nil
+//                                                                            action:nil];
 }
 
 - (void)_setupNextButton {
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next button label", nil)
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(_navigateToPostView)];

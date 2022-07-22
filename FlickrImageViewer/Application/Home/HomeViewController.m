@@ -38,7 +38,7 @@
     UIImage *popularIcon = [[UIImage imageNamed:@"ic_dashboard"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *popularIconOutlined = [[UIImage imageNamed:@"ic_dashboard_outlined"]
                                     imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    popularVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Dashboard"
+    popularVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Dashboard label", nil)
                                                          image:popularIconOutlined
                                                  selectedImage:popularIcon];
     
@@ -47,7 +47,7 @@
     UIImage *uploadIcon = [[UIImage imageNamed:@"ic_publish"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *uploadIconOutlined = [[UIImage imageNamed:@"ic_publish_outlined"]
                                    imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    uploadVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Upload"
+    uploadVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Upload label", nil)
                                                         image:uploadIconOutlined
                                                 selectedImage:uploadIcon];
     
@@ -65,7 +65,7 @@
     UIImage *profileIcon = [[UIImage imageNamed:@"ic_person"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *profileIconOutlined = [[UIImage imageNamed:@"ic_person_outlined"]
                                     imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    userVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Profile"
+    userVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Profile label", nil)
                                                       image:profileIconOutlined
                                               selectedImage:profileIcon];
 
@@ -96,7 +96,7 @@
 - (void)onStartUploadingImageWithTotalTasksCount:(NSInteger)totalTasks
                               finishedTasksCount:(NSInteger)finishedTasks {
     if (SSSnackbar.currentSnackbar == nil) {
-        NSString *statusString = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
+        NSString *statusString = [NSString stringWithFormat:NSLocalizedString(@"Upload status ongoing with successful/total", nil),
                                   finishedTasks,
                                   totalTasks];
         [self _displayUploadingSnackbarWithStatusString:statusString];
@@ -125,15 +125,15 @@
         }
         case kNoError: {
             NSLog(@"[DEBUG] %s: Upload finished! Continuing...", __func__);
-            NSString *statusString = [NSString stringWithFormat:@"Uploading %lu/%lu photos...",
-                                     finishedTasks,
+            NSString *statusString = [NSString stringWithFormat:NSLocalizedString(@"Upload status ongoing with succesful/total", nil),
+                                      finishedTasks,
                                      totalTasks];
             [SSSnackbar.currentSnackbar setLabelText:statusString];
             break;
         }
         default: {
             NSLog(@"[DEBUG] %s: Upload finished for all images!", __func__);
-            NSString *finishStatus = [NSString stringWithFormat:@"Uploading finished with %lu/%lu photos succeeded!",
+            NSString *finishStatus = [NSString stringWithFormat:NSLocalizedString(@"Upload status finished with successful/total", nil),
                                      finishedTasks,
                                      totalTasks];
             // refresh profile upon finish uploading all
@@ -148,7 +148,7 @@
 - (void)_displayNoInternetStatus {
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
                                                        message:@"No internet, please try again later"
-                                                    actionText:@"CLOSE"
+                                                    actionText:NSLocalizedString(@"Upload status close", nil)
                                                       duration:2
                                                    actionBlock:^(SSSnackbar *sender) {
         NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
@@ -160,7 +160,7 @@
 //    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading... "];
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
                                                        message:statusString
-                                                    actionText:@"CLOSE"
+                                                    actionText:NSLocalizedString(@"Upload status close", nil)
                                                       duration:SnackbarDurationInfinite
                                                    actionBlock:^(SSSnackbar *sender) {
         NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
@@ -171,7 +171,7 @@
 - (void)_displayUploadFinishSnackbarWithStatusString:(NSString *)statusString {
     SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
                                                        message:statusString
-                                                    actionText:@"CLOSE"
+                                                    actionText:NSLocalizedString(@"Upload status close", nil)
                                                       duration:3
                                                    actionBlock:^(SSSnackbar *sender) {
         NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);

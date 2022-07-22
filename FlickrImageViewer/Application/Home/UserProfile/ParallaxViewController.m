@@ -92,13 +92,13 @@
 
 - (void)_setupLogoutModal {
     @weakify(self)
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Log out"
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Logout button menu", nil)
                                                      style:UIAlertActionStyleDestructive
                                                    handler:^(UIAlertAction * _Nonnull action) {
         @strongify(self)
         [self _logout];
     }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Logout cancel button menu", nil)
                                                            style:UIAlertActionStyleCancel
                                                          handler:nil];
     [self.logoutModal addAction:action];
@@ -145,8 +145,8 @@
 
 - (UIAlertController *)logoutModal {
     if (_logoutModal) return _logoutModal;
-    _logoutModal = [UIAlertController alertControllerWithTitle:@"Hope to see you soon"
-                                                       message:@"Are you sure you want to logout?"
+    _logoutModal = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Logout modal title", nil)
+                                                       message:NSLocalizedString(@"Logout modal message", nil)
                                                 preferredStyle:UIAlertControllerStyleAlert];
     return _logoutModal;
 }
@@ -154,7 +154,7 @@
 - (UIBarButtonItem *)settingButton {
     if (_settingButton) return _settingButton;
     @weakify(self)
-    UIAction *logoutAction = [UIAction actionWithTitle:@"Logout"
+    UIAction *logoutAction = [UIAction actionWithTitle:NSLocalizedString(@"Logout button menu", nil)
                                                  image:nil
                                             identifier:nil
                                                handler:^(__kindof UIAction * _Nonnull action) {

@@ -81,6 +81,7 @@
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
 		B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */; };
+		B2E1BD10288A4AE000712331 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2E1BD12288A4AE000712331 /* Localizable.strings */; };
 		B2E6CD0A287821C1005F3F2D /* DescriptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD09287821C1005F3F2D /* DescriptionTextField.m */; };
 		B2E6CD0D2878245D005F3F2D /* AlbumPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD0C2878245D005F3F2D /* AlbumPickerViewController.m */; };
 		B2E6CD11287AA770005F3F2D /* MXParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD10287AA770005F3F2D /* MXParallaxHeader.m */; };
@@ -272,6 +273,10 @@
 		B2CED18E286460AE00606615 /* ImageURLBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageURLBuilder.m; sourceTree = "<group>"; };
 		B2D7F5912866E2E3008A2805 /* UserProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
 		B2D7F5922866E2E3008A2805 /* UserProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
+		B2E1BD0E288A494400712331 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Main.strings; sourceTree = "<group>"; };
+		B2E1BD0F288A494400712331 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B2E1BD11288A4AE000712331 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B2E1BD13288A4AE300712331 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2E6CD08287821C1005F3F2D /* DescriptionTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DescriptionTextField.h; sourceTree = "<group>"; };
 		B2E6CD09287821C1005F3F2D /* DescriptionTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DescriptionTextField.m; sourceTree = "<group>"; };
 		B2E6CD0B2878245D005F3F2D /* AlbumPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumPickerViewController.h; sourceTree = "<group>"; };
@@ -719,6 +724,7 @@
 				B29CBB572859D2B20058B382 /* Main.storyboard */,
 				B29CBB5A2859D2B60058B382 /* Assets.xcassets */,
 				B29CBB5C2859D2B60058B382 /* LaunchScreen.storyboard */,
+				B2E1BD12288A4AE000712331 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1138,6 +1144,7 @@
 			knownRegions = (
 				en,
 				Base,
+				vi,
 			);
 			mainGroup = B29CBB422859D2B20058B382;
 			productRefGroup = B29CBB4C2859D2B20058B382 /* Products */;
@@ -1157,6 +1164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B29CBB5E2859D2B60058B382 /* LaunchScreen.storyboard in Resources */,
+				B2E1BD10288A4AE000712331 /* Localizable.strings in Resources */,
 				B29CBB5B2859D2B60058B382 /* Assets.xcassets in Resources */,
 				B29CBB592859D2B20058B382 /* Main.storyboard in Resources */,
 			);
@@ -1316,6 +1324,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B29CBB582859D2B20058B382 /* Base */,
+				B2E1BD0E288A494400712331 /* vi */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1324,8 +1333,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				B29CBB5D2859D2B60058B382 /* Base */,
+				B2E1BD0F288A494400712331 /* vi */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B2E1BD12288A4AE000712331 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2E1BD11288A4AE000712331 /* vi */,
+				B2E1BD13288A4AE300712331 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1335,6 +1354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1393,6 +1413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1448,8 +1469,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlickrImageViewer/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Gallery permission needed for photo uploading.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1460,7 +1483,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.duongvc.FlickrImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1474,8 +1497,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlickrImageViewer/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Gallery permission needed for photo uploading.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1486,7 +1511,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.duongvc.FlickrImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1499,6 +1524,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
@@ -1516,6 +1542,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
@@ -1532,6 +1559,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewerUITests;
@@ -1547,6 +1575,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewerUITests;
@@ -1561,6 +1590,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1618,8 +1648,10 @@
 				CODE_SIGN_ENTITLEMENTS = FlickrImageViewer/FlickrImageViewerProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlickrImageViewer/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Gallery permission needed for photo uploading.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1630,7 +1662,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.duongvc.FlickrImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1643,6 +1675,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
@@ -1659,6 +1692,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T895D5DM3F;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = vn.vng.duongvc.FlickrImageViewerUITests;
@@ -1680,7 +1714,7 @@
 				B2B096B62880093B009A4E75 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B29CBB7A2859D2B60058B382 /* Build configuration list for PBXNativeTarget "FlickrImageViewer" */ = {
 			isa = XCConfigurationList;
@@ -1690,7 +1724,7 @@
 				B2B096B72880093B009A4E75 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B29CBB7D2859D2B60058B382 /* Build configuration list for PBXNativeTarget "FlickrImageViewerTests" */ = {
 			isa = XCConfigurationList;
@@ -1700,7 +1734,7 @@
 				B2B096B82880093B009A4E75 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B29CBB802859D2B60058B382 /* Build configuration list for PBXNativeTarget "FlickrImageViewerUITests" */ = {
 			isa = XCConfigurationList;
@@ -1710,7 +1744,7 @@
 				B2B096B92880093B009A4E75 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

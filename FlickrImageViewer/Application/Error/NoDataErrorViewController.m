@@ -47,7 +47,7 @@
     
     _noDataErrorCaption = [[UILabel alloc] init];
     [_noDataErrorCaption setFont:[UIFont systemFontOfSize:18 weight:UIFontWeightBold]];
-    _noDataErrorCaption.text = @"No photo yet!";
+    _noDataErrorCaption.text = NSLocalizedString(@"No data error label", nil);
     _noDataErrorCaption.textAlignment = NSTextAlignmentCenter;
     _noDataErrorCaption.numberOfLines = 0;
     return _noDataErrorCaption;
@@ -62,7 +62,7 @@
     _retryButton.layer.borderWidth = 1.0f;
     _retryButton.layer.cornerRadius = kCornerRadius;
     _retryButton.layer.borderColor = UIColor.grayColor.CGColor;
-    [_retryButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
+    [_retryButton setTitle:NSLocalizedString(@"Try again button text", nil) forState:UIControlStateNormal];
     [_retryButton addTarget:self
                      action:@selector(onRetryButtonClicked)
            forControlEvents:UIControlEventTouchUpInside];

@@ -112,7 +112,7 @@
 
 - (void)_setupCollectionView {
     [self.view addSubview:self.collectionView];
-    self.collectionView.backgroundColor = UIColor.lightGrayColor;
+//    self.collectionView.backgroundColor = UIColor.lightGrayColor;
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.collectionView.dataSource = self.dataSource;
     self.collectionView.delegate = self;

@@ -1,0 +1,50 @@
+/* 
+  Localizable.strings
+  FlickrImageViewer
+
+  Created by LAP14121 on 22/07/2022.
+  
+*/
+
+// Button text
+"Try again button text" = "TRY AGAIN";
+"Grant access button text" = "GRANT ACCESS";
+"Get started button text" = "GET STARTED";
+
+// Label text
+"Network error label" = "Network problem occured!\nPlease try again";
+"Server error label" = "Something went wrong!\nPlease try again";
+"No data error label" = "No data yet!\nAdd some then try again";
+"Permission error label" = "We will need your photo permission\nto be able to upload photos";
+
+// Upload related
+"Gallery title" = "Photo Library";
+"Next button label" = "Next";
+
+// Upload post related
+"Upload Post title" = "New Post";
+"Post button label" = "Post";
+"Browse album placeholder" = "Browse Albums";
+"Title placeholder" = "Title";
+"Description placeholder" = "Description";
+
+// Upload status related
+"Upload status ongoing with successful/total" = "Uploading... Status: %lu/%lu";
+"Upload status finished with successful/total" = "Uploaded! Status: %lu/%lu";
+"Upload status no internet" = "No internet connection, please try again later!";
+"Upload status close" = "CLOSE";
+
+// Logout modal related
+"Logout button menu" = "Logout";
+"Logout cancel button menu" = "Cancel";
+"Logout modal title" = "Hope to see you soon";
+"Logout modal message" = "Are you sure you want to logout?";
+
+// Profile screen related
+"Profile public photo label" = "Public photos";
+"Profile album label" = "Albums";
+
+// Tabbar item label
+"Dashboard label" = "Dashboard";
+"Upload label" = "Upload";
+"Profile label" = "Profile";

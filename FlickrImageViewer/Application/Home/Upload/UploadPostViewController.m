@@ -91,11 +91,11 @@
 
 
 - (void)_setupTitle {
-    self.navigationItem.title = @"New Post";
+    self.navigationItem.title = NSLocalizedString(@"Upload Post title", nil);
 }
 
 - (void)_setupPostButton {
-     UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
+     UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Post button label", nil)
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(_onPostButtonClicked)];
@@ -198,7 +198,7 @@
     } else {
         [self.albumSelectorButton setTitleColor:UIColor.grayColor
                                        forState:UIControlStateNormal];
-        [self.albumSelectorButton setTitle:@"Browse Albums"
+        [self.albumSelectorButton setTitle:NSLocalizedString(@"Browse album placeholder", nil)
                                   forState:UIControlStateNormal];
     }
 }
