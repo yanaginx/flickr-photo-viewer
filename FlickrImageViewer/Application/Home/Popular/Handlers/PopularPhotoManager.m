@@ -57,7 +57,7 @@
         // TODO: Fetch from core data first
         NSArray *popularPhotos = [self _fetchPopularPhotoFromLocal];
         // if there is data then transform it into the model then return
-        if (popularPhotos) {
+        if (popularPhotos && popularPhotos.count != 0) {
             NSMutableArray * photos = [self _extractPhotosFromPopularPhotos:popularPhotos];
             // Printing all the photo fetched!
             for (Photo *photo in photos) {

@@ -60,7 +60,7 @@
         // TODO: Fetch from core data first
         NSArray *albumPhotos = [self _fetchAlbumPhotosFromLocalWithAlbumID:albumID];
         // if there is data then transform it into the model then return
-        if (albumPhotos) {
+        if (albumPhotos && albumPhotos.count != 0) {
             NSMutableArray *photos = [self _extractPhotosFromAlbumPhotos:albumPhotos];
              // Printing all the photo fetched!
             NSLog(@"[DEBUG] %s: number of photos fetched offline: %lu",

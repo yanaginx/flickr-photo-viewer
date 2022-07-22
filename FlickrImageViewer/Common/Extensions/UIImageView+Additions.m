@@ -20,8 +20,8 @@
         [[AsyncImageFetcher sharedImageFetcher] fetchAsyncForIdentifier:url.absoluteString
                                                                imageURL:url
                                                              completion:^(UIImage * _Nullable image) {
-            self.image = nil;
             dispatch_async(dispatch_get_main_queue(), ^{
+                self.image = nil;
                 if (image) {
                     self.image = image;
                 }

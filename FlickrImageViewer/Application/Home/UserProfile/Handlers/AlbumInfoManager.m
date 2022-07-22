@@ -56,7 +56,7 @@
         // TODO: Fetch from core data first
         NSArray *albums = [self _fetchAlbumInfoFromLocal];
         // if there is data then transform it into the model then return
-        if (albums) {
+        if (albums && albums.count != 0) {
             NSMutableArray *albumInfos = [self _extractAlbumInfosFromAlbums:albums];
              // Printing all the photo fetched!
             for (AlbumInfo *albumInfo in albumInfos) {
