@@ -59,7 +59,7 @@
 
 #pragma mark - UI related
 
-#define kMargin 3
+#define kMargin 1
 #define kCellHeight 200
 #define kIsFixedHeight YES
 #define kMaxRowHeight 200

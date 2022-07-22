@@ -154,16 +154,28 @@
                 case kNetworkError:
                     // Network error view
                     NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                    if (self->isRefreshing) {
+                        self->isRefreshing = NO;
+                        [self.refreshControl endRefreshing];
+                    }
                     [self _viewNetworkError];
                     break;
                 case kNoDataError:
                     // No data error view
                     NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                    if (self->isRefreshing) {
+                        self->isRefreshing = NO;
+                        [self.refreshControl endRefreshing];
+                    }
                     [self _viewNoDataError];
                     break;
                 default:
                     // Error occur view
                     NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                    if (self->isRefreshing) {
+                        self->isRefreshing = NO;
+                        [self.refreshControl endRefreshing];
+                    }
                     [self _viewServerError];
                     break;
             }

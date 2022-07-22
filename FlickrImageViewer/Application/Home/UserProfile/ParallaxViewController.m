@@ -108,12 +108,16 @@
 
 #pragma mark - PublicPhotosRefreshDelegate
 - (void)cancelRefreshingAfterFetchingPublicPhotos {
-    [self.refreshController endRefreshing];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.refreshController endRefreshing];
+    });
 }
 
 #pragma mark - AlbumRefreshDelegate
 - (void)cancelRefreshingAfterFetchingAlbums {
-    [self.refreshController endRefreshing];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.refreshController endRefreshing];
+    });
 }
 
 

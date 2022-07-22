@@ -9,8 +9,8 @@
 #import "../Defer/Defer.h"
 #import "../Scope/Scope.h"
 #import "Operation/ImageDownloadOperation.h"
-#import "Cache/ImageURLCache.h"
-#import "Cache/ImageCache.h"
+//#import "Cache/ImageURLCache.h"
+//#import "Cache/ImageCache.h"
 #import "Cache/MDImageCache.h"
 
 #define kMaxAsyncOperations 4
@@ -23,8 +23,8 @@
 @property (nonatomic, strong) NSOperationQueue *fetchQueue;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<handlerBlock> *> *completionHandlers;
 @property (nonatomic, strong) NSURLSession *downloadSession;
-@property (nonatomic, strong) ImageURLCache *imageURLCache;
-@property (nonatomic, strong) ImageCache *imageCache;
+//@property (nonatomic, strong) ImageURLCache *imageURLCache;
+//@property (nonatomic, strong) ImageCache *imageCache;
 @property (nonatomic, strong) MDImageCache *mdImageCache;
 
 @end
@@ -97,19 +97,19 @@
     return [self.mdImageCache imageForKey:identifier];
 }
 
-- (UIImage *)fetchedDiskDataForIdentifier:(NSString *)identifier {
-    NSURLRequest *requestWithURL = [[NSURLRequest alloc]
-                                    initWithURL:[NSURL URLWithString:identifier]];
-    NSCachedURLResponse *cachedResponse = [self.imageURLCache cachedResponseForRequest:requestWithURL];
-    if (cachedResponse.data) {
-        UIImage *image = [UIImage imageWithData:cachedResponse.data];
-//        NSLog(@"[DEBUG] %s: FOUND: %@",
-//              __func__,
-//              image);
-        return image;
-    }
-    return nil;
-}
+//- (UIImage *)fetchedDiskDataForIdentifier:(NSString *)identifier {
+//    NSURLRequest *requestWithURL = [[NSURLRequest alloc]
+//                                    initWithURL:[NSURL URLWithString:identifier]];
+//    NSCachedURLResponse *cachedResponse = [self.imageURLCache cachedResponseForRequest:requestWithURL];
+//    if (cachedResponse.data) {
+//        UIImage *image = [UIImage imageWithData:cachedResponse.data];
+////        NSLog(@"[DEBUG] %s: FOUND: %@",
+////              __func__,
+////              image);
+//        return image;
+//    }
+//    return nil;
+//}
 
 /**
  Cancels any enqueued asychronous fetches for a specified `UUID`. Completion
@@ -150,8 +150,8 @@
         ImageDownloadOperation *operation = [[ImageDownloadOperation alloc]
                                              initWithIdentifier:identifier
                                              imageURL:imageURL
-                                             URLSession:self.downloadSession
-                                             imageURLCache:self.imageURLCache];
+                                             URLSession:self.downloadSession];
+//                                             imageURLCache:self.imageURLCache];
 
         // Set the operation's completion block to cache the fetched object and call the associated completion blocks
         @weakify(operation)
@@ -246,30 +246,30 @@
     return _downloadSession;
 }
 
-- (ImageURLCache *)imageURLCache {
-    if (_imageURLCache) return _imageURLCache;
-    
-    NSUInteger memoryCapacity = kMemoryCapacity;
-    NSUInteger diskCapacity = kDiskCapacity;
-    NSURL *cacheURL = [[[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory
-                                                              inDomain:NSUserDomainMask
-                                                     appropriateForURL:nil
-                                                                create:YES
-                                                                 error:nil]
-                       URLByAppendingPathComponent:@"DOWNLOAD_CACHE"];
-    _imageURLCache =  [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
-                                                       diskCapacity:diskCapacity
-                                                           diskPath:[cacheURL path]];
-    return _imageURLCache;
-}
-
-- (ImageCache *)imageCache {
-    if (_imageCache) return _imageCache;
-    
-    _imageCache = [[ImageCache alloc] init];
-    [_imageCache setTotalCostLimit:kMemoryCapacity];
-    return _imageCache;
-}
+//- (ImageURLCache *)imageURLCache {
+//    if (_imageURLCache) return _imageURLCache;
+//
+//    NSUInteger memoryCapacity = kMemoryCapacity;
+//    NSUInteger diskCapacity = kDiskCapacity;
+//    NSURL *cacheURL = [[[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory
+//                                                              inDomain:NSUserDomainMask
+//                                                     appropriateForURL:nil
+//                                                                create:YES
+//                                                                 error:nil]
+//                       URLByAppendingPathComponent:@"DOWNLOAD_CACHE"];
+//    _imageURLCache =  [[ImageURLCache alloc] initWithMemoryCapacity:memoryCapacity
+//                                                       diskCapacity:diskCapacity
+//                                                           diskPath:[cacheURL path]];
+//    return _imageURLCache;
+//}
+//
+//- (ImageCache *)imageCache {
+//    if (_imageCache) return _imageCache;
+//
+//    _imageCache = [[ImageCache alloc] init];
+//    [_imageCache setTotalCostLimit:kMemoryCapacity];
+//    return _imageCache;
+//}
 
 - (MDImageCache *)mdImageCache {
     if (_mdImageCache) return _mdImageCache;

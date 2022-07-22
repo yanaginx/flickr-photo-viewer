@@ -25,8 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL
-                        URLSession:(NSURLSession *)urlSession
-                     imageURLCache:(ImageURLCache *)imageURLCache;
+                        URLSession:(NSURLSession *)urlSession;
+//                     imageURLCache:(ImageURLCache *)imageURLCache;
 
 @end
 

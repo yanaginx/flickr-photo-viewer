@@ -24,6 +24,9 @@
 #import "Views/PopularPhotoCollectionViewCell.h"
 
 
+#define kSlowVelocityNum 10
+#define kFastVelocityNum 1
+
 @interface PopularViewController () <UICollectionViewDelegate,
                                      UICollectionViewDelegateFlowLayout,
                                      NetworkErrorViewDelegate,
@@ -34,6 +37,10 @@
     BOOL isLastPage;
     BOOL isRefreshing;
     NSInteger numOfPhotosBeforeNewFetch;
+    
+    CGPoint lastOffset;
+    NSTimeInterval lastOffsetCapture;
+    BOOL isScrollingFast;
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -51,7 +58,7 @@
     self = [super init];
     if (self) {
         currentPage = 1;
-        numOfPhotosBeforeNewFetch = 1;
+        numOfPhotosBeforeNewFetch = kSlowVelocityNum;
         isLastPage = NO;
         isRefreshing = NO;
         
@@ -155,7 +162,7 @@
     forItemAtIndexPath:(NSIndexPath *)indexPath {
     // Only call this when in online mode
     if (self.popularPhotoManager.isConnected) {
-        if (indexPath.row == self.popularPhotoViewModel.numberOfItems - 1 &&
+        if (indexPath.row == self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
             !isLastPage) {
             NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
             if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
@@ -176,16 +183,28 @@
             case kNetworkError:
                 // Network error view
                 NSLog(@"[DEBUG] %s : No internet connection", __func__);
+                if (self->isRefreshing) {
+                    self->isRefreshing = NO;
+                    [self.refreshControl endRefreshing];
+                }
                 [self _viewNetworkError];
                 break;
             case kNoDataError:
                 // No data error view
                 NSLog(@"[DEBUG] %s : No data error, try again", __func__);
+                if (self->isRefreshing) {
+                    self->isRefreshing = NO;
+                    [self.refreshControl endRefreshing];
+                }
                 [self _viewNoDataError];
                 break;
             default:
                 // Error occur view
                 NSLog(@"[DEBUG] %s : Something went wrong", __func__);
+                if (self->isRefreshing) {
+                    self->isRefreshing = NO;
+                    [self.refreshControl endRefreshing];
+                }
                 [self _viewServerError];
                 break;
         }
@@ -287,6 +306,29 @@
     });
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint currentOffset = scrollView.contentOffset;
+    NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+
+    NSTimeInterval timeDiff = currentTime - lastOffsetCapture;
+    if(timeDiff > 0.1) {
+        CGFloat distance = currentOffset.y - lastOffset.y;
+        //The multiply by 10, / 1000 isn't really necessary.......
+        CGFloat scrollSpeedNotAbs = (distance * 10) / 1000; //in pixels per millisecond
+
+        CGFloat scrollSpeed = fabs(scrollSpeedNotAbs);
+        if (scrollSpeed > 0.5) {
+            isScrollingFast = YES;
+            numOfPhotosBeforeNewFetch = kFastVelocityNum;
+        } else {
+            isScrollingFast = NO;
+            numOfPhotosBeforeNewFetch = kSlowVelocityNum;
+        }
+
+        lastOffset = currentOffset;
+        lastOffsetCapture = currentTime;
+    }
+}
 
 #pragma mark - Custom Accessors
 - (PopularPhotoDataSource *)dataSource {

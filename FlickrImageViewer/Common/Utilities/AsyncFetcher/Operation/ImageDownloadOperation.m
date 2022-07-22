@@ -7,7 +7,7 @@
 
 #import "ImageDownloadOperation.h"
 #import "../../../Constants/Constants.h"
-#import "../Cache/ImageURLCache.h"
+//#import "../Cache/ImageURLCache.h"
 
 @interface ImageDownloadOperation ()
 
@@ -15,7 +15,7 @@
 @property (readwrite) BOOL finished;
 
 @property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) ImageURLCache *imageURLCache;
+//@property (nonatomic, strong) ImageURLCache *imageURLCache;
 
 @end
 
@@ -24,14 +24,14 @@
 #pragma mark - Initialization
 - (instancetype)initWithIdentifier:(NSString *)identifier
                           imageURL:(NSURL *)imageURL
-                        URLSession:(NSURLSession *)urlSession
-                     imageURLCache:(ImageURLCache *)imageURLCache{
+                        URLSession:(NSURLSession *)urlSession {
+//                     imageURLCache:(ImageURLCache *)imageURLCache{
     self = [super init];
     if (self) {
         self.identifier = identifier;
         self.imageURL = imageURL;
         self.session = urlSession;
-        self.imageURLCache = imageURLCache;
+//        self.imageURLCache = imageURLCache;
     }
     return self;
 }

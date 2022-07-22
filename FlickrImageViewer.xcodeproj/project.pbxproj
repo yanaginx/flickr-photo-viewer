@@ -22,10 +22,7 @@
 		B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30D328604FC700E976C8 /* HomeViewController.m */; };
 		B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DB2860508D00E976C8 /* UploadViewController.m */; };
 		B23A30E02860573400E976C8 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30DF2860573400E976C8 /* UIView+Additions.m */; };
-		B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30E928606FEA00E976C8 /* HMAC-sha1.m */; };
 		B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30EE28607FCB00E976C8 /* NSString+Additions.m */; };
-		B23A30F42861602800E976C8 /* TDOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30F32861602800E976C8 /* TDOAuth.m */; };
-		B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30F728616CD300E976C8 /* OMGUserAgent.m */; };
 		B23A30FD28616E4800E976C8 /* UserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FC28616E4800E976C8 /* UserAgent.m */; };
 		B23A310028616E8F00E976C8 /* OAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A30FF28616E8F00E976C8 /* OAuth.m */; };
 		B23A310A28619FE700E976C8 /* LoginHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23A310928619FE700E976C8 /* LoginHandler.m */; };
@@ -41,7 +38,6 @@
 		B277DAE42872B6B000EEEBCB /* AlbumDetailPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE32872B6AF00EEEBCB /* AlbumDetailPhotoManager.m */; };
 		B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE62872B6C000EEEBCB /* AlbumInfoManager.m */; };
 		B277DAEA2872C9C900EEEBCB /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */; };
-		B28290242886F46C00B61291 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B28290232886F46C00B61291 /* ImageCache.m */; };
 		B282902A2887AB8100B61291 /* MDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B28290292887AB8100B61291 /* MDImageCache.m */; };
 		B2891798287FBED800AE87B1 /* UploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = B2891797287FBED800AE87B1 /* UploadTask.m */; };
 		B289179B287FC64800AE87B1 /* UploadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B289179A287FC64800AE87B1 /* UploadInfo.m */; };
@@ -76,7 +72,6 @@
 		B2CAD5932875589D007AAE9B /* PhotoForUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD5922875589D007AAE9B /* PhotoForUpload.m */; };
 		B2CBAC432883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC412883F3000052C1D3 /* FlickrImageViewer.xcdatamodeld */; };
 		B2CBAC652883FFEE0052C1D3 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC642883FFEE0052C1D3 /* DataController.m */; };
-		B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC68288400C40052C1D3 /* DataContext.m */; };
 		B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CBAC78288440BB0052C1D3 /* Reachability.m */; };
 		B2CED18628635C7900606615 /* LoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18528635C7900606615 /* LoadingButton.m */; };
 		B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CED18E286460AE00606615 /* ImageURLBuilder.m */; };
@@ -91,7 +86,6 @@
 		B2E6CD1E287B0494005F3F2D /* PopularPhotoViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E6CD1D287B0493005F3F2D /* PopularPhotoViewModel.m */; };
 		B2F69877286B224400CA596B /* Scope.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69876286B224400CA596B /* Scope.m */; };
 		B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */; };
-		B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */; };
 		B2F69893286C3AF400CA596B /* NetworkErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */; };
 		B2F69896286C3B0200CA596B /* NoDataErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69895286C3B0100CA596B /* NoDataErrorViewController.m */; };
 		B2F69899286C3B0F00CA596B /* ServerErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F69898286C3B0F00CA596B /* ServerErrorViewController.m */; };
@@ -106,7 +100,6 @@
 		B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA063F28859DDB00024DD2 /* PublicPhoto+CoreDataClass.m */; };
 		B2FA064A28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */; };
 		B2FA064F28865BAB00024DD2 /* ImageDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */; };
-		B2FA0653288683EE00024DD2 /* ImageURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FA0652288683EE00024DD2 /* ImageURLCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,14 +151,8 @@
 		B23A30DE2860573400E976C8 /* UIView+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		B23A30DF2860573400E976C8 /* UIView+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 		B23A30E72860624600E976C8 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		B23A30E828606FEA00E976C8 /* HMAC-sha1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HMAC-sha1.h"; sourceTree = "<group>"; };
-		B23A30E928606FEA00E976C8 /* HMAC-sha1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "HMAC-sha1.m"; sourceTree = "<group>"; };
 		B23A30ED28607FCB00E976C8 /* NSString+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
 		B23A30EE28607FCB00E976C8 /* NSString+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
-		B23A30F22861602800E976C8 /* TDOAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDOAuth.h; sourceTree = "<group>"; };
-		B23A30F32861602800E976C8 /* TDOAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDOAuth.m; sourceTree = "<group>"; };
-		B23A30F628616CD300E976C8 /* OMGUserAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OMGUserAgent.h; sourceTree = "<group>"; };
-		B23A30F728616CD300E976C8 /* OMGUserAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OMGUserAgent.m; sourceTree = "<group>"; };
 		B23A30FB28616E4800E976C8 /* UserAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgent.h; sourceTree = "<group>"; };
 		B23A30FC28616E4800E976C8 /* UserAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgent.m; sourceTree = "<group>"; };
 		B23A30FE28616E8F00E976C8 /* OAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuth.h; sourceTree = "<group>"; };
@@ -196,8 +183,6 @@
 		B277DAE62872B6C000EEEBCB /* AlbumInfoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumInfoManager.m; sourceTree = "<group>"; };
 		B277DAE82872C9C900EEEBCB /* NSDate+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
 		B277DAE92872C9C900EEEBCB /* NSDate+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
-		B28290222886F46C00B61291 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
-		B28290232886F46C00B61291 /* ImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		B28290282887AB8000B61291 /* MDImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MDImageCache.h; sourceTree = "<group>"; };
 		B28290292887AB8100B61291 /* MDImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MDImageCache.m; sourceTree = "<group>"; };
 		B2891796287FBED800AE87B1 /* UploadTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadTask.h; sourceTree = "<group>"; };
@@ -263,8 +248,6 @@
 		B2CBAC422883F3000052C1D3 /* FlickrImageViewer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlickrImageViewer.xcdatamodel; sourceTree = "<group>"; };
 		B2CBAC632883FFEE0052C1D3 /* DataController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
 		B2CBAC642883FFEE0052C1D3 /* DataController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
-		B2CBAC67288400C40052C1D3 /* DataContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataContext.h; sourceTree = "<group>"; };
-		B2CBAC68288400C40052C1D3 /* DataContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataContext.m; sourceTree = "<group>"; };
 		B2CBAC77288440BB0052C1D3 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		B2CBAC78288440BB0052C1D3 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B2CED18428635C7900606615 /* LoadingButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingButton.h; sourceTree = "<group>"; };
@@ -297,8 +280,6 @@
 		B2F69879286B22BE00CA596B /* Defer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defer.h; sourceTree = "<group>"; };
 		B2F6987B286B24D200CA596B /* AsyncImageFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncImageFetcher.h; sourceTree = "<group>"; };
 		B2F6987C286B24D200CA596B /* AsyncImageFetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcher.m; sourceTree = "<group>"; };
-		B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncImageFetcherOperation.h; sourceTree = "<group>"; };
-		B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncImageFetcherOperation.m; sourceTree = "<group>"; };
 		B2F69891286C3AF400CA596B /* NetworkErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkErrorViewController.h; sourceTree = "<group>"; };
 		B2F69892286C3AF400CA596B /* NetworkErrorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkErrorViewController.m; sourceTree = "<group>"; };
 		B2F69894286C3B0100CA596B /* NoDataErrorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoDataErrorViewController.h; sourceTree = "<group>"; };
@@ -328,8 +309,6 @@
 		B2FA064028859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PublicPhoto+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B2FA064D28865BAB00024DD2 /* ImageDownloadOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloadOperation.h; sourceTree = "<group>"; };
 		B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadOperation.m; sourceTree = "<group>"; };
-		B2FA0651288683EE00024DD2 /* ImageURLCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageURLCache.h; sourceTree = "<group>"; };
-		B2FA0652288683EE00024DD2 /* ImageURLCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageURLCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -485,34 +464,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		B23A30EB286070C000E976C8 /* Hash */ = {
-			isa = PBXGroup;
-			children = (
-				B23A30E828606FEA00E976C8 /* HMAC-sha1.h */,
-				B23A30E928606FEA00E976C8 /* HMAC-sha1.m */,
-			);
-			path = Hash;
-			sourceTree = "<group>";
-		};
-		B23A30F128615FF800E976C8 /* TDOAuth */ = {
-			isa = PBXGroup;
-			children = (
-				B23A30F528616C6C00E976C8 /* OMGHTTPURLRQ */,
-				B23A30F22861602800E976C8 /* TDOAuth.h */,
-				B23A30F32861602800E976C8 /* TDOAuth.m */,
-			);
-			path = TDOAuth;
-			sourceTree = "<group>";
-		};
-		B23A30F528616C6C00E976C8 /* OMGHTTPURLRQ */ = {
-			isa = PBXGroup;
-			children = (
-				B23A30F628616CD300E976C8 /* OMGUserAgent.h */,
-				B23A30F728616CD300E976C8 /* OMGUserAgent.m */,
-			);
-			path = OMGHTTPURLRQ;
-			sourceTree = "<group>";
-		};
 		B23A30F928616E1100E976C8 /* OAuth1.0 */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,7 +495,6 @@
 		B2410885286020BD005B08BC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				B2FA064B28864DD500024DD2 /* AsyncImageManager */,
 				B2CBAC762884409E0052C1D3 /* Reachability */,
 				B2CBAC622883FD850052C1D3 /* DataController */,
 				B221556B287BFDF300F2A074 /* AsyncUploader */,
@@ -557,8 +507,6 @@
 				B2F69873286B219600CA596B /* Defer */,
 				B2CED18C2864609C00606615 /* ImageURLBuilder */,
 				B23A30F928616E1100E976C8 /* OAuth1.0 */,
-				B23A30F128615FF800E976C8 /* TDOAuth */,
-				B23A30EB286070C000E976C8 /* Hash */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -588,18 +536,10 @@
 			isa = PBXGroup;
 			children = (
 				B23A310428619F6E00E976C8 /* Handlers */,
-				B241088A2860215F005B08BC /* Views */,
 				B23A30BF286047EF00E976C8 /* LoginViewController.h */,
 				B23A30C0286047EF00E976C8 /* LoginViewController.m */,
 			);
 			path = Login;
-			sourceTree = "<group>";
-		};
-		B241088A2860215F005B08BC /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		B26447C4286950A200D09C10 /* Layouts */ = {
@@ -732,7 +672,6 @@
 		B29CBB862859D33B0058B382 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				B2CBAC66288400B50052C1D3 /* DataContext */,
 				B23A30CB28604BB400E976C8 /* Error */,
 				B23A30CD28604F0700E976C8 /* Home */,
 				B241088928602120005B08BC /* Login */,
@@ -896,15 +835,6 @@
 			path = DataController;
 			sourceTree = "<group>";
 		};
-		B2CBAC66288400B50052C1D3 /* DataContext */ = {
-			isa = PBXGroup;
-			children = (
-				B2CBAC67288400C40052C1D3 /* DataContext.h */,
-				B2CBAC68288400C40052C1D3 /* DataContext.m */,
-			);
-			path = DataContext;
-			sourceTree = "<group>";
-		};
 		B2CBAC762884409E0052C1D3 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -1025,23 +955,6 @@
 			children = (
 				B2FA064D28865BAB00024DD2 /* ImageDownloadOperation.h */,
 				B2FA064E28865BAB00024DD2 /* ImageDownloadOperation.m */,
-				B2F6987F286B25DB00CA596B /* AsyncImageFetcherOperation.h */,
-				B2F69880286B25DB00CA596B /* AsyncImageFetcherOperation.m */,
-			);
-			path = Operation;
-			sourceTree = "<group>";
-		};
-		B2FA064B28864DD500024DD2 /* AsyncImageManager */ = {
-			isa = PBXGroup;
-			children = (
-				B2FA064C28865A8500024DD2 /* Operation */,
-			);
-			path = AsyncImageManager;
-			sourceTree = "<group>";
-		};
-		B2FA064C28865A8500024DD2 /* Operation */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Operation;
 			sourceTree = "<group>";
@@ -1049,10 +962,6 @@
 		B2FA0650288683D600024DD2 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				B2FA0651288683EE00024DD2 /* ImageURLCache.h */,
-				B2FA0652288683EE00024DD2 /* ImageURLCache.m */,
-				B28290222886F46C00B61291 /* ImageCache.h */,
-				B28290232886F46C00B61291 /* ImageCache.m */,
 				B28290282887AB8000B61291 /* MDImageCache.h */,
 				B28290292887AB8100B61291 /* MDImageCache.m */,
 			);
@@ -1213,7 +1122,6 @@
 				B2BF06DD28703AFF002F4B1B /* User.m in Sources */,
 				B23A30DC2860508E00E976C8 /* UploadViewController.m in Sources */,
 				B26447CF2869541800D09C10 /* FixedFlowLayout.m in Sources */,
-				B23A30F828616CD300E976C8 /* OMGUserAgent.m in Sources */,
 				B2D7F5932866E2E3008A2805 /* UserProfileViewController.m in Sources */,
 				B2A10BFD286EA16D001189EE /* Photo.m in Sources */,
 				B2F6987D286B24D200CA596B /* AsyncImageFetcher.m in Sources */,
@@ -1233,7 +1141,6 @@
 				B2CAD58728742F4C007AAE9B /* XMLReader.m in Sources */,
 				B277DAD22872867E00EEEBCB /* AlbumInfoCollectionViewCell.m in Sources */,
 				B277DAE72872B6C000EEEBCB /* AlbumInfoManager.m in Sources */,
-				B28290242886F46C00B61291 /* ImageCache.m in Sources */,
 				B23A30EF28607FCB00E976C8 /* NSString+Additions.m in Sources */,
 				B2FA064428859DDB00024DD2 /* UserInfo+CoreDataProperties.m in Sources */,
 				B282902A2887AB8100B61291 /* MDImageCache.m in Sources */,
@@ -1246,7 +1153,6 @@
 				B29CBB502859D2B20058B382 /* AppDelegate.m in Sources */,
 				B20A5C60287593C900F692C7 /* GalleryDataSource.m in Sources */,
 				B2FA064928859DDB00024DD2 /* PublicPhoto+CoreDataClass.m in Sources */,
-				B2FA0653288683EE00024DD2 /* ImageURLCache.m in Sources */,
 				B2A10BEC286D4A7E001189EE /* PublicPhotosViewController.m in Sources */,
 				B20A5C662876C68200F692C7 /* PermissionErrorViewController.m in Sources */,
 				B277DAE12872A5F200EEEBCB /* AlbumDetailCollectionViewCell.m in Sources */,
@@ -1254,22 +1160,18 @@
 				B2BF06D428702D4B002F4B1B /* NSUserDefaults+Additions.m in Sources */,
 				B2FA064A28859DDB00024DD2 /* PublicPhoto+CoreDataProperties.m in Sources */,
 				B2891798287FBED800AE87B1 /* UploadTask.m in Sources */,
-				B2CBAC69288400C40052C1D3 /* DataContext.m in Sources */,
 				B2CBAC79288440BB0052C1D3 /* Reachability.m in Sources */,
 				B2CED18F286460AE00606615 /* ImageURLBuilder.m in Sources */,
 				B2CAD58D28744867007AAE9B /* UISegmentedControl+Additions.m in Sources */,
 				B2A10BEF286D4A9E001189EE /* AlbumViewController.m in Sources */,
 				B2F69877286B224400CA596B /* Scope.m in Sources */,
-				B2F69881286B25DB00CA596B /* AsyncImageFetcherOperation.m in Sources */,
 				B2FA064228859DDB00024DD2 /* Album+CoreDataProperties.m in Sources */,
 				B277DADE2872A5D500EEEBCB /* AlbumDetailDataSource.m in Sources */,
 				B29CBB612859D2B60058B382 /* main.m in Sources */,
-				B23A30F42861602800E976C8 /* TDOAuth.m in Sources */,
 				B20A5C692877D4B100F692C7 /* TitleTextField.m in Sources */,
 				B23A30D428604FC700E976C8 /* HomeViewController.m in Sources */,
 				B2001FBA2869B247002EB17F /* PopularPhotoCollectionViewCell.m in Sources */,
 				B2A10BF2286D4B92001189EE /* HeaderViewController.m in Sources */,
-				B23A30EA28606FEA00E976C8 /* HMAC-sha1.m in Sources */,
 				B23A310028616E8F00E976C8 /* OAuth.m in Sources */,
 				B26447CC2869521C00D09C10 /* DynamicCollectionViewLayout.m in Sources */,
 				B20A5C592875743400F692C7 /* UploadPostViewController.m in Sources */,
