@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PopularViewController : UIViewController
 
+- (void)scrollToTop;
+
 @end
 
 NS_ASSUME_NONNULL_END

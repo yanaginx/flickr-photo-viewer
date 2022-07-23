@@ -15,7 +15,10 @@
 #define kProfileTabIndex 2
 #define kUploadFinishSnackbarDuration 3
 
-@interface HomeViewController () <UploadPhotoManagerDelegate>
+@interface HomeViewController () <UploadPhotoManagerDelegate> {
+    BOOL _didTapTheSameVC;
+    UIViewController *_previousVC;
+}
 //                                  UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) UploadPhotoManager *uploadManager;
@@ -24,6 +27,15 @@
 @end
 
 @implementation HomeViewController
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _didTapTheSameVC = NO;
+        _previousVC = nil;
+    }
+    return self;
+}
 
 - (void)dealloc {
     NSLog(@"[DEBUG] %s: did run!", __func__);
@@ -34,7 +46,7 @@
     self.delegate = self;
     
     UIViewController *popularVC = [[PopularViewController alloc] init];
-    UINavigationController *popularNavi = [[UINavigationController alloc] initWithRootViewController:popularVC];
+//    UINavigationController *popularNavi = [[UINavigationController alloc] initWithRootViewController:popularVC];
     UIImage *popularIcon = [[UIImage imageNamed:@"ic_dashboard"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *popularIconOutlined = [[UIImage imageNamed:@"ic_dashboard_outlined"]
                                     imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -70,7 +82,8 @@
                                               selectedImage:profileIcon];
 
     self.viewControllers = [NSArray arrayWithObjects:
-                            popularNavi,
+//                            popularNavi,
+                            popularVC,
                             uploadVC,
                             userNavi,
                             nil];
@@ -86,6 +99,17 @@
         return NO;
     }
     return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController
+ didSelectViewController:(UIViewController *)viewController {
+    if (_previousVC == viewController) {
+        // the same tab was tapped a second time
+        if ([viewController respondsToSelector:@selector(scrollToTop)]) {
+            [viewController performSelector:@selector(scrollToTop)];
+        }
+    }
+    _previousVC = viewController;
 }
 
 #pragma mark - UploadPhotoManagerDelegate

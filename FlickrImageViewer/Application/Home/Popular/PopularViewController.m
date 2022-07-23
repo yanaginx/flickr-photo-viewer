@@ -98,7 +98,10 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
-
+- (void)scrollToTop {
+    [self.collectionView setContentOffset:CGPointMake(0, -self.collectionView.safeAreaInsets.top)
+                                 animated:YES];
+}
 
 #pragma mark - Operations
 
