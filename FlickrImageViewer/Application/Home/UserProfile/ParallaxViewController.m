@@ -66,6 +66,7 @@
     self.scrollView.refreshControl = self.refreshController;
     self.userProfileViewController.publicPhotoViewController.delegate = self;
     self.userProfileViewController.albumViewController.delegate = self;
+    self.refreshController.layer.zPosition = self.scrollView.layer.zPosition + 1;
 }
 
 - (void)_refreshData {
