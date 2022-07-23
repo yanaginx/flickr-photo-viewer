@@ -96,6 +96,7 @@ static void * const UploadTaskContext = (void*)&UploadTaskContext;
                     self.state = UploadTaskStateCompletedWithError;
                     dispatch_group_leave(dispatchGroup);
                     dispatch_semaphore_signal(dispatchSemaphore);
+                    return;
                 }
                 // this is the local self now
                 self.state = UploadTaskStateCompleted;

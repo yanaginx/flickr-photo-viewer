@@ -104,7 +104,7 @@
 //        SSSnackbar.currentSnackbar setLabelText:@""
     }
     NSLog(@"[DEBUG] %s: Start uploading!", __func__);
-    self.selectedViewController = [self.viewControllers objectAtIndex:kProfileTabIndex];
+    [self _selectProfileView];
 }
 
 - (void)onFinishUploadingImageWithErrorCode:(NSInteger)errorCode
@@ -125,7 +125,7 @@
         }
         case kNoError: {
             NSLog(@"[DEBUG] %s: Upload finished! Continuing...", __func__);
-            NSString *statusString = [NSString stringWithFormat:NSLocalizedString(@"Upload status ongoing with succesful/total", nil),
+            NSString *statusString = [NSString stringWithFormat:NSLocalizedString(@"Upload status ongoing with successful/total", nil),
                                       finishedTasks,
                                      totalTasks];
             [SSSnackbar.currentSnackbar setLabelText:statusString];
@@ -146,37 +146,51 @@
 
 #pragma mark - Private methods
 - (void)_displayNoInternetStatus {
-    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
-                                                       message:@"No internet, please try again later"
-                                                    actionText:NSLocalizedString(@"Upload status close", nil)
-                                                      duration:2
-                                                   actionBlock:^(SSSnackbar *sender) {
-        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
-    }];
-    [snackbar display];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                           message:@"No internet, please try again later"
+                                                        actionText:NSLocalizedString(@"Upload status close", nil)
+                                                          duration:2
+                                                       actionBlock:^(SSSnackbar *sender) {
+            NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+        }];
+        [snackbar display];
+    });
 }
 
 - (void)_displayUploadingSnackbarWithStatusString:(NSString *)statusString {
 //    NSString *snackbarMessage = [NSString stringWithFormat:@"Uploading... "];
-    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
-                                                       message:statusString
-                                                    actionText:NSLocalizedString(@"Upload status close", nil)
-                                                      duration:SnackbarDurationInfinite
-                                                   actionBlock:^(SSSnackbar *sender) {
-        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
-    }];
-    [snackbar display];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                           message:statusString
+                                                        actionText:NSLocalizedString(@"Upload status close", nil)
+                                                          duration:SnackbarDurationInfinite
+                                                       actionBlock:^(SSSnackbar *sender) {
+            NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+        }];
+        [snackbar display];
+        
+    });
 }
 
 - (void)_displayUploadFinishSnackbarWithStatusString:(NSString *)statusString {
-    SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
-                                                       message:statusString
-                                                    actionText:NSLocalizedString(@"Upload status close", nil)
-                                                      duration:3
-                                                   actionBlock:^(SSSnackbar *sender) {
-        NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
-    }];
-    [snackbar display];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SSSnackbar *snackbar = [SSSnackbar snackbarWithContextView:self.view
+                                                           message:statusString
+                                                        actionText:NSLocalizedString(@"Upload status close", nil)
+                                                          duration:3
+                                                       actionBlock:^(SSSnackbar *sender) {
+            NSLog(@"[DEBUG] %s: snackbar close clicked!", __func__);
+        }];
+        [snackbar display];
+        
+    });
+}
+
+- (void)_selectProfileView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.selectedViewController = [self.viewControllers objectAtIndex:kProfileTabIndex];
+    });
 }
 
 #pragma mark - Private methods

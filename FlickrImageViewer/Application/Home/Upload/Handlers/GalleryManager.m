@@ -26,6 +26,22 @@
                                                  options:option];
 }
 
+- (void)getFullSizeImageByAsset:(PHAsset *)asset
+              completionHandler:(void (^)(UIImage * _Nullable image))completion {
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.synchronous = YES;
+    [self.imageCacheManager requestImageForAsset:asset
+                                      targetSize:PHImageManagerMaximumSize
+                                     contentMode:PHImageContentModeAspectFill
+                                         options:options
+                                   resultHandler:^(UIImage * _Nullable result,
+                                                   NSDictionary * _Nullable info) {
+        if (result) {
+            completion(result);
+        }
+    }];
+}
+
 #pragma mark - Custom Accessors
 - (PHCachingImageManager *)imageCacheManager {
     if (_imageCacheManager) return _imageCacheManager;

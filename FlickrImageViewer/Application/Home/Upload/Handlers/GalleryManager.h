@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)fetchAssets;
 
+- (void)getFullSizeImageByAsset:(PHAsset *)asset
+              completionHandler:(void (^)(UIImage * _Nullable image))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

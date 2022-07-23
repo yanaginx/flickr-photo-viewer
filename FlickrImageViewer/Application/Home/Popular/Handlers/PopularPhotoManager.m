@@ -268,6 +268,7 @@
 
     [params setObject:kConsumerKey forKey:@"api_key"];
     [params setObject:kPopularPhotosMethod forKey:@"method"];
+//    [params setObject:kRecentPhotosMethod forKey:@"method"];
     [params setObject:kPopularUserID forKey:@"user_id"];
     [params setObject:kIsNoJSONCallback forKey:@"nojsoncallback"];
     [params setObject:kResponseFormat forKey:@"format"];

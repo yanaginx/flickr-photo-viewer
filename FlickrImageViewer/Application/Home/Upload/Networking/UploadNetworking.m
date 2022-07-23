@@ -94,9 +94,9 @@
             return;
         }
         
-        NSString *responseDataString = [[NSString alloc] initWithData:data
-                                                             encoding:NSASCIIStringEncoding];
-        NSLog(@"[DEBUG] %s : response string result: %@", __func__, responseDataString);
+//        NSString *responseDataString = [[NSString alloc] initWithData:data
+//                                                             encoding:NSASCIIStringEncoding];
+//        NSLog(@"[DEBUG] %s : response string result: %@", __func__, responseDataString);
         // TODO: check the return response:
         NSError *localError = nil;
         NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data
@@ -158,10 +158,10 @@
     
     // add set body to the request
     requestWithSignature.HTTPBody = postBody;
-    NSLog(@"%s : Request body %@",
-          __func__,
-          [[NSString alloc] initWithData:requestWithSignature.HTTPBody
-                                encoding:NSASCIIStringEncoding]);
+//    NSLog(@"%s : Request body %@",
+//          __func__,
+//          [[NSString alloc] initWithData:requestWithSignature.HTTPBody
+//                                encoding:NSASCIIStringEncoding]);
     
     return requestWithSignature;
 }

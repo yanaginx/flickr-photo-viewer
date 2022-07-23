@@ -33,12 +33,12 @@
 @property (nonatomic, strong) UploadPhotoManager *uploadPhotoManager;
 @property (nonatomic, strong) GalleryManager *galleryManager;
 
-@property (nonatomic, strong) NSArray <PHAsset *>* assets;
-@property (nonatomic, strong) AlbumInfo *selectedAlbumInfo;
+@property (nonatomic, copy) NSArray <PHAsset *>* assets;
+@property (nonatomic, copy) AlbumInfo *selectedAlbumInfo;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) TitleTextField *titleTextField;
-@property (nonatomic, strong) DescriptionTextField *descriptionTextField;
+@property (nonatomic, copy) TitleTextField *titleTextField;
+@property (nonatomic, copy) DescriptionTextField *descriptionTextField;
 @property (nonatomic, strong) UIButton *albumSelectorButton;
 
 @end
@@ -218,11 +218,15 @@
 #pragma mark - Handlers
 
 - (void)_onPostButtonClicked {
-    [self.uploadPhotoManager uploadSelectedImages:self.assets
-                                        withTitle:self.titleTextField.text
-                                      description:self.descriptionTextField.text
-                                          albumID:self.selectedAlbumInfo.albumID];
     [self dismissViewControllerAnimated:YES completion:nil];
+    NSString *titleText = self.titleTextField.text;
+    NSString *descriptionText = self.descriptionTextField.text;
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        [self.uploadPhotoManager uploadSelectedImages:self.assets
+                                            withTitle:titleText
+                                          description:descriptionText
+                                              albumID:self.selectedAlbumInfo.albumID];
+    });
 }
 
 /*
