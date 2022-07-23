@@ -78,6 +78,10 @@
     }
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
 #pragma mark - Operations
 - (void)_setupViews {
     self.view.backgroundColor = UIColor.whiteColor;
