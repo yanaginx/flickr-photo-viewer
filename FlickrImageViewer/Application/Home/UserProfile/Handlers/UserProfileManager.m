@@ -129,10 +129,10 @@
 - (BOOL)_isConnected {
     Reachability *reach = [Reachability reachabilityForInternetConnection];
     if (reach.currentReachabilityStatus != NotReachable) {
-        NSLog(@"[DEBUG] %s: Is Connected", __func__);
+//        NSLog(@"[DEBUG] %s: Is Connected", __func__);
         return YES;
     }
-    NSLog(@"[DEBUG] %s: Not connected", __func__);
+//    NSLog(@"[DEBUG] %s: Not connected", __func__);
     return NO;
 }
 

@@ -41,6 +41,7 @@
 #pragma mark - Public methods
 - (void)refreshProfile {
     [self _refreshData];
+    [self.headerVC reloadProfileInfo];
 }
 
 #pragma mark - Operations
@@ -60,7 +61,7 @@
 
 - (void)_setupRefreshControl {
     [self.refreshController addTarget:self
-                            action:@selector(_refreshData)
+                            action:@selector(refreshProfile)
                   forControlEvents:UIControlEventValueChanged];
     self.scrollView.refreshControl = self.refreshController;
     self.userProfileViewController.publicPhotoViewController.delegate = self;

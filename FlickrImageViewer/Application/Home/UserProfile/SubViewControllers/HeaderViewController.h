@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *numberOfPhotosLabel;
 
+- (void)reloadProfileInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

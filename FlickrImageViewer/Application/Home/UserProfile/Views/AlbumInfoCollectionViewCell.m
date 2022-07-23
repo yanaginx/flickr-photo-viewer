@@ -95,7 +95,7 @@
         _albumNameLabel.font = [UIFont systemFontOfSize:18
                                                  weight:UIFontWeightBold];
         _albumNameLabel.clipsToBounds = YES;
-        _albumNameLabel.text = @"Album Name";
+        _albumNameLabel.text = @"";
     }
     return _albumNameLabel;
 }
@@ -108,7 +108,7 @@
                                                   kAlbumInfoDateCreatedHeight);
         _dateCreatedLabel = [[UILabel alloc] initWithFrame:dateCreatedLabelFrame];
 //        _dateCreatedLabel.clipsToBounds = YES;
-        _dateCreatedLabel.text = @"DAY MONTH YEAR";
+        _dateCreatedLabel.text = @"";
         _dateCreatedLabel.textColor = UIColor.darkGrayColor;
     }
     return _dateCreatedLabel;
@@ -122,7 +122,7 @@
                                                      kAlbumInfoNumberOfPhotosHeight);
         _numberOfPhotosLabel = [[UILabel alloc] initWithFrame:numberOfPhotosLabelFrame];
         _numberOfPhotosLabel.clipsToBounds = YES;
-        _numberOfPhotosLabel.text = @"# Photos";
+        _numberOfPhotosLabel.text = @"";
         _numberOfPhotosLabel.textColor = UIColor.darkGrayColor;
     }
     return _numberOfPhotosLabel;

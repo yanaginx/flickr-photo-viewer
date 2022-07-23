@@ -107,6 +107,8 @@
             return;
         }
         
+//        NSLog(@"[DEBUG] %s: %@", __func__, [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+        
         NSError *localError = nil;
         NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
         if (localError) {

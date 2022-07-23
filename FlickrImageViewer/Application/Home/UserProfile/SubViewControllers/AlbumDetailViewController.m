@@ -28,6 +28,7 @@
     NSInteger currentPage;
     BOOL isLastPage;
     BOOL isRefreshing;
+    BOOL isErrorPageDisplaying;
     NSInteger numOfPhotosBeforeNewFetch;
     NSUInteger totalNumberOfPhotos;
     NSInteger numberOfPages;
@@ -49,6 +50,7 @@
         currentPage = 1;
         isLastPage = NO;
         isRefreshing = NO;
+        isErrorPageDisplaying = NO;
         numOfPhotosBeforeNewFetch = 2;
         numberOfPages = LONG_MAX;
         self.refreshControl = [[UIRefreshControl alloc] init];
@@ -121,6 +123,10 @@
     if (!isRefreshing) {
         isRefreshing = YES;
         currentPage = 1;
+        if (isErrorPageDisplaying) {
+            isErrorPageDisplaying = NO;
+            [self.navigationController popViewControllerAnimated:NO];
+        }
         [self.dataSource.photos removeAllObjects];
         [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
         [self _getAlbumDetailForAlbumID:self.albumInfo.albumID
@@ -158,6 +164,7 @@
                         self->isRefreshing = NO;
                         [self.refreshControl endRefreshing];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewNetworkError];
                     break;
                 case kNoDataError:
@@ -167,6 +174,7 @@
                         self->isRefreshing = NO;
                         [self.refreshControl endRefreshing];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewNoDataError];
                     break;
                 default:
@@ -176,6 +184,7 @@
                         self->isRefreshing = NO;
                         [self.refreshControl endRefreshing];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewServerError];
                     break;
             }
@@ -281,6 +290,7 @@
 
 #pragma mark - NetworkErrorViewDelegate
 - (void)onRetryForNetworkErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
@@ -291,6 +301,7 @@
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];
@@ -301,6 +312,7 @@
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.albumDetailPhotoManager clearLocalAlbumPhotosForAlbumID:self.albumInfo.albumID];

@@ -40,6 +40,10 @@
 //    NSLog(@"[DEBUG] %s: %f", __func__, self.view.frame.size.width);
 //}
 
+- (void)reloadProfileInfo {
+    [self _getUserProfile];
+}
+
 #pragma mark - Operations
 - (void)_getUserProfile {
     [self.userProfileManager getUserProfileWithCompletionHandler:^(NSURL * _Nullable avatarURL,
@@ -103,7 +107,7 @@
                                       kNameLabelHeight);
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
 //    self.nameLabel.textColor = kAppleBlue;
-    self.nameLabel.text = @"Display name";
+    self.nameLabel.text = @"";
 }
 
 - (void)_setupNumberOfPhotosLabel {
@@ -115,7 +119,7 @@
                                                 kNumberOfPhotoLabelHeight);
     self.numberOfPhotosLabel.textAlignment = NSTextAlignmentCenter;
 //    self.numberOfPhotosLabel.textColor = ;
-    self.numberOfPhotosLabel.text = @"#Number Photos";
+    self.numberOfPhotosLabel.text = @"";
 }
 
 #pragma mark - Helpers

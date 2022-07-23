@@ -37,7 +37,7 @@
     BOOL isLastPage;
     BOOL isRefreshing;
     NSInteger numOfPhotosBeforeNewFetch;
-    
+    BOOL isErrorPageDisplaying;
     CGPoint lastOffset;
     NSTimeInterval lastOffsetCapture;
     BOOL isScrollingFast;
@@ -142,6 +142,10 @@
         isRefreshing = YES;
         currentPage = 1;
         [self.popularPhotoViewModel removeAllPhotos];
+        if (isErrorPageDisplaying) {
+            isErrorPageDisplaying = NO;
+            [self.navigationController popViewControllerAnimated:NO];
+        }
         [self.popularPhotoViewModel getPhotosForPage:currentPage];
     } else {
         [self.refreshControl endRefreshing];
@@ -187,6 +191,7 @@
                     self->isRefreshing = NO;
                     [self.refreshControl endRefreshing];
                 }
+                self->isErrorPageDisplaying = YES;
                 [self _viewNetworkError];
                 break;
             case kNoDataError:
@@ -196,6 +201,7 @@
                     self->isRefreshing = NO;
                     [self.refreshControl endRefreshing];
                 }
+                self->isErrorPageDisplaying = YES;
                 [self _viewNoDataError];
                 break;
             default:
@@ -205,6 +211,7 @@
                     self->isRefreshing = NO;
                     [self.refreshControl endRefreshing];
                 }
+                self->isErrorPageDisplaying = YES;
                 [self _viewServerError];
                 break;
         }
@@ -224,6 +231,7 @@
 #pragma mark - NetworkErrorViewDelegate
 
 - (void)onRetryForNetworkErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];
@@ -232,6 +240,7 @@
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];
@@ -240,6 +249,7 @@
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
+    self->isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];

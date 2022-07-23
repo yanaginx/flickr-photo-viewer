@@ -42,6 +42,7 @@
     BOOL isRefreshing;
     NSInteger dynamicLayoutIdx;
     NSInteger fixedLayoutIdx;
+    BOOL isErrorPageDisplaying;
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -67,6 +68,7 @@
         numberOfPages = LONG_MAX;
         isLastPage = NO;
         isRefreshing = NO;
+        isErrorPageDisplaying = NO;
         dynamicLayoutIdx = 0;
         fixedLayoutIdx = 1;
     }
@@ -122,6 +124,10 @@
         [self.dynamicLayout clearCache];
         [self.publicPhotoManager clearLocalPublicPhotos];
     }
+    if (isErrorPageDisplaying) {
+        isErrorPageDisplaying = NO;
+        [self.navigationController popViewControllerAnimated:NO];
+    }
     [self _getPhotoURLsForPage:currentPage];
 }
 
@@ -147,6 +153,7 @@
                         self->isRefreshing = NO;
                         [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewNetworkError];
                     break;
                 case kNoDataError:
@@ -156,6 +163,7 @@
                         self->isRefreshing = NO;
                         [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewNoDataError];
                     break;
                 default:
@@ -165,6 +173,7 @@
                         self->isRefreshing = NO;
                         [self.delegate cancelRefreshingAfterFetchingPublicPhotos];
                     }
+                    self->isErrorPageDisplaying = YES;
                     [self _viewServerError];
                     break;
             }
@@ -230,6 +239,7 @@
 
 #pragma mark - NetworkErrorViewDelegate
 - (void)onRetryForNetworkErrorClicked {
+    isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.dataSource.photos removeAllObjects];
@@ -240,6 +250,7 @@
 
 #pragma mark - ServerErrorViewDelegate
 - (void)onRetryForServerErrorClicked {
+    isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.dataSource.photos removeAllObjects];
@@ -250,6 +261,7 @@
 
 #pragma mark - NoDataErrorViewDelegate
 - (void)onRetryForNoDataErrorClicked {
+    isErrorPageDisplaying = NO;
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.dataSource.photos removeAllObjects];
