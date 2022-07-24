@@ -165,11 +165,13 @@
             
             Photo *photo = [[Photo alloc] initWithImageURL:photoURL
                                                  imageSize:imageSize];
-            [photos addObject:photo];
-            // Save the photo info into the core data
-            BOOL isSaveToCoreDataSuccessful = [self _savePublicPhotosWithPhoto:photo];
-            if (!isSaveToCoreDataSuccessful) {
-                NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+            if (photo != nil) {
+                [photos addObject:photo];
+                // Save the photo info into the core data
+                BOOL isSaveToCoreDataSuccessful = [self _savePublicPhotosWithPhoto:photo];
+                if (!isSaveToCoreDataSuccessful) {
+                    NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+                }
             }
         }
         completion(photos, nil, totalPhotosNumber);

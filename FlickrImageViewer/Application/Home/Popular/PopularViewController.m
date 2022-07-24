@@ -152,6 +152,7 @@
             isErrorPageDisplaying = NO;
             [self.navigationController popViewControllerAnimated:NO];
         }
+        isAPICalling = YES;
         [self.popularPhotoViewModel getPhotosForPage:currentPage];
     } else {
         [self.refreshControl endRefreshing];
@@ -173,10 +174,11 @@
     // Only call this when in online mode
     if (self.popularPhotoManager.isConnected) {
         if (indexPath.row >= self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
-            !isLastPage) {
+            !isLastPage && !isAPICalling) {
             NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
             if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
             currentPage += 1;
+            isAPICalling = YES;
             [self.popularPhotoViewModel getPhotosForPage:currentPage];
         }
     }
@@ -242,6 +244,7 @@
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];
+    isAPICalling = YES;
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
@@ -251,6 +254,7 @@
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];
+    isAPICalling = YES;
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
@@ -260,6 +264,7 @@
     [self.navigationController popViewControllerAnimated:NO];
     currentPage = 1;
     [self.popularPhotoViewModel removeAllPhotos];
+    isAPICalling = YES;
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
 }
 
@@ -374,6 +379,7 @@
                         NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
                         if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
                         currentPage += 1;
+                        isAPICalling = YES;
                         [self.popularPhotoViewModel getPhotosForPage:currentPage];
                     }
                 }

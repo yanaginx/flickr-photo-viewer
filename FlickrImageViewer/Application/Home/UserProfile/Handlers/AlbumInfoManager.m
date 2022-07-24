@@ -152,11 +152,13 @@
                                                             albumName:albumName
                                                           dateCreated:dateCreated
                                                        numberOfPhotos:numberOfPhotos];
-            [photoSets addObject:albumInfo];
-            // Save the album info into the core data
-            BOOL isSaveToCoreDataSuccessful = [self _saveAlbumInfoWithAlbumInfo:albumInfo];
-            if (!isSaveToCoreDataSuccessful) {
-                NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+            if (albumInfo != nil) {
+                [photoSets addObject:albumInfo];
+                // Save the album info into the core data
+                BOOL isSaveToCoreDataSuccessful = [self _saveAlbumInfoWithAlbumInfo:albumInfo];
+                if (!isSaveToCoreDataSuccessful) {
+                    NSLog(@"[DEBUG] %s: Something went wrong!", __func__);
+                }
             }
         }
         completion(photoSets, nil, totalAlbumInfosNumber);
