@@ -361,7 +361,7 @@
             float scrollContentSizeHeight = scrollView.contentSize.height;
             float scrollOffset = scrollView.contentOffset.y;
 
-            NSLog(@"FAST VH: %f \n ContentH : %f\n scrollOffset : %f", scrollViewHeight, scrollContentSizeHeight, scrollOffset);
+//            NSLog(@"FAST VH: %f \n ContentH : %f\n scrollOffset : %f", scrollViewHeight, scrollContentSizeHeight, scrollOffset);
             if ((scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.89 &&
                 scrollOffset + scrollViewHeight <= scrollContentSizeHeight * 0.9) ||
                 (scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.79 &&
