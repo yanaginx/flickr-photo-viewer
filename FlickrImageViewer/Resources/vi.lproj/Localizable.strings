@@ -40,6 +40,13 @@
 "Logout modal title" = "Hi vọng được gặp lại bạn sớm";
 "Logout modal message" = "Bạn có chắc là bạn muốn đăng xuất?";
 
+// Clear cache modal related
+"Clear cache modal title" = "Xóa bộ đệm?";
+"Clear cache modal message" = "Hành động này sẽ xóa dữ liệu đệm";
+"Clear cache button menu" = "Xóa bộ đệm";
+"Clear cache cancel button menu" = "Hủy";
+"Clear cache confirm button menu" = "Đồng ý";
+
 // Profile screen related
 "Profile public photo label" = "Hình công khai";
 "Profile album label" = "Album";

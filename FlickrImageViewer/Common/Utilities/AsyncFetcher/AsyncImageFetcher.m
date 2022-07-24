@@ -207,6 +207,11 @@
     }
 }
 
+#pragma mark - Clear cache
+- (void)clearDiskCache {
+    [self.mdImageCache clearDiskCache];
+}
+
 
 #pragma mark - Custom Accessors
 - (NSOperationQueue *)serialAccessQueue {

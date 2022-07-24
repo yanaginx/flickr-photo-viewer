@@ -141,6 +141,23 @@ static inline NSString *cachePathForKey(NSString *directory, NSString *key) {
     });
 }
 
+- (void)clearDiskCache {
+    dispatch_sync(_cacheInfoQueue, ^{
+        for(NSString* key in _cacheInfo) {
+            [[NSFileManager defaultManager] removeItemAtPath:cachePathForKey(_directory, key)
+                                                       error:NULL];
+        }
+        
+        [_cacheInfo removeAllObjects];
+        
+        dispatch_sync(_frozenCacheInfoQueue, ^{
+            self.frozenCacheInfo = [_cacheInfo copy];
+        });
+
+        [self setNeedsSave];
+    });
+}
+
 - (void)removeCacheForKey:(NSString*)key {
     [self->_memCache removeObjectForKey:key];
     

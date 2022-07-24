@@ -32,6 +32,8 @@ typedef void (^handlerBlock)(UIImage * _Nullable);
 
 - (void)cancelFetchForIdentifier:(NSString *)identifier;
 
+- (void)clearDiskCache;
+
 @end
 
 NS_ASSUME_NONNULL_END

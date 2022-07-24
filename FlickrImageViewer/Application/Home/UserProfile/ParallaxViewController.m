@@ -13,6 +13,7 @@
 
 #import "../../Main/AppDelegate.h"
 #import "../../../Common/Utilities/AccountManager/AccountManager.h"
+#import "../../../Common/Utilities/AsyncFetcher/AsyncImageFetcher.h"
 #import "../../../Common/Constants/Constants.h"
 #import "../../../Common/Utilities/Scope/Scope.h"
 
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) UIRefreshControl *refreshController;
 
 @property (nonatomic, strong) UIAlertController *logoutModal;
+@property (nonatomic, strong) UIAlertController *clearCacheModal;
 @property (nonatomic, strong) UIBarButtonItem *settingButton;
 
 @end
@@ -85,6 +87,7 @@
 
 - (void)_setupSettingSection {
     [self _setupLogoutModal];
+    [self _setupClearCacheModal];
     [self _setupSettingButton];
 }
 
@@ -106,6 +109,20 @@
     [self.logoutModal addAction:action];
     [self.logoutModal addAction:cancelAction];
     self.logoutModal.preferredAction = action;
+}
+
+- (void)_setupClearCacheModal {
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear cache confirm button menu", nil)
+                                                     style:UIAlertActionStyleDestructive
+                                                   handler:^(UIAlertAction * _Nonnull action) {
+        [AsyncImageFetcher.sharedImageFetcher clearDiskCache];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear cache cancel button menu", nil)
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [self.clearCacheModal addAction:action];
+    [self.clearCacheModal addAction:cancelAction];
+    self.clearCacheModal.preferredAction = action;
 }
 
 #pragma mark - PublicPhotosRefreshDelegate
@@ -134,6 +151,10 @@
     [self presentViewController:self.logoutModal animated:YES completion:nil];
 }
 
+- (void)_onClearCacheButtonClicked {
+    [self presentViewController:self.clearCacheModal animated:YES completion:nil];
+}
+
 #pragma mark - Custom Accessors
 - (UserProfileViewController *)userProfileViewController {
     if (_userProfileViewController) return _userProfileViewController;
@@ -157,6 +178,14 @@
     return _logoutModal;
 }
 
+- (UIAlertController *)clearCacheModal {
+    if (_clearCacheModal) return _clearCacheModal;
+    _clearCacheModal = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Clear cache modal title", nil)
+                                                           message:NSLocalizedString(@"Clear cache modal message", nil)
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+    return _clearCacheModal;
+}
+
 - (UIBarButtonItem *)settingButton {
     if (_settingButton) return _settingButton;
     @weakify(self)
@@ -167,7 +196,15 @@
         @strongify(self)
         [self _onLogoutButtonClicked];
     }];
-    UIMenu *settingMenu = [UIMenu menuWithChildren:@[logoutAction]];
+    UIAction *clearCacheAction = [UIAction actionWithTitle:NSLocalizedString(@"Clear cache button menu", nil)
+                                                     image:nil
+                                                identifier:nil
+                                                   handler:^(__kindof UIAction * _Nonnull action) {
+        @strongify(self)
+        [self _onClearCacheButtonClicked];
+    }];
+
+    UIMenu *settingMenu = [UIMenu menuWithChildren:@[clearCacheAction, logoutAction]];
     _settingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_outlined_big"]
                                                        menu:settingMenu];
     return _settingButton;

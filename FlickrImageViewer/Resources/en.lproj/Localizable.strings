@@ -40,6 +40,13 @@
 "Logout modal title" = "Hope to see you soon";
 "Logout modal message" = "Are you sure you want to logout?";
 
+// Clear cache modal related
+"Clear cache modal title" = "Clear cache?";
+"Clear cache modal message" = "This will clear cache data";
+"Clear cache button menu" = "Clear cache";
+"Clear cache cancel button menu" = "Cancel";
+"Clear cache confirm button menu" = "OK";
+
 // Profile screen related
 "Profile public photo label" = "Public photos";
 "Profile album label" = "Albums";

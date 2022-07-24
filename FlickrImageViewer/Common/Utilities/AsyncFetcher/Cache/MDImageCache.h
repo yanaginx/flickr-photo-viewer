@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //- (instancetype)initWithCacheDirectory:(NSString *)cacheDirectory;
 - (void)clearCache;
+- (void)clearDiskCache;
 - (void)removeCacheForKey:(NSString *)key;
 - (BOOL)hasCacheForKey:(NSString *)key;
 
