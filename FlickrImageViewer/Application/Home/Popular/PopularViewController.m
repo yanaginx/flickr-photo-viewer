@@ -24,8 +24,8 @@
 #import "Views/PopularPhotoCollectionViewCell.h"
 
 
-#define kSlowVelocityNum 10
-#define kFastVelocityNum 1
+#define kSlowVelocityNum 5
+#define kFastVelocityNum 3
 
 @interface PopularViewController () <UICollectionViewDelegate,
                                      UICollectionViewDelegateFlowLayout,
@@ -41,6 +41,7 @@
     CGPoint lastOffset;
     NSTimeInterval lastOffsetCapture;
     BOOL isScrollingFast;
+    BOOL isAPICalling;
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -61,6 +62,7 @@
         numOfPhotosBeforeNewFetch = kSlowVelocityNum;
         isLastPage = NO;
         isRefreshing = NO;
+        isAPICalling = NO;
         
         self.dynamicLayout = [[DynamicCollectionViewLayout alloc] init];
         self.popularPhotoManager = [[PopularPhotoManager alloc] init];
@@ -83,6 +85,7 @@
     if (currentPage != 1) currentPage = 1;
     [self _initialSetup];
     [self.popularPhotoViewModel getPhotosForPage:currentPage];
+    isAPICalling = YES;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -169,7 +172,7 @@
     forItemAtIndexPath:(NSIndexPath *)indexPath {
     // Only call this when in online mode
     if (self.popularPhotoManager.isConnected) {
-        if (indexPath.row == self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
+        if (indexPath.row >= self.popularPhotoViewModel.numberOfItems - numOfPhotosBeforeNewFetch &&
             !isLastPage) {
             NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
             if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
@@ -182,6 +185,7 @@
 #pragma mark - PopularPhotoViewModelDelegate
 - (void)onFinishGettingPhotosWithErrorCode:(NSNumber *)errorCodeNumber
                             lastPageStatus:(NSNumber *)isLastPageNumber {
+    isAPICalling = NO;
     NSInteger errorCode = [errorCodeNumber integerValue];
     BOOL isLastPage = [isLastPageNumber boolValue];
    
@@ -319,6 +323,27 @@
     });
 }
 
+//- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+//    float scrollViewHeight = scrollView.frame.size.height;
+//    float scrollContentSizeHeight = scrollView.contentSize.height;
+//    float scrollOffset = scrollView.contentOffset.y;
+//
+//    if ((scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.6 &&
+//        scrollOffset + scrollViewHeight <= scrollContentSizeHeight * 0.7) ||
+//        scrollOffset + scrollViewHeight >= scrollContentSizeHeight) {
+//        // Load more cell here
+//        //This condition will be true when scrollview will reach to bottom
+//        if (self.popularPhotoManager.isConnected) {
+//            if (!isAPICalling && !isLastPage) {
+//                NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
+//                if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
+//                currentPage += 1;
+//                [self.popularPhotoViewModel getPhotosForPage:currentPage];
+//            }
+//        }
+//    }
+//}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGPoint currentOffset = scrollView.contentOffset;
     NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
@@ -332,15 +357,57 @@
         CGFloat scrollSpeed = fabs(scrollSpeedNotAbs);
         if (scrollSpeed > 0.5) {
             isScrollingFast = YES;
+            float scrollViewHeight = scrollView.frame.size.height;
+            float scrollContentSizeHeight = scrollView.contentSize.height;
+            float scrollOffset = scrollView.contentOffset.y;
+
+            NSLog(@"FAST VH: %f \n ContentH : %f\n scrollOffset : %f", scrollViewHeight, scrollContentSizeHeight, scrollOffset);
+            if ((scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.89 &&
+                scrollOffset + scrollViewHeight <= scrollContentSizeHeight * 0.9) ||
+                (scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.79 &&
+                 scrollOffset + scrollViewHeight <= scrollContentSizeHeight * 0.8) ||
+                scrollOffset + scrollViewHeight >= scrollContentSizeHeight) {
+                // Load more cell here
+                //This condition will be true when scrollview will reach to bottom
+                if (self.popularPhotoManager.isConnected) {
+                    if (!isAPICalling && !isLastPage) {
+                        NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
+                        if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
+                        currentPage += 1;
+                        [self.popularPhotoViewModel getPhotosForPage:currentPage];
+                    }
+                }
+            }
             numOfPhotosBeforeNewFetch = kFastVelocityNum;
         } else {
             isScrollingFast = NO;
+//            float scrollViewHeight = scrollView.frame.size.height;
+//            float scrollContentSizeHeight = scrollView.contentSize.height;
+//            float scrollOffset = scrollView.contentOffset.y;
+//
+//            NSLog(@" VH: %f \n ContentH : %f\n scrollOffset : %f", scrollViewHeight, scrollContentSizeHeight, scrollOffset);
+//            if ((scrollOffset + scrollViewHeight >= scrollContentSizeHeight * 0.75 &&
+//                scrollOffset + scrollViewHeight <= scrollContentSizeHeight * 0.80) ||
+//                scrollOffset + scrollViewHeight >= scrollContentSizeHeight) {
+//                // Load more cell here
+//                //This condition will be true when scrollview will reach to bottom
+//                if (!isAPICalling && !isLastPage) {
+//                    if (self.popularPhotoManager.isConnected) {
+//                        NSInteger expectedCurrentPage = ceil((float)self.popularPhotoViewModel.numberOfItems/kResultsPerPage.integerValue);
+//                        if (currentPage <= expectedCurrentPage) currentPage = expectedCurrentPage;
+//                        currentPage += 1;
+//                        [self.popularPhotoViewModel getPhotosForPage:currentPage];
+//                    }
+//
+//                }
+//            }
             numOfPhotosBeforeNewFetch = kSlowVelocityNum;
         }
 
         lastOffset = currentOffset;
         lastOffsetCapture = currentTime;
     }
+
 }
 
 #pragma mark - Custom Accessors
